@@ -1,0 +1,52 @@
+name: AppstoreSpy
+description: >-
+  Mobile-app market-intelligence provider exposing a public REST API for App Store (iOS) and Google Play data, including
+  app metadata, reviews, rankings, download/revenue estimates, developer lookup, keyword suggestions, and LiveOps
+  events. Covers 13 million apps across 100 countries.
+url: https://raw.githubusercontent.com/api-evangelist/appstorespy/refs/heads/main/apis.yml
+created: '2026-08-21'
+modified: '2026-08-21'
+specificationVersion: '0.21'
+tags:
+  - mobile-apps
+  - app-store-optimization
+  - market-intelligence
+  - app-analytics
+  - google-play
+  - apple-app-store
+  - reviews-and-ratings
+  - download-revenue-estimates
+  - marketing
+apis:
+  - name: AppstoreSpy API
+    description: >-
+      Public REST API for App Store and Google Play data: app lookup, search, filter search, reviews, rankings,
+      download/revenue estimates, developer lookup, daily installs, keyword suggestions, LiveOps events, and jobs
+      search. API-KEY header authentication; access gated behind the Business plan.
+    humanURL: https://api.appstorespy.com/docs
+    baseURL: https://api.appstorespy.com/v1
+    tags:
+      - mobile-apps
+      - app-store-optimization
+      - market-intelligence
+      - app-analytics
+      - google-play
+      - apple-app-store
+      - reviews-and-ratings
+      - download-revenue-estimates
+      - marketing
+    properties:
+      - type: OpenAPI
+        url: https://api.appstorespy.com/openapi.json
+      - type: Documentation
+        url: https://api.appstorespy.com/docs
+      - type: Documentation
+        url: https://appstorespy.com/app-store-api
+maintainers:
+  - FN: AppstoreSpy
+    url: https://appstorespy.com
+generated:
+  by: apis.io/add
+  model: claude-opus-4-8
+  confidence: 95
+  at: '2026-08-21T16:47:03.279Z'
