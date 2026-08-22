@@ -1,0 +1,154 @@
+generated: '2026-08-22'
+method: searched
+source: >-
+  https://api.appstorespy.com/docs (info.description conventions reference),
+  openapi/appstorespy-openapi.json, live probes of api.appstorespy.com
+authentication:
+  style: api-key-header
+  header: API-KEY
+  applied_to: all 33 operations (security declared per operation)
+  key_source: https://appstorespy.com/account
+  gating: Business plan ($199/month) required for live API access
+  cross_ref: authentication/appstorespy-authentication.yml
+transport:
+  protocol: https
+  http_version: HTTP/2
+  base_url: https://api.appstorespy.com/v1
+  media_type: application/json
+  accept_header_documented: true
+  note: 'The docs show every call with -H ''accept: application/json'' and -H ''API-KEY: <your_token>''.'
+pagination:
+  style: offset-page
+  params:
+    - name: page
+      used_by_operations: 6
+    - name: limit
+      used_by_operations: 8
+      note: Where declared, limit is bounded (e.g. SearchCreate.limit max 250).
+    - name: start
+      used_by_operations: 5
+    - name: end
+      used_by_operations: 5
+  response_fields:
+    - total_count
+  envelope: '{ data: [...], errors: [...], total_count: n }'
+  cursor: false
+  link_header: false
+  note: >-
+    Pagination is not uniform - only a subset of the 33 operations expose page or
+    limit, and detail endpoints expose neither.
+field_selection:
+  supported: true
+  param: fields
+  used_by_operations: 9
+  usage: 'fields=name,developer_name,ipd,downloads'
+  behaviour: Omit the parameter to receive all fields.
+  documented_at: https://api.appstorespy.com/docs
+sorting:
+  supported: true
+  param: sort
+  used_by_operations: 6
+  descending: 'Prefix the field with "-" (sort=-ratingCount)'
+  enums:
+    - IosSortEnum
+    - PlaySortEnum
+localization:
+  params:
+    - country
+    - language
+    - lang
+  discovery_operations:
+    - get_play_app_countries_ios_info_countries_get
+    - get_play_app_languages_ios_info_languages_get
+    - get_play_app_countries_play_info_countries_get
+    - get_play_app_languages_play_info_languages_get
+  note: >-
+    Country/language availability is queryable per app before requesting data;
+    a request for an unavailable country returns 204 No Content.
+async_semantics:
+  pattern: 202-then-retry
+  operations:
+    - get_suggests_play_suggestions_get
+    - get_events_play_liveops_get
+    - get_recrawl_ios_apps__id__recrawl_get
+    - get_recrawl_play_apps__id__recrawl_get
+    - create_search_jobs_search_post
+    - get_search_jobs_search_get
+  detail: >-
+    202 Accepted means the app/term was absent from the database and has been
+    queued for crawling; the caller retries the same request later. /jobs/search
+    is the explicit job form - POST creates a crawl job, GET retrieves it by
+    search_id. No callback, webhook or polling interval is documented.
+request_id_tracing:
+  supported: false
+  note: No request-id or correlation header is documented or observed.
+versioning:
+  style: url-path
+  current: v1
+  cross_ref: lifecycle/appstorespy-lifecycle.yml
+error_envelope:
+  application: '{ "detail": "..." }' 
+  validation: '{ "detail": [ { "loc": [...], "msg": "...", "type": "..." } ] }'
+  edge: '{ "message": "...", "code": n }'
+  partial_success: 'errors[] of DetailedError inside a 200 list response'
+  rfc9457: false
+  cross_ref: errors/appstorespy-problem-types.yml
+rate_limit_signaling:
+  status_on_exhaustion: 429
+  documented_headers: []
+  observed_headers: []
+  retry_after: false
+  note: >-
+    The docs state 429 = "Your request rate is over the limit" but publish no
+    numeric limit and no headers; no RateLimit-*, X-RateLimit-* or Retry-After
+    header was present on the live unauthenticated probe of
+    /v1/play/info/countries (2026-08-22, HTTP 401, server nginx).
+  cross_ref: rate-limits/appstorespy-rate-limits.yml
+idempotency:
+  supported: false
+  state: na
+  header: null
+  note: >-
+    No Idempotency-Key header or equivalent exists in the contract or the docs.
+    Exposure is low rather than absent: the six POST/trigger operations
+    (filter-search, similar, summary, recrawl, jobs/search) either compute a
+    query or enqueue a crawl - none creates a billable or externally visible
+    resource - but each call consumes API credits, so a retried request costs
+    credits twice with no dedupe key to prevent it. No Idempotency pointer is
+    wired into apis.yml.
+dry_run_mode:
+  supported: false
+  state: na
+  note: The API is a read/query surface; there is no state-changing action to rehearse.
+reversibility:
+  state: na
+  grade: none
+  write_surfaces:
+    - operation: create_search_jobs_search_post
+      path: POST /jobs/search
+      effect: Enqueues an asynchronous store-search crawl job and consumes API credits.
+      reversal_operation: null
+      window: null
+      evidence: >-
+        Neither the OpenAPI nor https://api.appstorespy.com/docs documents a
+        cancel, delete or abort operation for a search job - the only other jobs
+        operation is GET /jobs/search, which reads a result by search_id.
+    - operation: get_recrawl_ios_apps__id__recrawl_get
+      path: GET /ios/apps/{id}/recrawl
+      effect: Requests a fresh crawl of an App Store app; consumes API credits.
+      reversal_operation: null
+      window: null
+    - operation: get_recrawl_play_apps__id__recrawl_get
+      path: GET /play/apps/{id}/recrawl
+      effect: Requests a fresh crawl of a Google Play app; consumes API credits.
+      reversal_operation: null
+      window: null
+  note: >-
+    AppstoreSpy is a read-mostly market-intelligence API: 33 operations, none of
+    which create, update or delete a customer-owned resource. The only writes are
+    crawl/job triggers against AppstoreSpy's own pipeline. Nothing an agent can
+    do here needs undoing in the customer's account, so reversibility is `na`
+    rather than a zero - but note the one irreversible cost is CREDIT SPEND: a
+    trigger or job cannot be cancelled and the credits are consumed. No refund or
+    credit-reversal window is published anywhere on the pricing page or in the
+    Agreement, and none is asserted here.

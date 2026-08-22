@@ -1,0 +1,48 @@
+generated: '2026-08-22'
+method: probed
+source: live HTTPS probes of the API host and the marketing/app host
+hosts:
+  - host: api.appstorespy.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: appstorespy.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+note: >-
+  Every probed /.well-known/ path returned 404 on both hosts on 2026-08-22. The
+  API host answers with its own JSON 404 envelope
+  ({"message":"Not Found: The requested resource does not exist.","code":404}),
+  and the marketing host returns a small HTML 404 page - neither is an SPA
+  catch-all serving 200s, so these are true absences. No WellKnown or SecurityTxt
+  pointer is wired into apis.yml: this file documents an absence, and a pointer
+  would assert the provider serves a surface it does not.

@@ -5,7 +5,7 @@ description: >-
   events. Covers 13 million apps across 100 countries.
 url: https://raw.githubusercontent.com/api-evangelist/appstorespy/refs/heads/main/apis.yml
 created: '2026-08-21'
-modified: '2026-08-21'
+modified: '2026-08-22'
 specificationVersion: '0.21'
 tags:
   - mobile-apps
@@ -37,16 +37,72 @@ apis:
       - marketing
     properties:
       - type: OpenAPI
+        url: openapi/appstorespy-openapi.json
+      - type: OpenAPI
         url: https://api.appstorespy.com/openapi.json
       - type: Documentation
         url: https://api.appstorespy.com/docs
       - type: Documentation
         url: https://appstorespy.com/app-store-api
+image: https://appstorespy.com/s/icons/android-icon-192x192.png
 maintainers:
   - FN: AppstoreSpy
     url: https://appstorespy.com
+    email: support@appstorespy.com
 generated:
   by: apis.io/add
   model: claude-opus-4-8
   confidence: 95
   at: '2026-08-21T16:47:03.279Z'
+common:
+- type: AgenticAccess
+  url: agentic-access/appstorespy-agentic-access.yml
+- type: DomainSecurity
+  url: security/appstorespy-domain-security.yml
+- type: Authentication
+  url: authentication/appstorespy-authentication.yml
+- type: LLMsTxt
+  url: llms/appstorespy-llms.txt
+- type: Overlay
+  url: overlays/appstorespy-openapi-overlay.yaml
+- type: Conformance
+  url: conformance/appstorespy-conformance.yml
+- type: ErrorCatalog
+  url: errors/appstorespy-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/appstorespy-lifecycle.yml
+- type: Conventions
+  url: conventions/appstorespy-conventions.yml
+- type: DataModel
+  url: data-model/appstorespy-data-model.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Plans
+  url: plans/appstorespy-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/appstorespy-rate-limits.yml
+- type: Packages
+  url: packages/appstorespy-packages.yml
+- type: DeveloperPortal
+  url: https://appstorespy.com/app-store-api
+- type: APIReference
+  url: https://api.appstorespy.com/docs
+- type: Pricing
+  url: https://appstorespy.com/pricing
+- type: SignUp
+  url: https://appstorespy.com/sign_up
+- type: Login
+  url: https://appstorespy.com/sign_in
+- type: TermsOfService
+  url: https://appstorespy.com/agreement
+- type: PrivacyPolicy
+  url: https://appstorespy.com/privacy
+- type: Support
+  url: https://appstorespy.com/support
+- type: Blog
+  url: https://appstorespy.com/blog
+x-enrichment:
+  date: '2026-08-22'
+  status: enriched
+  artifacts_added: 20
+  pass: local-v1

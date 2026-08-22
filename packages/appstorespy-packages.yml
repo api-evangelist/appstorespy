@@ -1,0 +1,19 @@
+generated: '2026-08-22'
+method: searched
+source: >-
+  registry.npmjs.org search, pypi.org, rubygems.org, crates.io, api.github.com
+  org+repo search, and the AppstoreSpy API pages
+  (https://appstorespy.com/app-store-api, https://api.appstorespy.com/docs)
+package_count: 0
+official_sdk_count: 0
+packages: []
+note: >-
+  AppstoreSpy publishes no first-party client libraries. Searched 2026-08-22:
+  registry.npmjs.org search for "appstorespy" returned 0 results;
+  pypi.org/pypi/appstorespy/json 404; rubygems.org/api/v1/gems/appstorespy.json
+  404; crates.io search 0 crates; api.github.com/orgs/appstorespy 404 (no GitHub
+  organization exists), and a GitHub repository search returns only unrelated
+  third-party student/test projects. The provider's own API landing page and
+  Swagger UI document raw HTTP + the API-KEY header only, with no SDK or
+  download section. No SDKs pointer is emitted because there is no SDK to point
+  at - this file records a verified absence, not a gap in the search.

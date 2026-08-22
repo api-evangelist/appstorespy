@@ -1,0 +1,193 @@
+generated: '2026-08-22'
+method: derived
+source: openapi/appstorespy-openapi.json
+summary:
+  schema_count: 59
+  core_entities: 8
+  note: >-
+    The model is mirrored across two stores: nearly every entity has an Ios* and
+    a Play* variant with the same shape and different identifier space. Links are
+    by id VALUE (no $ref between entities except the shared media types), so the
+    graph below is derived from id-reference fields rather than schema
+    composition.
+identifiers:
+  - entity: App (App Store)
+    field: id
+    form: numeric Apple app ID (e.g. 284882215)
+  - entity: App (Google Play)
+    field: id
+    form: package name (e.g. com.snapchat.android)
+  - entity: Developer
+    field: id
+    form: store-native developer identifier
+  - entity: SearchJob
+    field: id / search_id
+    form: opaque string returned by POST /jobs/search
+entities:
+  - name: IosApp
+    also: NewIosApp
+    property_count: 50
+    key: id
+    served_by:
+      - get_app_details_ios_apps__id__get
+      - get_app_search_ios_apps_get
+      - get_filter_search_ios_apps_query_post
+      - get_similar_ios_apps_similar_post
+  - name: PlayApp
+    also: NewPlayApp
+    property_count: 57
+    key: id
+    served_by:
+      - get_app_details_play_apps__id__get
+      - get_app_search_play_apps_get
+      - get_filter_search_play_apps_query_post
+      - get_similar_play_apps_similar_post
+  - name: IosDev
+    property_count: 15
+    key: id
+    served_by:
+      - get_developer_ios_developers__id__get
+      - dev_search_ios_developers_get
+  - name: PlayDev
+    property_count: 22
+    key: id
+    served_by:
+      - get_developer_play_developers__id__get
+      - dev_search_play_developers_get
+  - name: IosReview
+    property_count: 8
+    key: id
+    served_by: [get_reviews_ios_apps__id__reviews_get]
+  - name: PlayReview
+    property_count: 12
+    key: id
+    served_by: [get_reviews_play_apps__id__reviews_get]
+  - name: IosRankingItem
+    property_count: 7
+    served_by: [get_ios_rankings_ios_rankings_get]
+  - name: PlayRankingItem
+    property_count: 6
+    served_by: [get_play_rankings_play_rankings_get]
+  - name: AppsEstimates
+    property_count: 4
+    served_by:
+      - get_apps_estimates_ios_estimates_get
+      - get_apps_estimates_play_estimates_get
+      - get_apps_estimates_ios_developers__id__estimates_get
+      - get_apps_estimates_play_developers__id__estimates_get
+  - name: AppsDailyInstalls
+    property_count: 4
+    served_by: [get_apps_installs_daily_play_apps__id__installs_daily_get]
+  - name: Suggest
+    property_count: 9
+    served_by: [get_suggests_play_suggestions_get]
+  - name: Event
+    property_count: 13
+    served_by: [get_events_play_liveops_get]
+    note: Google Play LiveOps event (type, title, text, image, video, date_from/date_to, country).
+  - name: SearchResult
+    also: SearchCreate
+    served_by: [create_search_jobs_search_post, get_search_jobs_search_get]
+  - name: Creatives
+    served_by: embedded in IosApp/PlayApp
+    composes: [Image, AppCreativeVideo]
+relationships:
+  - from: IosApp
+    to: IosDev
+    type: belongs_to
+    via: developer_id
+  - from: PlayApp
+    to: PlayDev
+    type: belongs_to
+    via: developer_id
+  - from: IosApp
+    to: IosDev
+    type: belongs_to
+    via: previous_developer_id
+    note: Prior owner after an app transfer; the model tracks developer change explicitly.
+  - from: PlayApp
+    to: PlayDev
+    type: belongs_to
+    via: previous_developer_id
+  - from: IosDev
+    to: IosApp
+    type: has_many
+    via: 'GET /ios/developers/{id}/estimates -> AppsEstimates keyed by app id'
+  - from: PlayDev
+    to: PlayApp
+    type: has_many
+    via: 'GET /play/developers/{id}/estimates -> AppsEstimates keyed by app id'
+  - from: IosApp
+    to: IosReview
+    type: has_many
+    via: 'IosReview.app -> app id (GET /ios/apps/{id}/reviews)'
+  - from: PlayApp
+    to: PlayReview
+    type: has_many
+    via: 'PlayReview.app -> app id (GET /play/apps/{id}/reviews)'
+  - from: IosApp
+    to: IosRankingItem
+    type: has_many
+    via: 'IosRankingItem.app -> app id, dimensioned by date/country/category/collection'
+  - from: PlayApp
+    to: PlayRankingItem
+    type: has_many
+    via: 'PlayRankingItem.app -> app id, dimensioned by date/country/category/collection'
+  - from: PlayApp
+    to: AppsDailyInstalls
+    type: has_many
+    via: 'AppsDailyInstalls.id -> app id, one row per date (ipd, installs)'
+  - from: IosApp
+    to: AppsEstimates
+    type: has_many
+    via: 'AppsEstimates.id -> app id, one row per month (downloads, revenue)'
+  - from: PlayApp
+    to: AppsEstimates
+    type: has_many
+    via: 'AppsEstimates.id -> app id, one row per month (downloads, revenue)'
+  - from: PlayApp
+    to: Event
+    type: has_many
+    via: 'Event.app -> app id (LiveOps events)'
+  - from: Suggest
+    to: PlayApp
+    type: belongs_to
+    via: 'Suggest.app -> app id (keyword suggestions scoped to an app)'
+  - from: Suggest
+    to: Cluster
+    type: has_many
+    via: results[]
+  - from: SearchResult
+    to: Cluster
+    type: has_many
+    via: results[]
+  - from: IosApp
+    to: Creatives
+    type: has_one
+    via: '$ref Creatives (Image + AppCreativeVideo)'
+  - from: PlayApp
+    to: Creatives
+    type: has_one
+    via: '$ref Creatives (Image + AppCreativeVideo)'
+enumerations:
+  - IosSortEnum
+  - PlaySortEnum
+  - SimilarEnum
+  - TypeEnum
+  - IosCategory
+  - PlayCategory
+  - IosChart
+  - PlayChart
+  - IosPlatform
+  - Store
+filter_shapes:
+  - SearchFilterIos
+  - SearchFilterPlay
+  - ChartFilterIos
+  - ChartFilterPlay
+  - ValueRange
+  - DateRange
+note: >-
+  Derived entirely from the published contract; no relationship is asserted that
+  is not visible as an id-reference field or a $ref in
+  openapi/appstorespy-openapi.json.

@@ -1,0 +1,95 @@
+generated: '2026-08-22'
+method: derived
+source: >-
+  openapi/appstorespy-openapi.json, live probes of api.appstorespy.com and
+  appstorespy.com, https://appstorespy.com/agreement,
+  https://appstorespy.com/privacy
+standards:
+  - id: openapi-3.1
+    conforms: true
+    evidence: >-
+      https://api.appstorespy.com/openapi.json declares openapi 3.1.0, 32 paths /
+      33 operations, 59 component schemas; served publicly and unauthenticated
+      with Swagger UI at /docs and ReDoc at /redoc.
+  - id: rest
+    conforms: true
+    evidence: >-
+      Resource-oriented JSON over HTTPS: /ios/apps/{id}, /play/developers/{id},
+      /play/apps/{id}/reviews; GET for reads, POST for filter/similar/summary
+      query bodies.
+  - id: api-key-auth
+    conforms: true
+    evidence: >-
+      components.securitySchemes.APIKeyHeader - type apiKey, in header, name
+      API-KEY - applied to all 33 operations.
+  - id: oauth2
+    conforms: false
+    evidence: >-
+      No oauth2 or openIdConnect security scheme in the spec;
+      /.well-known/oauth-authorization-server and /.well-known/openid-configuration
+      both 404 on api.appstorespy.com and appstorespy.com.
+  - id: oidc
+    conforms: false
+    evidence: /.well-known/openid-configuration returns 404 on both hosts (probed 2026-08-22).
+  - id: rfc9457
+    conforms: false
+    evidence: >-
+      Errors are vendor JSON - {"detail": "..."} from the application and
+      {"message": "...", "code": n} from the edge. No application/problem+json
+      media type appears anywhere in the contract.
+  - id: pagination
+    conforms: true
+    partial: true
+    evidence: >-
+      Offset-style pagination via `page` (6 operations) and `limit` (8
+      operations); list envelopes return total_count. No cursor, no Link header,
+      and page/limit are not applied uniformly across the 33 operations.
+  - id: idempotency
+    conforms: false
+    evidence: >-
+      No Idempotency-Key header or equivalent in any operation's parameters; no
+      mention in the docs. The POST operations are query bodies rather than
+      resource creation, so the exposure is limited - see
+      conventions/appstorespy-conventions.yml.
+  - id: json-schema-2020-12
+    conforms: true
+    evidence: >-
+      OpenAPI 3.1.0 uses JSON Schema 2020-12 for its 59 component schemas
+      (anyOf/prefix-free constructs present, e.g. DetailedError.value).
+  - id: sparse-fieldsets
+    conforms: true
+    evidence: >-
+      A `fields` query parameter (9 operations) selects which response fields are
+      returned, documented in info.description.
+  - id: rfc8594-sunset
+    conforms: false
+    evidence: No Sunset or Deprecation response headers documented or declared.
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: /.well-known/security.txt returns 404 on api.appstorespy.com and appstorespy.com.
+  - id: graphql
+    conforms: false
+    partial: true
+    evidence: >-
+      https://appstorespy.com/graphql answers POST introspection with HTTP 200
+      and introspection enabled, but the entire schema is a placeholder - a single
+      Query field `Hello: String`, no mutation and no subscription type. Saved at
+      graphql/appstorespy.graphql. Not a usable GraphQL API.
+domain_standards:
+  - id: none-applicable
+    conforms: false
+    evidence: >-
+      Mobile app-store market intelligence has no cross-vendor interchange
+      standard to declare. The contract's domain vocabulary is the two store
+      operators' own shapes - Apple App Store numeric app IDs, Google Play
+      package IDs (com.example.app), ISO 3166 country codes and Play category
+      enums - which are platform conventions, not a published domain standard.
+      REWARD-ONLY dimension: recorded as not applicable rather than invented.
+compliance:
+  certifications_published: []
+  trust_center: false
+  evidence: >-
+    No SOC 2 / ISO 27001 / PCI / HIPAA claim appears on appstorespy.com; no
+    trust center, no compliance page. probe-security-programs.py returned
+    vdp=none trust=none on 2026-08-22. GDPR/CCPA handling is described only in
+    the general Privacy page. No `Compliance` pointer is emitted.

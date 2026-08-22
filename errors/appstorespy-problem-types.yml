@@ -1,0 +1,118 @@
+generated: '2026-08-22'
+method: derived
+source: openapi/appstorespy-openapi.json + https://api.appstorespy.com/docs (info.description status-code reference)
+format: vendor-json
+rfc9457: false
+envelope:
+  simple_error:
+    schema: Error
+    fields:
+      - name: detail
+        type: string
+        required: true
+    used_by: 403, 429
+  validation_error:
+    schema: HTTPValidationError
+    fields:
+      - name: detail
+        type: array<ValidationError>
+        required: false
+    item_fields:
+      - name: loc
+        type: array<string|integer>
+        description: JSON path to the offending input, FastAPI style.
+      - name: msg
+        type: string
+      - name: type
+        type: string
+        description: Machine-readable validation error type.
+    used_by: 422
+  gateway_error:
+    observed: true
+    example: '{"message": "Not Found: The requested resource does not exist.", "code": 404}'
+    note: >-
+      Probed live 2026-08-22. The edge (nginx) returns a DIFFERENT envelope than
+      the application - {message, code} rather than {detail} - for unrouted paths
+      (404) and unauthenticated calls (401, {"message":"Not authenticated","code":401}).
+      Neither 401 nor 404 appears in the OpenAPI responses at all, so an agent
+      parsing only the spec will mis-handle the two most common failures.
+  partial_results:
+    schema: DetailedError
+    fields:
+      - name: location
+        type: string
+      - name: message
+        type: string
+      - name: value
+        type: string|array<string>
+    note: >-
+      List responses (IosAppListResponse, PlayAppListResponse,
+      ApiResponse[list[...]]) carry an inline errors[] array of DetailedError
+      alongside data[] and total_count, so a 200 can still report per-item
+      failures. Agents must inspect errors[] on success responses.
+problem_types:
+  - status: 200
+    title: OK
+    documented_in: info.description
+  - status: 202
+    title: Accepted
+    detail: >-
+      The app or term was not in the AppstoreSpy database and has been submitted
+      for crawling; retry later. Returned by /play/suggestions and /play/liveops.
+    remediation: Poll the same request after a delay; the payload arrives once the crawl completes.
+    operations:
+      - get_suggests_play_suggestions_get
+      - get_events_play_liveops_get
+  - status: 204
+    title: No Content
+    detail: No data for the requested country.
+    documented_in: info.description
+    note: Documented in prose but not declared on any operation in the spec.
+  - status: 206
+    title: Partial Content
+    detail: Partial App Store app record returned.
+    operations:
+      - get_app_details_ios_apps__id__get
+  - status: 401
+    title: Not authenticated
+    detail: 'Observed live: {"message":"Not authenticated","code":401} when the API-KEY header is absent.'
+    remediation: Send the API-KEY request header with a Business-plan token from https://appstorespy.com/account
+    documented_in: none
+    note: Not declared anywhere in the OpenAPI contract; captured by live probe 2026-08-22.
+  - status: 403
+    title: Forbidden
+    detail: Your access token is not valid.
+    schema: Error
+    remediation: Check the API-KEY value and that the account holds an active Business plan with API credits.
+    operations:
+      - get_app_details_ios_apps__id__get
+  - status: 404
+    title: Not Found
+    detail: 'Edge response: {"message":"Not Found: The requested resource does not exist.","code":404}'
+    documented_in: none
+  - status: 422
+    title: Validation Error
+    detail: One or more query, path or body parameters failed validation.
+    schema: HTTPValidationError
+    remediation: Read detail[].loc to find the offending parameter and detail[].type for the rule that failed.
+    operations_count: 29
+  - status: 429
+    title: Too Many Requests
+    detail: Your request rate is over the limit.
+    schema: Error
+    remediation: >-
+      Back off and retry. No Retry-After or RateLimit-* header is documented, and
+      none was observed on the unauthenticated probe - see
+      rate-limits/appstorespy-rate-limits.yml
+    operations:
+      - get_app_details_ios_apps__id__get
+coverage:
+  operations_total: 33
+  operations_with_403: 1
+  operations_with_429: 1
+  operations_with_422: 29
+  note: >-
+    403 and 429 are declared on ONE operation (/ios/apps/{id}) even though the
+    prose reference presents them as API-wide. The other 32 operations declare
+    only 200 and 422, so a spec-driven client cannot see the auth or throttling
+    failure modes.

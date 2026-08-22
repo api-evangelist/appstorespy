@@ -1,0 +1,70 @@
+generated: '2026-08-22'
+method: searched
+source: >-
+  https://api.appstorespy.com/openapi.json, https://api.appstorespy.com/docs,
+  https://appstorespy.com/app-store-api, https://appstorespy.com/pricing,
+  https://appstorespy.com/agreement
+versioning:
+  scheme: url-path
+  current: v1
+  evidence: 'servers[0].url = https://api.appstorespy.com/v1'
+  info_version: 0.0.1
+  note: >-
+    info.version is "0.0.1" - an unmanaged FastAPI default rather than a released
+    contract version - while the callable surface is pinned at /v1 in the path.
+    No dated version history, no version-selection header, and no documented
+    policy for how a new major version would be introduced.
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  evidence: >-
+    No operation in the OpenAPI carries `deprecated: true`; no deprecation,
+    sunset or end-of-life policy appears in the docs, on the API landing page,
+    or in the Agreement.
+status_page:
+  published: false
+  probes:
+    - url: https://appstorespy.com/status
+      status: 404
+    - url: https://status.appstorespy.com/
+      status: 404
+      note: >-
+        DNS resolves (176.9.8.246) but the host serves a bare nginx 404 over TLS
+        (certificate mismatch) and over HTTP - no status service is deployed.
+  note: >-
+    No status page or uptime dashboard found. Support is a single email address
+    (support@appstorespy.com) plus a Facebook page.
+sla:
+  published: false
+  note: >-
+    The Agreement (https://appstorespy.com/agreement) is a subscription terms
+    document; no uptime commitment, credit schedule or support-response target
+    is published for the API.
+changelog:
+  published: false
+  probes:
+    - url: https://appstorespy.com/changelog
+      status: 404
+  note: >-
+    AppstoreSpy markets "App changelog history" as a DATA product (change history
+    for the apps it tracks) - that is not an API changelog. No dated release
+    notes for the API itself were found.
+support:
+  channels:
+    - type: email
+      value: support@appstorespy.com
+      url: https://appstorespy.com/support
+    - type: facebook
+      url: https://www.facebook.com/AppstoreSpy/
+availability:
+  api_access_gating: >-
+    API access is sold only on the Business plan ($199/month); lower tiers carry
+    a monthly API credit allowance but the API landing page states the API "is
+    only available on Business plan".
+note: >-
+  No StatusPage or Deprecation pointer is wired into apis.yml: neither surface
+  exists, and a pointer would assert one does. Only `Lifecycle` is emitted, and
+  it records the absences with the probes behind them.

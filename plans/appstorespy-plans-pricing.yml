@@ -1,0 +1,123 @@
+generated: '2026-08-22'
+method: searched
+source: https://appstorespy.com/pricing
+secondary_source: https://appstorespy.com/app-store-api
+currency: USD
+billing_periods:
+  - monthly
+  - annual
+annual_discount: '20% when paid annually'
+plan_count: 4
+api_access_plans: 4
+plans:
+  - name: Free
+    price: 0
+    currency: USD
+    period: month
+    seats: 1
+    api_credits_per_month: 100
+    limits:
+      app_info_views_per_day: 100
+      collections: 1
+      apps_per_collection: 5
+      top_charts_export: 200
+    included:
+      - Analyze keywords on Google Play
+      - Track 5 apps
+  - name: Premium
+    price: 19
+    currency: USD
+    period: month
+    seats: 1
+    api_credits_per_month: 1000
+    limits:
+      app_info_views_per_day: 1000
+      collections: 1
+      apps_per_collection: 100
+      top_charts_export: 200
+    included:
+      - Chrome Extension keyword analysis with daily installs and estimated revenue
+      - Market Explorer
+      - Apps history
+      - Revenue and downloads
+  - name: Pro
+    price: 99
+    currency: USD
+    period: month
+    seats: 1
+    api_credits_per_month: 10000
+    limits:
+      app_info_views_per_day: 10000
+      collections: 10
+      apps_per_collection: 1000
+      top_charts_export: 200
+    included:
+      - Full apps database
+      - Niche comparison
+      - Contact research
+      - Keyword analysis
+      - Competitor ad creatives
+      - Removed apps
+  - name: Business
+    price: 199
+    currency: USD
+    period: month
+    seats: 3
+    api_credits_per_month: 100000
+    limits:
+      app_info_views_per_day: 50000
+      collections: 100
+      apps_per_collection: 10000
+      top_charts_export: 200
+    included:
+      - All Pro features
+      - CSV export
+      - API access
+      - Full revenue and installs data
+      - Emails export
+      - Removed apps data
+      - App changelog history
+      - Custom features on request
+overage:
+  model: prepaid credit packs
+  source: https://appstorespy.com/app-store-api
+  packs:
+    - credits: 25000
+      price: 60
+      currency: USD
+    - credits: 50000
+      price: 120
+      currency: USD
+    - credits: 100000
+      price: 220
+      currency: USD
+metering:
+  unit: API credit
+  note: >-
+    The API "charges API credits for various calls" - the per-endpoint credit
+    cost is NOT published on the pricing page, in the API landing page, or in the
+    OpenAPI contract, so a buyer cannot compute the cost of a workload before
+    subscribing.
+discrepancy:
+  field: Business plan API credits per month
+  values:
+    - value: 100000
+      source: https://appstorespy.com/pricing
+      quote: 'Automate data gathering with 100 000 monthly API credits'
+    - value: 12000
+      source: https://appstorespy.com/app-store-api
+      quote: 'Business plan includes 12 000 credits per month'
+  note: >-
+    The provider's two own pages state different Business-plan credit
+    allowances (100,000 vs 12,000) as of 2026-08-22. Both are recorded verbatim;
+    neither is chosen. The plans[] entry above carries the pricing-page figure
+    because that is the page the checkout flows from.
+gating:
+  api_available_on: Business plan only
+  quote: 'AppstoreSpy API is only available on Business plan and charges API credits for various calls.'
+  note: >-
+    Lower tiers list an API credit allowance in the plan-comparison table
+    ("Basic API (credits per month)") while the API landing page says API access
+    is Business-only. Recorded as published, not reconciled.
+signup_url: https://appstorespy.com/sign_up
+checkout_url: https://appstorespy.com/shoppingcart?product=business2

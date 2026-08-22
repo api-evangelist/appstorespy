@@ -1,0 +1,66 @@
+generated: '2026-08-22'
+method: searched
+source: https://api.appstorespy.com/docs
+docs: https://api.appstorespy.com/docs
+derived_from: openapi/appstorespy-openapi.json
+summary:
+  types:
+    - apiKey
+  api_key_in:
+    - header
+  oauth2: false
+  openid_connect: false
+  mutual_tls: false
+  http_auth: false
+schemes:
+  - name: APIKeyHeader
+    type: apiKey
+    in: header
+    parameter: API-KEY
+    applied_to_operations: 33
+    applied_to_all_operations: true
+    sources:
+      - openapi/appstorespy-openapi.json
+      - https://api.appstorespy.com/docs
+key_management:
+  issuance_url: https://appstorespy.com/account
+  documented_quote: >-
+    "If you do not have an API Key token, you can get it on your account page
+    https://appstorespy.com/account. An API Key is required to be sent as part of
+    every request in request header."
+  example_request: |
+    -H 'accept: application/json'
+    -H 'API-KEY: <your_token>'
+  rotation_documented: false
+  expiry_documented: false
+  scoping: none
+  multiple_keys: not documented
+  test_vs_live_keys: false
+  key_prefix: not documented
+gating:
+  plan_required: Business ($199/month)
+  note: >-
+    The API landing page states the API "is only available on Business plan",
+    so an API key is obtainable only by a paying subscriber - there is no free
+    or trial API tier that can be self-served.
+failure_modes:
+  - status: 401
+    body: '{"message":"Not authenticated","code":401}'
+    trigger: API-KEY header absent
+    observed: '2026-08-22 live probe of /v1/play/info/countries'
+    declared_in_spec: false
+  - status: 403
+    body: '{"detail":"..."}'
+    trigger: Access token is not valid
+    declared_in_spec: true
+    declared_on_operations: 1
+transport_security:
+  https_required: true
+  tls_version: TLSv1.3
+  hsts: false
+  cross_ref: security/appstorespy-domain-security.yml
+scopes:
+  applicable: false
+  note: >-
+    Key-auth only - there is no OAuth or permission surface, so no scopes/
+    artifact is emitted rather than an empty one.

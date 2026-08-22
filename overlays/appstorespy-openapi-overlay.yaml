@@ -1,0 +1,82 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the AppstoreSpy API
+  version: 1.0.0
+x-provenance:
+  generated: '2026-08-22'
+  method: generated
+  source: openapi/appstorespy-openapi.json
+  extends: openapi/appstorespy-openapi.json
+  note: >-
+    Captures the enrichment pass's additions WITHOUT mutating the provider's
+    contract. Every value below is either read from the provider's own docs
+    (https://api.appstorespy.com/docs, https://appstorespy.com/app-store-api,
+    https://appstorespy.com/pricing) or observed on a live probe on 2026-08-22.
+    Nothing here is invented; apply it only to the specific spec it extends.
+actions:
+  - target: $.info
+    description: Record contact, terms and the licence/attribution stance the provider publishes.
+    update:
+      contact:
+        name: AppstoreSpy Support
+        email: support@appstorespy.com
+        url: https://appstorespy.com/support
+      termsOfService: https://appstorespy.com/agreement
+      x-privacy-policy: https://appstorespy.com/privacy
+      x-pricing: https://appstorespy.com/pricing
+      x-api-landing-page: https://appstorespy.com/app-store-api
+      x-access-gating: >-
+        API access is sold on the Business plan ($199/month) and metered in API
+        credits; keys are issued at https://appstorespy.com/account
+  - target: $.info
+    description: >-
+      info.version is the FastAPI default 0.0.1, which does not identify a released
+      contract. Record the callable version actually pinned in the server URL.
+    update:
+      x-contract-version-note: >-
+        info.version "0.0.1" is a framework default. The callable surface is /v1
+        (servers[0].url). No dated version history is published.
+  - target: $.components.securitySchemes.APIKeyHeader
+    description: Document how a caller obtains the API-KEY value.
+    update:
+      description: >-
+        API key issued on the AppstoreSpy account page
+        (https://appstorespy.com/account) and sent on every request as the
+        API-KEY request header. Requires an active Business plan. No key prefix,
+        rotation policy or expiry is published.
+  - target: $.paths.*.*.responses
+    description: >-
+      401 is returned by the edge when the API-KEY header is absent but is declared
+      on no operation in the contract. Add it so generated clients handle it.
+    update:
+      '401':
+        description: >-
+          Not authenticated - the API-KEY request header was missing. Observed
+          live 2026-08-22; body {"message":"Not authenticated","code":401}. Note
+          this envelope differs from the application's {"detail": "..."} shape.
+  - target: $.tags
+    description: >-
+      The contract declares only two tags (Google Play, App Store) while operations
+      also use Jobs, Suggestions, Search Filter v.2 and Events. Declare the rest.
+    update:
+      - name: Jobs
+        description: Asynchronous store-search crawl jobs (POST to create, GET to retrieve by search_id).
+      - name: Suggestions
+        description: Google Play keyword suggestion crawls; returns 202 while a term is being crawled.
+      - name: Events
+        description: Google Play LiveOps events for an app; returns 202 while an app is being crawled.
+      - name: Search Filter v.2
+        description: Multi-parameter filter search over the app database.
+  - target: $
+    description: Cross-link the artifacts derived from this contract.
+    update:
+      x-api-evangelist:
+        conventions: conventions/appstorespy-conventions.yml
+        errors: errors/appstorespy-problem-types.yml
+        authentication: authentication/appstorespy-authentication.yml
+        data_model: data-model/appstorespy-data-model.yml
+        rate_limits: rate-limits/appstorespy-rate-limits.yml
+        plans: plans/appstorespy-plans-pricing.yml
+        lifecycle: lifecycle/appstorespy-lifecycle.yml
+        conformance: conformance/appstorespy-conformance.yml
+        skills: skills/_index.yml

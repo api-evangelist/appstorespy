@@ -1,0 +1,79 @@
+generated: '2026-08-22'
+method: searched
+source: >-
+  https://api.appstorespy.com/docs (info.description status-code reference),
+  https://appstorespy.com/pricing, https://appstorespy.com/app-store-api,
+  plus a live unauthenticated probe of
+  https://api.appstorespy.com/v1/play/info/countries
+limit_count: 4
+throttling_documented: false
+quota_documented: true
+limits:
+  - scope: per-account
+    type: quota
+    window: month
+    unit: API credits
+    limit: 100
+    plan: Free
+    source: https://appstorespy.com/pricing
+  - scope: per-account
+    type: quota
+    window: month
+    unit: API credits
+    limit: 1000
+    plan: Premium
+    source: https://appstorespy.com/pricing
+  - scope: per-account
+    type: quota
+    window: month
+    unit: API credits
+    limit: 10000
+    plan: Pro
+    source: https://appstorespy.com/pricing
+  - scope: per-account
+    type: quota
+    window: month
+    unit: API credits
+    limit: 100000
+    plan: Business
+    source: https://appstorespy.com/pricing
+    note: >-
+      https://appstorespy.com/app-store-api states 12 000 credits per month for
+      the same plan - see plans/appstorespy-plans-pricing.yml discrepancy block.
+burst: null
+per_second_limit: null
+per_minute_limit: null
+response_headers:
+  documented: []
+  observed: []
+  retry_after: false
+  probe:
+    url: https://api.appstorespy.com/v1/play/info/countries
+    method: GET
+    authenticated: false
+    status: 401
+    date: '2026-08-22'
+    headers_returned:
+      - server
+      - date
+      - content-type
+      - content-length
+    note: >-
+      No RateLimit-*, X-RateLimit-* or Retry-After header is returned. An
+      authenticated probe is not possible - API access requires a paid Business
+      plan - so a header could in principle appear on authenticated traffic, but
+      none is documented anywhere.
+exhaustion:
+  status: 429
+  body: '{ "detail": "..." }'
+  documented_quote: 'Too Many Requests - Your request rate is over the limit.'
+  declared_on_operations: 1
+  note: >-
+    429 is declared on exactly ONE of the 33 operations in the OpenAPI
+    (/ios/apps/{id}); the other 32 declare only 200 and 422, so a spec-driven
+    client will not model throttling at all.
+note: >-
+  AppstoreSpy publishes a MONTHLY CREDIT QUOTA per plan but no rate limit: no
+  requests-per-second/minute figure, no burst allowance, no per-endpoint credit
+  cost, and no runtime headers. An agent can be throttled with 429 and has no
+  published signal telling it how long to wait or how much quota remains.

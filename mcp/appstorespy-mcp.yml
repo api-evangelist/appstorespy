@@ -1,0 +1,139 @@
+generated: '2026-08-22'
+method: derived
+source: openapi/appstorespy-openapi.json
+status: candidate
+name: AppstoreSpy (candidate MCP server)
+description: >-
+  AppstoreSpy publishes no MCP server. This is a CANDIDATE tool surface derived
+  from the 33 operations in the provider's own OpenAPI 3.1.0 contract, recording
+  what an MCP server over this API would expose. Nothing here is served by the
+  provider today.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: derived
+search_evidence:
+  - url: https://api.appstorespy.com/mcp
+    status: 404
+  - url: https://appstorespy.com/mcp
+    status: 404
+  - url: https://mcp.appstorespy.com/mcp
+    status: 0
+    note: TLS handshake fails - self-signed certificate on a wildcard host; no MCP service
+  - url: https://api.appstorespy.com/.well-known/ai-plugin.json
+    status: 404
+  - url: https://appstorespy.com/app-store-api
+    status: 200
+    note: API landing page documents REST + API-KEY only; no MCP, agent or LLM integration mentioned
+transport_note: >-
+  Authentication would be the API-KEY request header (see
+  authentication/appstorespy-authentication.yml); API access itself is gated
+  behind the paid Business plan.
+tools:
+  - name: get_ios_app
+    rest: get_app_details_ios_apps__id__get
+    description: Get an App Store app by numeric app ID.
+  - name: search_ios_apps
+    rest: get_app_search_ios_apps_get
+    description: Search App Store apps by free-text query.
+  - name: filter_search_ios_apps
+    rest: get_filter_search_ios_apps_query_post
+    description: Filter-search App Store apps with multi-parameter filters and sorting.
+  - name: get_ios_app_reviews
+    rest: get_reviews_ios_apps__id__reviews_get
+    description: Get country-specific App Store reviews for an app.
+  - name: get_ios_similar_apps
+    rest: get_similar_ios_apps_similar_post
+    description: Get apps similar to a set of App Store apps.
+  - name: get_ios_summary
+    rest: get_summary_ios_apps_summary_post
+    description: Get an aggregate summary across an App Store filter set.
+  - name: recrawl_ios_app
+    rest: get_recrawl_ios_apps__id__recrawl_get
+    description: Request a fresh crawl of an App Store app.
+  - name: get_ios_estimates
+    rest: get_apps_estimates_ios_estimates_get
+    description: Get download/revenue estimates for App Store apps.
+  - name: get_ios_developer
+    rest: get_developer_ios_developers__id__get
+    description: Get an App Store developer by ID.
+  - name: search_ios_developers
+    rest: dev_search_ios_developers_get
+    description: Search App Store developers.
+  - name: get_ios_developer_estimates
+    rest: get_apps_estimates_ios_developers__id__estimates_get
+    description: Get download/revenue estimates for one App Store developer's apps.
+  - name: get_ios_rankings
+    rest: get_ios_rankings_ios_rankings_get
+    description: Get App Store chart rankings by country, category and collection.
+  - name: list_ios_countries
+    rest: get_play_app_countries_ios_info_countries_get
+    description: List App Store countries available for a given app.
+  - name: list_ios_languages
+    rest: get_play_app_languages_ios_info_languages_get
+    description: List App Store languages available for a given app.
+  - name: get_play_app
+    rest: get_app_details_play_apps__id__get
+    description: Get a Google Play app by package ID.
+  - name: search_play_apps
+    rest: get_app_search_play_apps_get
+    description: Search Google Play apps by free-text query.
+  - name: filter_search_play_apps
+    rest: get_filter_search_play_apps_query_post
+    description: Filter-search Google Play apps with multi-parameter filters and sorting.
+  - name: get_play_app_reviews
+    rest: get_reviews_play_apps__id__reviews_get
+    description: Get country-specific Google Play reviews for an app.
+  - name: get_play_similar_apps
+    rest: get_similar_play_apps_similar_post
+    description: Get apps similar to a set of Google Play apps.
+  - name: get_play_summary
+    rest: get_summary_play_apps_summary_post
+    description: Get an aggregate summary across a Google Play filter set.
+  - name: recrawl_play_app
+    rest: get_recrawl_play_apps__id__recrawl_get
+    description: Request a fresh crawl of a Google Play app.
+  - name: get_play_estimates
+    rest: get_apps_estimates_play_estimates_get
+    description: Get download/revenue estimates for Google Play apps.
+  - name: get_play_daily_installs
+    rest: get_apps_installs_daily_play_apps__id__installs_daily_get
+    description: Get daily install history for a Google Play app.
+  - name: get_play_developer
+    rest: get_developer_play_developers__id__get
+    description: Get a Google Play developer by ID.
+  - name: search_play_developers
+    rest: dev_search_play_developers_get
+    description: Search Google Play developers.
+  - name: get_play_developer_estimates
+    rest: get_apps_estimates_play_developers__id__estimates_get
+    description: Get download/revenue estimates for one Google Play developer's apps.
+  - name: get_play_rankings
+    rest: get_play_rankings_play_rankings_get
+    description: Get Google Play chart rankings by country, category and collection.
+  - name: get_play_keyword_suggestions
+    rest: get_suggests_play_suggestions_get
+    description: Get Google Play keyword suggestions for a term (202 while crawling).
+  - name: get_play_liveops_events
+    rest: get_events_play_liveops_get
+    description: Get Google Play LiveOps events for an app (202 while crawling).
+  - name: list_play_countries
+    rest: get_play_app_countries_play_info_countries_get
+    description: List Google Play countries available for a given app.
+  - name: list_play_languages
+    rest: get_play_app_languages_play_info_languages_get
+    description: List Google Play languages available for a given app.
+  - name: create_search_job
+    rest: create_search_jobs_search_post
+    description: Create an asynchronous store-search crawl job.
+  - name: get_search_job
+    rest: get_search_jobs_search_get
+    description: Fetch the result of an asynchronous store-search crawl job.
+note: >-
+  No MCPServer pointer is wired into apis.yml. mode is `none` because nobody
+  ships a server - remote or stdio - and a pointer would read as a live agent
+  surface. A tool crosswalk is not emitted either: there is no MCP tool set and
+  no usable GraphQL surface to bind REST operations against.

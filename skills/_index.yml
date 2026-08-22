@@ -1,0 +1,30 @@
+generated: '2026-08-22'
+method: generated
+source: openapi/appstorespy-openapi.json + https://api.appstorespy.com/docs
+api: AppstoreSpy API
+provider_published_skills: false
+provider_probe:
+  - url: https://appstorespy.com/llms.txt
+    status: 404
+  - url: https://api.appstorespy.com/llms.txt
+    status: 404
+skills:
+  - file: appstorespy-app-intelligence-lookup.md
+    name: appstorespy-app-intelligence-lookup
+    summary: >-
+      Resolve one app on either store and assemble metadata, developer, reviews,
+      rankings, estimates and daily installs, with the 202/204/206 semantics and
+      the credit-spend cautions an agent needs.
+    operation_count: 13
+  - file: appstorespy-market-discovery.md
+    name: appstorespy-market-discovery
+    summary: >-
+      Size and explore a market segment: summarise before enumerating,
+      filter-search, read charts, expand by similarity, find developers, and run
+      keyword/LiveOps/async-job research.
+    operation_count: 14
+note: >-
+  AppstoreSpy publishes no agent skills, no AGENTS.md and no llms.txt. These two
+  skills are GENERATED and every operationId in them was read from the
+  provider's own OpenAPI at https://api.appstorespy.com/openapi.json - none is
+  invented. They mirror the two marquee flows the contract actually supports.

@@ -1,0 +1,19 @@
+# Discovered by introspection 2026-08-22 against https://appstorespy.com/graphql
+# (HTTP 200, application/json, introspection ENABLED and anonymous).
+#
+# This is the complete schema the endpoint returns. It is a placeholder: one
+# Query field named Hello returning String, and no mutation or subscription
+# type. It is NOT a data API for the App Store / Google Play catalog - that
+# surface is the REST API at https://api.appstorespy.com/v1 (see
+# openapi/appstorespy-openapi.json). Saved verbatim as discovered so a later
+# round can tell whether the endpoint has grown; no `GraphQL` pointer is wired
+# into apis.yml, because advertising this as a GraphQL API would overstate a
+# single scalar field.
+
+schema {
+  query: Query
+}
+
+type Query {
+  Hello: String
+}

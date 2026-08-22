@@ -1,0 +1,388 @@
+generated: '2026-08-22'
+method: generated
+source: openapi/appstorespy-openapi.json
+description: Recommended x-agentic-access execution contracts, classified heuristically from
+  the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
+  audience per deployment. See research/curity/agentic-governance/.
+summary:
+  operations: 33
+  by_action_class:
+    connected: 26
+    acting: 7
+  by_consequence:
+    read: 26
+    write: 7
+  human_in_the_loop_required: 0
+operations:
+- path: /ios/apps/{id}
+  method: get
+  operationId: get_app_details_ios_apps__id__get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /ios/apps
+  method: get
+  operationId: get_app_search_ios_apps_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /ios/apps/{id}/reviews
+  method: get
+  operationId: get_reviews_ios_apps__id__reviews_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /ios/apps/query
+  method: post
+  operationId: get_filter_search_ios_apps_query_post
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /ios/apps/similar
+  method: post
+  operationId: get_similar_ios_apps_similar_post
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /ios/apps/summary
+  method: post
+  operationId: get_summary_ios_apps_summary_post
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /ios/apps/{id}/recrawl
+  method: get
+  operationId: get_recrawl_ios_apps__id__recrawl_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /ios/estimates
+  method: get
+  operationId: get_apps_estimates_ios_estimates_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /ios/info/countries
+  method: get
+  operationId: get_play_app_countries_ios_info_countries_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /ios/info/languages
+  method: get
+  operationId: get_play_app_languages_ios_info_languages_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /ios/developers/{id}
+  method: get
+  operationId: get_developer_ios_developers__id__get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /ios/developers
+  method: get
+  operationId: dev_search_ios_developers_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /ios/developers/{id}/estimates
+  method: get
+  operationId: get_apps_estimates_ios_developers__id__estimates_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /ios/rankings
+  method: get
+  operationId: get_ios_rankings_ios_rankings_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /jobs/search
+  method: get
+  operationId: get_search_jobs_search_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /jobs/search
+  method: post
+  operationId: create_search_jobs_search_post
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /play/apps
+  method: get
+  operationId: get_app_search_play_apps_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /play/apps/{id}/reviews
+  method: get
+  operationId: get_reviews_play_apps__id__reviews_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /play/apps/{id}/recrawl
+  method: get
+  operationId: get_recrawl_play_apps__id__recrawl_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /play/apps/query
+  method: post
+  operationId: get_filter_search_play_apps_query_post
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /play/apps/similar
+  method: post
+  operationId: get_similar_play_apps_similar_post
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /play/apps/summary
+  method: post
+  operationId: get_summary_play_apps_summary_post
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /play/apps/{id}
+  method: get
+  operationId: get_app_details_play_apps__id__get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /play/info/countries
+  method: get
+  operationId: get_play_app_countries_play_info_countries_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /play/info/languages
+  method: get
+  operationId: get_play_app_languages_play_info_languages_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /play/developers/{id}
+  method: get
+  operationId: get_developer_play_developers__id__get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /play/developers
+  method: get
+  operationId: dev_search_play_developers_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /play/developers/{id}/estimates
+  method: get
+  operationId: get_apps_estimates_play_developers__id__estimates_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /play/estimates
+  method: get
+  operationId: get_apps_estimates_play_estimates_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /play/apps/{id}/installs_daily
+  method: get
+  operationId: get_apps_installs_daily_play_apps__id__installs_daily_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /play/suggestions
+  method: get
+  operationId: get_suggests_play_suggestions_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /play/liveops
+  method: get
+  operationId: get_events_play_liveops_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /play/rankings
+  method: get
+  operationId: get_play_rankings_play_rankings_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
