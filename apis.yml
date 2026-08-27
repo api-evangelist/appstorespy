@@ -18,32 +18,90 @@ tags:
   - download-revenue-estimates
   - marketing
 apis:
-  - name: AppstoreSpy API
-    description: >-
-      Public REST API for App Store and Google Play data: app lookup, search, filter search, reviews, rankings,
-      download/revenue estimates, developer lookup, daily installs, keyword suggestions, LiveOps events, and jobs
-      search. API-KEY header authentication; access gated behind the Business plan.
-    humanURL: https://api.appstorespy.com/docs
-    baseURL: https://api.appstorespy.com/v1
-    tags:
-      - mobile-apps
-      - app-store-optimization
-      - market-intelligence
-      - app-analytics
-      - google-play
-      - apple-app-store
-      - reviews-and-ratings
-      - download-revenue-estimates
-      - marketing
-    properties:
-      - type: OpenAPI
-        url: openapi/appstorespy-openapi.json
-      - type: OpenAPI
-        url: https://api.appstorespy.com/openapi.json
-      - type: Documentation
-        url: https://api.appstorespy.com/docs
-      - type: Documentation
-        url: https://appstorespy.com/app-store-api
+- aid: appstorespy:appstorespy-app-store-api
+  name: AppstoreSpy App Store API
+  description: The App Store API from AppstoreSpy — 14 operation(s) for app store.
+  humanURL: https://api.appstorespy.com/docs
+  baseURL: https://api.appstorespy.com/v1
+  tags:
+  - App Store
+  properties:
+  - type: OpenAPI
+    url: openapi/appstorespy-app-store-api-openapi.yml
+  - type: Documentation
+    url: https://api.appstorespy.com/docs
+  - type: Documentation
+    url: https://appstorespy.com/app-store-api
+- aid: appstorespy:appstorespy-events-api
+  name: AppstoreSpy Events API
+  description: The Events API from AppstoreSpy — 1 operation(s) for events.
+  humanURL: https://api.appstorespy.com/docs
+  baseURL: https://api.appstorespy.com/v1
+  tags:
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/appstorespy-events-api-openapi.yml
+  - type: Documentation
+    url: https://api.appstorespy.com/docs
+  - type: Documentation
+    url: https://appstorespy.com/app-store-api
+- aid: appstorespy:appstorespy-google-play-api
+  name: AppstoreSpy Google Play API
+  description: The Google Play API from AppstoreSpy — 17 operation(s) for google play.
+  humanURL: https://api.appstorespy.com/docs
+  baseURL: https://api.appstorespy.com/v1
+  tags:
+  - Google Play
+  properties:
+  - type: OpenAPI
+    url: openapi/appstorespy-google-play-api-openapi.yml
+  - type: Documentation
+    url: https://api.appstorespy.com/docs
+  - type: Documentation
+    url: https://appstorespy.com/app-store-api
+- aid: appstorespy:appstorespy-jobs-api
+  name: AppstoreSpy Jobs API
+  description: The Jobs API from AppstoreSpy — 1 operation(s) for jobs.
+  humanURL: https://api.appstorespy.com/docs
+  baseURL: https://api.appstorespy.com/v1
+  tags:
+  - Jobs
+  properties:
+  - type: OpenAPI
+    url: openapi/appstorespy-jobs-api-openapi.yml
+  - type: Documentation
+    url: https://api.appstorespy.com/docs
+  - type: Documentation
+    url: https://appstorespy.com/app-store-api
+- aid: appstorespy:appstorespy-search-filter-v-2-api
+  name: AppstoreSpy Search Filter v.2 API
+  description: The Search Filter v.2 API from AppstoreSpy — 1 operation(s) for search filter v.2.
+  humanURL: https://api.appstorespy.com/docs
+  baseURL: https://api.appstorespy.com/v1
+  tags:
+  - Search Filter v.2
+  properties:
+  - type: OpenAPI
+    url: openapi/appstorespy-search-filter-v-2-api-openapi.yml
+  - type: Documentation
+    url: https://api.appstorespy.com/docs
+  - type: Documentation
+    url: https://appstorespy.com/app-store-api
+- aid: appstorespy:appstorespy-suggestions-api
+  name: AppstoreSpy Suggestions API
+  description: The Suggestions API from AppstoreSpy — 1 operation(s) for suggestions.
+  humanURL: https://api.appstorespy.com/docs
+  baseURL: https://api.appstorespy.com/v1
+  tags:
+  - Suggestions
+  properties:
+  - type: OpenAPI
+    url: openapi/appstorespy-suggestions-api-openapi.yml
+  - type: Documentation
+    url: https://api.appstorespy.com/docs
+  - type: Documentation
+    url: https://appstorespy.com/app-store-api
 image: https://appstorespy.com/s/icons/android-icon-192x192.png
 maintainers:
   - FN: AppstoreSpy
