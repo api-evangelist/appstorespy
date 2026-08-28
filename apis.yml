@@ -4,6 +4,17 @@ description: >-
   app metadata, reviews, rankings, download/revenue estimates, developer lookup, keyword suggestions, and LiveOps
   events. Covers 13 million apps across 100 countries.
 url: https://raw.githubusercontent.com/api-evangelist/appstorespy/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 created: '2026-08-21'
 modified: '2026-08-22'
 specificationVersion: '0.21'
