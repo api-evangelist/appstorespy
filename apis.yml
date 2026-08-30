@@ -19,6 +19,16 @@ created: '2026-08-21'
 modified: '2026-08-22'
 specificationVersion: '0.21'
 tags:
+  - Mobile Apps
+  - App Store Optimization
+  - Market Intelligence
+  - App Analytics
+  - Google Play
+  - apple-app-store
+  - Reviews and Ratings
+  - download-revenue-estimates
+  - Marketing
+tags_raw:
   - mobile-apps
   - app-store-optimization
   - market-intelligence
@@ -49,6 +59,8 @@ apis:
   humanURL: https://api.appstorespy.com/docs
   baseURL: https://api.appstorespy.com/v1
   tags:
+  - Event
+  tags_raw:
   - Events
   properties:
   - type: OpenAPI
@@ -77,6 +89,8 @@ apis:
   humanURL: https://api.appstorespy.com/docs
   baseURL: https://api.appstorespy.com/v1
   tags:
+  - Job
+  tags_raw:
   - Jobs
   properties:
   - type: OpenAPI
