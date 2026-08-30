@@ -1,0 +1,255 @@
+openapi: 3.2.0
+info:
+  title: AppstoreSpy Suggestions API
+  description: "# Authentication\n\nThe Appstorespy API uses API-KEY authentication.<br>\n\nIf you do not have an API Key token, you can get it on your account page [https://appstorespy.com/account](https://appstorespy.com/account). <br>\n\nAn API Key is required to be sent as part of every request in request header.\n\n```\n\n    -H 'accept: application/json'\n\n    -H 'API-KEY: <your_token>'\n\n```\n\n\n\n# Fields\n\nUse the fields parameter to specify which fields should be returned. <br>\n\nExample:\n\n```\n\n    Request: fields=name,developer_name,ipd,downloads,...\n\n    Response: {name: ..., developer_name: ..., ipd: ..., downloads: ..., ...}\n\n```\n\nDon`t use fields parameter if you need to get all fields. <br>\n\n\n\n\n\n# Sort\n\nWhen you use search, you can add a sort parameter.\n\n```\n\n    Request: sort=ratingCount\n\n    Response: [{name: app1, ratingCount: 4.2}, {name: app2, ratingCount: 4.4}, ...]\n\n```\n\nIf you need DESC sorting add \"-\" before sort parametr.\n\n```\n\n    Request: sort=-ratingCount\n\n    Response: [{name: app2, ratingCount: 4.4}, {name: app1, ratingCount: 4.2}, ...]\n\n```\n\n\n\n# County & Language params\n\n...\n\n\n\n# Status codes / Error codes\n\n* 200 OK.\n\n* 202 Accepted - The app was not present in our databases and has been submitted for crawling. If the app is available anywhere, it will be available soon.\n\n* 204 No Content - No data for requested country.\n\n* 403 Forbidden - Your access token is not valid.\n\n* 429 Too Many Requests - Your request rate is over the limit.\n"
+  version: 0.0.1
+servers:
+- url: https://api.appstorespy.com/v1
+tags:
+- name: Suggestions
+paths:
+  /play/suggestions:
+    get:
+      tags:
+      - Suggestions
+      summary: Get Suggests
+      operationId: get_suggests_play_suggestions_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: Q
+        name: q
+        in: query
+      - required: false
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/AppCountries'
+          default: US
+        name: country
+        in: query
+      - required: false
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/AppLanguages'
+          default: en_US
+        name: lang
+        in: query
+      - required: false
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/CacheTime'
+          default: 7d
+        name: freshness
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Suggest'
+        '202':
+          description: Response in progress
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuggestLite'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+components:
+  schemas:
+    SuggestLite:
+      properties:
+        id:
+          type: string
+          title: Id
+        term:
+          type: string
+          title: Term
+        country:
+          type: string
+          title: Country
+        added:
+          type: string
+          format: date-time
+          title: Added
+        lang:
+          type: string
+          title: Lang
+        store:
+          type: string
+          title: Store
+      type: object
+      required:
+      - id
+      - term
+      - country
+      - added
+      - lang
+      - store
+      title: SuggestLite
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AppLanguages:
+      type: string
+      enum:
+      - en_US
+      - ar
+      - en_GB
+      - fr_FR
+      - es_419
+      - de_DE
+      - pt_BR
+      - it_IT
+      - ja_JP
+      - ko_KR
+      - tr_TR
+      - ru_RU
+      - vi
+      title: AppLanguages
+      description: An enumeration.
+    Suggest:
+      properties:
+        id:
+          type: string
+          title: Id
+        term:
+          type: string
+          title: Term
+        country:
+          type: string
+          title: Country
+        added:
+          type: string
+          format: date-time
+          title: Added
+        lang:
+          type: string
+          title: Lang
+        store:
+          type: string
+          title: Store
+        crawled:
+          type: string
+          format: date-time
+          title: Crawled
+        app:
+          type: string
+          title: App
+        results:
+          items:
+            type: string
+          type: array
+          title: Results
+      type: object
+      required:
+      - id
+      - term
+      - country
+      - added
+      - lang
+      - store
+      title: Suggest
+    AppCountries:
+      type: string
+      enum:
+      - US
+      - CA
+      - AT
+      - BE
+      - CY
+      - CZ
+      - DK
+      - FI
+      - FR
+      - DE
+      - GR
+      - HU
+      - IE
+      - IT
+      - NL
+      - 'NO'
+      - PL
+      - PT
+      - RU
+      - ES
+      - SE
+      - CH
+      - TR
+      - UA
+      - GB
+      - EG
+      - IN
+      - IL
+      - MA
+      - NG
+      - SA
+      - ZA
+      - AE
+      - AU
+      - HK
+      - ID
+      - JP
+      - KZ
+      - KR
+      - MY
+      - NZ
+      - PK
+      - PH
+      - SG
+      - TW
+      - TH
+      - VN
+      - AR
+      - BR
+      - MX
+      title: AppCountries
+      description: An enumeration.
+    CacheTime:
+      type: string
+      enum:
+      - 1d
+      - 7d
+      - 30d
+      title: CacheTime
+      description: An enumeration.
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: API-KEY

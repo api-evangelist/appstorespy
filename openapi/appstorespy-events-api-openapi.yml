@@ -1,0 +1,217 @@
+openapi: 3.2.0
+info:
+  title: AppstoreSpy Events API
+  description: "# Authentication\n\nThe Appstorespy API uses API-KEY authentication.<br>\n\nIf you do not have an API Key token, you can get it on your account page [https://appstorespy.com/account](https://appstorespy.com/account). <br>\n\nAn API Key is required to be sent as part of every request in request header.\n\n```\n\n    -H 'accept: application/json'\n\n    -H 'API-KEY: <your_token>'\n\n```\n\n\n\n# Fields\n\nUse the fields parameter to specify which fields should be returned. <br>\n\nExample:\n\n```\n\n    Request: fields=name,developer_name,ipd,downloads,...\n\n    Response: {name: ..., developer_name: ..., ipd: ..., downloads: ..., ...}\n\n```\n\nDon`t use fields parameter if you need to get all fields. <br>\n\n\n\n\n\n# Sort\n\nWhen you use search, you can add a sort parameter.\n\n```\n\n    Request: sort=ratingCount\n\n    Response: [{name: app1, ratingCount: 4.2}, {name: app2, ratingCount: 4.4}, ...]\n\n```\n\nIf you need DESC sorting add \"-\" before sort parametr.\n\n```\n\n    Request: sort=-ratingCount\n\n    Response: [{name: app2, ratingCount: 4.4}, {name: app1, ratingCount: 4.2}, ...]\n\n```\n\n\n\n# County & Language params\n\n...\n\n\n\n# Status codes / Error codes\n\n* 200 OK.\n\n* 202 Accepted - The app was not present in our databases and has been submitted for crawling. If the app is available anywhere, it will be available soon.\n\n* 204 No Content - No data for requested country.\n\n* 403 Forbidden - Your access token is not valid.\n\n* 429 Too Many Requests - Your request rate is over the limit.\n"
+  version: 0.0.1
+servers:
+- url: https://api.appstorespy.com/v1
+tags:
+- name: Events
+paths:
+  /play/liveops:
+    get:
+      tags:
+      - Events
+      summary: Get Events
+      operationId: get_events_play_liveops_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: App
+        name: app
+        in: query
+      - required: false
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/AppCountries'
+          default: US
+        name: country
+        in: query
+      - required: false
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/CacheTime'
+          default: 7d
+        name: freshness
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Event'
+                type: array
+                title: Response 200 Get Events Play Liveops Get
+        '202':
+          description: Response in progress
+          content:
+            application/json: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+components:
+  schemas:
+    Event:
+      properties:
+        id:
+          type: string
+          title: Id
+        app:
+          type: string
+          title: App
+        store:
+          type: string
+          title: Store
+        type:
+          type: string
+          title: Type
+        title:
+          type: string
+          title: Title
+        text:
+          type: string
+          title: Text
+        image:
+          type: string
+          title: Image
+        country:
+          type: string
+          title: Country
+        state:
+          type: string
+          title: State
+        crawled:
+          type: string
+          format: date-time
+          title: Crawled
+        date_from:
+          type: string
+          format: date-time
+          title: Date From
+        date_to:
+          type: string
+          format: date-time
+          title: Date To
+        video:
+          type: string
+          title: Video
+      type: object
+      required:
+      - id
+      - app
+      - store
+      - type
+      - title
+      - text
+      - image
+      - country
+      - state
+      - crawled
+      - date_from
+      title: Event
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AppCountries:
+      type: string
+      enum:
+      - US
+      - CA
+      - AT
+      - BE
+      - CY
+      - CZ
+      - DK
+      - FI
+      - FR
+      - DE
+      - GR
+      - HU
+      - IE
+      - IT
+      - NL
+      - 'NO'
+      - PL
+      - PT
+      - RU
+      - ES
+      - SE
+      - CH
+      - TR
+      - UA
+      - GB
+      - EG
+      - IN
+      - IL
+      - MA
+      - NG
+      - SA
+      - ZA
+      - AE
+      - AU
+      - HK
+      - ID
+      - JP
+      - KZ
+      - KR
+      - MY
+      - NZ
+      - PK
+      - PH
+      - SG
+      - TW
+      - TH
+      - VN
+      - AR
+      - BR
+      - MX
+      title: AppCountries
+      description: An enumeration.
+    CacheTime:
+      type: string
+      enum:
+      - 1d
+      - 7d
+      - 30d
+      title: CacheTime
+      description: An enumeration.
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: API-KEY
