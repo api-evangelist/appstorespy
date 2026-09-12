@@ -153,6 +153,8 @@ generated:
   confidence: 95
   at: '2026-08-21T16:47:03.279Z'
 common:
+- type: Website
+  url: https://www.appstorespy.com/
 - type: AgenticAccess
   url: agentic-access/appstorespy-agentic-access.yml
 - type: DomainSecurity
