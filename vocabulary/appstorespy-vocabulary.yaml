@@ -1,0 +1,183 @@
+vocabulary: '0.1'
+name: AppstoreSpy controlled vocabulary
+description: >-
+  The terms the AppstoreSpy contract uses, so that a field name is a documented
+  decision rather than an accident of whoever wrote the endpoint. Every term
+  below is read from the published OpenAPI at
+  https://api.appstorespy.com/openapi.json; nothing here is aspirational.
+method: first-party
+source: https://api.appstorespy.com/openapi.json
+
+conventions:
+  casing:
+    paths: lower-kebab segments, snake_case where a segment is multi-word
+    parameters: snake_case
+    schema_fields: snake_case
+    schema_names: PascalCase, prefixed by store (IosApp, PlayApp, IosDev, PlayDev)
+  store_prefix: >-
+    Every store-scoped term exists twice, once per store, distinguished by the
+    `Ios` and `Play` prefix on schemas and by the /ios and /play path namespace.
+    A term with no prefix is store-independent.
+  units:
+    revenue_month: US dollars, expressed in thousands in filter bodies
+    downloads_month: units, expressed in thousands in filter bodies
+    size: megabytes
+    dates: ISO 8601
+
+entities:
+  - term: app
+    definition: >-
+      One listing on one store. Identified by bundle id on Google Play
+      (com.twitter.android) and by numeric App Store id on iOS (333903271).
+    schemas: [PlayApp, IosApp]
+    paths: [/play/apps, /ios/apps]
+  - term: developer
+    definition: >-
+      The account that publishes apps on a store. Carries publisher identifiers
+      and a headquarters country, and is not unified across the two stores.
+    schemas: [PlayDev, IosDev]
+    paths: [/play/developers, /ios/developers]
+  - term: review
+    definition: A user review left on one app, in one storefront and language.
+    schemas: [PlayReview, IosReview]
+  - term: ranking
+    definition: >-
+      One app's position in one chart on one day. The chart is identified by the
+      triple (country, category, collection), plus platform on iOS.
+    schemas: [PlayRankingItem, IosRankingItem]
+    paths: [/play/rankings, /ios/rankings]
+  - term: event
+    definition: >-
+      A LiveOps event Google Play surfaces on an app listing: a sale,
+      tournament, update or new content drop. Google Play only.
+    schemas: [Event]
+    paths: [/play/liveops]
+  - term: suggestion
+    definition: >-
+      A Google Play search autocomplete completion for a term, in one country
+      and language.
+    schemas: [Suggest, SuggestLite]
+    paths: [/play/suggestions]
+  - term: job
+    definition: >-
+      An asynchronous keyword crawl submitted by the caller. Created, then
+      polled until its results are attached.
+    schemas: [SearchCreate, SearchResult]
+    paths: [/jobs/search]
+
+dimensions:
+  - term: country
+    definition: >-
+      The storefront a request is answered for, as an ISO 3166-1 alpha-2 code.
+      Defaults to US. Governs which listing, rating and chart data is returned.
+    enum: AppCountries
+    enumerated_at: [/play/info/countries, /ios/info/countries]
+  - term: language
+    definition: >-
+      The language of the listing metadata, as a locale such as en_US. Defaults
+      to the store's default language for the country. Distinct from `country`:
+      a US storefront can be read in several languages.
+    enum: AppLanguages
+    enumerated_at: [/play/info/languages, /ios/info/languages]
+    aliases: [lang]
+    alias_note: >-
+      `lang` appears on /play/suggestions and /play/liveops where `language`
+      appears elsewhere. The two mean the same thing; the split is historical.
+  - term: category
+    definition: The store's own category taxonomy. The two stores do not share one.
+    enum: [PlayCategory, IosCategory]
+  - term: category_type
+    definition: Whether a listing is an APP or a GAME. Shared across both stores.
+    enum: TypeEnum
+  - term: collection
+    definition: >-
+      Which chart a ranking belongs to: top free, top paid, top grossing and the
+      store-specific variants.
+    enum: Collection
+  - term: platform
+    definition: The device family an App Store chart is drawn for. iOS only.
+    enum: IosPlatform
+  - term: store
+    definition: Which of the two stores a store-independent operation addresses.
+    enum: Store
+
+metrics:
+  - term: downloads_month
+    definition: Estimated installs in the trailing month.
+    sortable: true
+  - term: downloads_lifetime
+    definition: Estimated installs since release.
+    sortable: false
+  - term: downloads_daily
+    definition: Estimated installs on one day.
+    sortable: true
+  - term: downloads_exact
+    definition: Installs as the store reports them, where the store reports a number.
+    sortable: true
+  - term: downloads_mark
+    definition: >-
+      The install bracket Google Play displays (100, 500, 1000, 5000 and so on)
+      rather than an estimate. Google Play only.
+    sortable: true
+  - term: revenue_month
+    definition: Estimated gross revenue in the trailing month.
+    sortable: true
+  - term: revenue_lifetime
+    definition: Estimated gross revenue since release.
+    sortable: false
+  - term: rating_avg
+    definition: Mean rating across all storefronts.
+    sortable: true
+  - term: rating_value
+    definition: >-
+      Mean rating in the requested country. Distinct from rating_avg, which is
+      global; the pair is the most commonly confused in this vocabulary.
+    sortable: true
+  - term: rating_count
+    definition: Number of ratings, which on both stores exceeds review_count.
+    sortable: true
+  - term: review_count
+    definition: Number of written reviews.
+    sortable: true
+
+request_conventions:
+  - term: fields
+    definition: >-
+      Comma-separated list of the columns to return. Omit it to receive all
+      fields. Applies to 9 operations.
+  - term: sort
+    definition: >-
+      Comma-separated list of fields to sort by. A leading `-` means descending:
+      `-downloads_month,name`.
+  - term: page
+    definition: 1-based page number, used with `limit`.
+  - term: limit
+    definition: Page size. Bounded per operation.
+  - term: q
+    definition: >-
+      Free-text query on the search endpoints. On the developer endpoints it
+      also accepts `field:value` terms such as `hq_country:US`.
+  - term: freshness
+    definition: >-
+      How old a cached crawl may be before the request triggers a recrawl.
+      Where a recrawl is triggered, the operation answers 202 with a partial
+      result rather than blocking.
+    enum: CacheTime
+  - term: ValueRange
+    definition: '{"gte": n, "lte": n} — an inclusive numeric range in a filter body.'
+  - term: DateRange
+    definition: '{"gte": "YYYY-MM-DD", "lte": "YYYY-MM-DD"} — an inclusive date range.'
+
+response_conventions:
+  - term: total-count
+    definition: >-
+      Response header carrying the size of the full result set, sent by the list
+      operations. Not currently declared in the contract.
+  - term: total_count
+    definition: The same count inside the `{ data, errors, total_count }` envelope.
+  - term: X-Receipt
+    definition: Response header identifying the billing receipt for the call.
+  - term: X-Cost
+    definition: Response header carrying the credits the call consumed.
+  - term: X-Remaining-Credits
+    definition: Response header carrying the credits left on the plan after the call.

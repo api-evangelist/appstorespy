@@ -177,6 +177,10 @@ common:
   url: data-model/appstorespy-data-model.yml
 - type: AgentSkill
   url: skills/_index.yml
+- type: SpectralRules
+  url: rules/appstorespy-spectral-rules.yml
+- type: Vocabulary
+  url: vocabulary/appstorespy-vocabulary.yaml
 - type: Plans
   url: plans/appstorespy-plans-pricing.yml
 - type: RateLimits
