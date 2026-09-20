@@ -187,6 +187,9 @@ common:
 - type: StatusPage
   url: https://api.appstorespy.com/status
   name: Live per-dependency health
+- type: Deprecation
+  url: https://api.appstorespy.com/deprecation-policy
+  name: 90 days notice; /v1 supported 12 months past a successor
 - type: Packages
   url: packages/appstorespy-packages.yml
 - type: DeveloperPortal
