@@ -33,6 +33,9 @@ accessModel:
 created: '2026-08-21'
 modified: '2026-08-22'
 specificationVersion: '0.21'
+x-docs-platform: swagger-ui
+x-docs-platform-confidence: medium
+x-docs-platform-checked: 2026-09-19
 tags:
   - Mobile App
   - App Store Optimization
