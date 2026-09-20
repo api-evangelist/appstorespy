@@ -3,7 +3,7 @@ description: >-
   Mobile-app market-intelligence provider exposing a public REST API for App Store (iOS) and Google Play data, including
   app metadata, reviews, rankings, download/revenue estimates, developer lookup, keyword suggestions, and LiveOps
   events. Covers 13 million apps across 100 countries.
-url: https://raw.githubusercontent.com/api-evangelist/appstorespy/refs/heads/main/apis.yml
+url: https://api.appstorespy.com/apis.yml
 deliveryModel:
   model: saas
   open_source: false
@@ -155,6 +155,10 @@ generated:
 common:
 - type: Website
   url: https://www.appstorespy.com/
+- type: APICatalog
+  url: https://api.appstorespy.com/.well-known/api-catalog
+- type: Security
+  url: https://api.appstorespy.com/.well-known/security.txt
 - type: AgenticAccess
   url: agentic-access/appstorespy-agentic-access.yml
 - type: DomainSecurity

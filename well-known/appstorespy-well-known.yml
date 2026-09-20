@@ -1,18 +1,27 @@
-generated: '2026-08-22'
+generated: '2026-09-20'
 method: probed
 source: live HTTPS probes of the API host and the marketing/app host
+note: >-
+  Re-probed by the provider on 2026-09-20 after deploying the discovery surface
+  on api.appstorespy.com. The api-catalog and security.txt below are new; every
+  other path is unchanged from the 2026-08-22 probe. appstorespy.com, the
+  marketing and app host, still serves none of them.
 hosts:
   - host: api.appstorespy.com
     documents:
+      - path: /.well-known/api-catalog
+        status: 200
+        content_type: application/linkset+json
+        note: RFC 9727 API catalog, served as an RFC 9264 linkset.
       - path: /.well-known/security.txt
-        status: 404
+        status: 200
+        content_type: text/plain
+        note: RFC 9116, with Contact, Expires, Preferred-Languages and Canonical.
       - path: /.well-known/openid-configuration
         status: 404
       - path: /.well-known/oauth-authorization-server
         status: 404
       - path: /.well-known/oauth-protected-resource
-        status: 404
-      - path: /.well-known/api-catalog
         status: 404
       - path: /.well-known/ai-plugin.json
         status: 404
@@ -38,11 +47,3 @@ hosts:
         status: 404
       - path: /.well-known/agent.json
         status: 404
-note: >-
-  Every probed /.well-known/ path returned 404 on both hosts on 2026-08-22. The
-  API host answers with its own JSON 404 envelope
-  ({"message":"Not Found: The requested resource does not exist.","code":404}),
-  and the marketing host returns a small HTML 404 page - neither is an SPA
-  catch-all serving 200s, so these are true absences. No WellKnown or SecurityTxt
-  pointer is wired into apis.yml: this file documents an absence, and a pointer
-  would assert the provider serves a surface it does not.
