@@ -181,6 +181,12 @@ common:
   url: plans/appstorespy-plans-pricing.yml
 - type: RateLimits
   url: rate-limits/appstorespy-rate-limits.yml
+- type: ChangeLog
+  url: https://api.appstorespy.com/changelog
+  name: Consumer-visible changes to the /v1 surface
+- type: StatusPage
+  url: https://api.appstorespy.com/status
+  name: Live per-dependency health
 - type: Packages
   url: packages/appstorespy-packages.yml
 - type: DeveloperPortal
