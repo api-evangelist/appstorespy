@@ -102,6 +102,12 @@ artifacts:
   plans/appstorespy-plans-pricing.yml:
     method: searched
     evidence: declared in the artifact
+  rules/appstorespy-spectral-rules.yml:
+    method: first-party
+    evidence: authored by AppstoreSpy and contributed by pull request
+  vocabulary/appstorespy-vocabulary.yaml:
+    method: first-party
+    evidence: authored by AppstoreSpy and contributed by pull request
   rate-limits/appstorespy-rate-limits.yml:
     method: searched
     evidence: declared in the artifact
