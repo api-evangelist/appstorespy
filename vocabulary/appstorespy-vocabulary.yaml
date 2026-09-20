@@ -101,50 +101,134 @@ dimensions:
     definition: Which of the two stores a store-independent operation addresses.
     enum: Store
 
+field_selection:
+  note: >-
+    `fields` exists on two surfaces that do not accept the same names. This is the
+    single sharpest edge in the vocabulary: the same metric is `downloads` on one
+    surface and `downloads_month` on the other, and asking for the wrong one is a
+    400 rather than an empty column. Verified against api.appstorespy.com on
+    2026-09-20 by requesting each name on both surfaces.
+  surfaces:
+    - name: filter
+      operations:
+        - POST /{store}/apps/query
+        - POST /{store}/developers/query
+      shape: array of strings
+      accepts: every term in `metrics` below
+      error_shape: '{"errors": [{"location": "fields", "message": "Unknown fields", "value": [...]}]}'
+    - name: lookup
+      operations:
+        - GET /{store}/apps
+        - GET /{store}/apps/{id}
+        - GET /{store}/apps/{id}/reviews
+        - GET /{store}/developers
+        - GET /{store}/developers/{id}
+      shape: comma-separated string
+      accepts: every term EXCEPT those listed under filter_surface_only below
+      error_shape: '{"detail": "Wrong field - <name>"}'
+  filter_surface_only:
+    - downloads_month
+    - downloads_lifetime
+    - downloads_daily
+    - downloads_exact
+    - revenue_month
+    - revenue_lifetime
+    - downloads_mark
+  error_shape_note: >-
+    The two surfaces report the same class of mistake in two different shapes,
+    recorded here because a consumer handling one will not parse the other.
+
 metrics:
+  - term: downloads
+    definition: >-
+      Estimated installs, as the lookup surface names them. The same figure the
+      filter surface calls downloads_month.
+    surfaces: [filter, lookup]
+    sortable: true
+  - term: installs
+    definition: >-
+      Estimated installs. A Google Play synonym for downloads; the iOS lookup
+      surface rejects it and takes `downloads` instead.
+    surfaces: [filter, lookup]
+    stores: [play]
+    sortable: true
+  - term: revenue
+    definition: >-
+      Estimated gross revenue, as the lookup surface names it. The same figure the
+      filter surface calls revenue_month.
+    surfaces: [filter, lookup]
+    sortable: true
   - term: downloads_month
     definition: Estimated installs in the trailing month.
+    surfaces: [filter]
     sortable: true
   - term: downloads_lifetime
     definition: Estimated installs since release.
+    surfaces: [filter]
     sortable: false
   - term: downloads_daily
     definition: Estimated installs on one day.
+    surfaces: [filter]
     sortable: true
   - term: downloads_exact
     definition: Installs as the store reports them, where the store reports a number.
+    surfaces: [filter]
+    sortable: true
+  - term: installs_exact
+    definition: Installs as Google Play reports them.
+    surfaces: [filter, lookup]
+    stores: [play]
     sortable: true
   - term: downloads_mark
     definition: >-
       The install bracket Google Play displays (100, 500, 1000, 5000 and so on)
-      rather than an estimate. Google Play only.
+      rather than an estimate. Filter surface only, and Google Play only: the iOS
+      filter surface rejects it outright.
+    surfaces: [filter]
+    stores: [play]
     sortable: true
   - term: revenue_month
     definition: Estimated gross revenue in the trailing month.
+    surfaces: [filter]
     sortable: true
   - term: revenue_lifetime
     definition: Estimated gross revenue since release.
+    surfaces: [filter]
     sortable: false
   - term: rating_avg
     definition: Mean rating across all storefronts.
+    surfaces: [filter, lookup]
     sortable: true
   - term: rating_value
     definition: >-
       Mean rating in the requested country. Distinct from rating_avg, which is
       global; the pair is the most commonly confused in this vocabulary.
+    surfaces: [filter, lookup]
     sortable: true
   - term: rating_count
     definition: Number of ratings, which on both stores exceeds review_count.
+    surfaces: [filter, lookup]
     sortable: true
   - term: review_count
-    definition: Number of written reviews.
+    definition: >-
+      Number of written reviews. Available on the lookup surface for Google Play
+      only; the iOS lookup surface rejects it, while the iOS filter surface takes it.
+    surfaces: [filter, lookup]
+    stores: [play]
     sortable: true
+  - term: top_countries_downloads
+    definition: Per-country breakdown of estimated installs.
+    surfaces: [filter, lookup]
+  - term: top_countries_revenue
+    definition: Per-country breakdown of estimated revenue.
+    surfaces: [filter, lookup]
 
 request_conventions:
   - term: fields
     definition: >-
-      Comma-separated list of the columns to return. Omit it to receive all
-      fields. Applies to 9 operations.
+      The columns to return; omit for all. A comma-separated string on the lookup
+      surface and an array on the filter surface, and the two do not accept the
+      same names. See `field_selection` above.
   - term: sort
     definition: >-
       Comma-separated list of fields to sort by. A leading `-` means descending:
