@@ -190,6 +190,9 @@ common:
 - type: Deprecation
   url: https://api.appstorespy.com/deprecation-policy
   name: 90 days notice; /v1 supported 12 months past a successor
+- type: RoadMap
+  url: https://api.appstorespy.com/roadmap
+  name: Nine near-term contract items, each with its evidence
 - type: Packages
   url: packages/appstorespy-packages.yml
 - type: DeveloperPortal
