@@ -187,6 +187,15 @@ common:
   url: https://appstorespy.com/app-store-api
 - type: APIReference
   url: https://api.appstorespy.com/docs
+- type: GitHubRepository
+  url: https://github.com/romamo/appstorespy-api-docs
+  name: Public examples, Postman collection and lint ruleset
+- type: Postman
+  url: https://raw.githubusercontent.com/romamo/appstorespy-api-docs/main/postman/appstorespy.postman_collection.json
+  name: All 37 operations, generated from the live contract
+- type: Examples
+  url: https://github.com/romamo/appstorespy-api-docs/tree/main/examples
+  name: curl walkthrough, Python quickstart, MCP client config
 - type: Pricing
   url: https://appstorespy.com/pricing
 - type: SignUp
