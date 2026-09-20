@@ -163,6 +163,8 @@ common:
   url: authentication/appstorespy-authentication.yml
 - type: LLMsTxt
   url: llms/appstorespy-llms.txt
+- type: MCPServer
+  url: https://api.appstorespy.com/mcp
 - type: Overlay
   url: overlays/appstorespy-openapi-overlay.yaml
 - type: Conformance
