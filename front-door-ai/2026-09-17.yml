@@ -1,0 +1,26 @@
+# Front Door AI Index — appstorespy — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: appstorespy
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.appstorespy.com
+  final_host: appstorespy.com
+  ownership: own
+  owner: appstorespy
+  shares_host_with: null
+  inherited_from: null
+  verdict: scored
+  score: 1
+  host_score: 1
+  density: 1.6
+  words: 626
+  tiers:
+    agentic: 1
+    core: 0
+    model: 0
+  ambiguous: 2
+  top_terms:
+    intelligence: 2
+    fine-tune: 1

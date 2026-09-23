@@ -1,7 +1,10 @@
 openapi: 3.2.0
 info:
   title: AppstoreSpy Jobs API
-  description: "# Authentication\n\nThe Appstorespy API uses API-KEY authentication.<br>\n\nIf you do not have an API Key token, you can get it on your account page [https://appstorespy.com/account](https://appstorespy.com/account). <br>\n\nAn API Key is required to be sent as part of every request in request header.\n\n```\n\n    -H 'accept: application/json'\n\n    -H 'API-KEY: <your_token>'\n\n```\n\n\n\n# Fields\n\nUse the fields parameter to specify which fields should be returned. <br>\n\nExample:\n\n```\n\n    Request: fields=name,developer_name,ipd,downloads,...\n\n    Response: {name: ..., developer_name: ..., ipd: ..., downloads: ..., ...}\n\n```\n\nDon`t use fields parameter if you need to get all fields. <br>\n\n\n\n\n\n# Sort\n\nWhen you use search, you can add a sort parameter.\n\n```\n\n    Request: sort=ratingCount\n\n    Response: [{name: app1, ratingCount: 4.2}, {name: app2, ratingCount: 4.4}, ...]\n\n```\n\nIf you need DESC sorting add \"-\" before sort parametr.\n\n```\n\n    Request: sort=-ratingCount\n\n    Response: [{name: app2, ratingCount: 4.4}, {name: app1, ratingCount: 4.2}, ...]\n\n```\n\n\n\n# County & Language params\n\n...\n\n\n\n# Status codes / Error codes\n\n* 200 OK.\n\n* 202 Accepted - The app was not present in our databases and has been submitted for crawling. If the app is available anywhere, it will be available soon.\n\n* 204 No Content - No data for requested country.\n\n* 403 Forbidden - Your access token is not valid.\n\n* 429 Too Many Requests - Your request rate is over the limit.\n"
+  description: '# Authentication
+
+
+    The Appstorespy API uses API-KEY authentication.'
   version: 0.0.1
 servers:
 - url: https://api.appstorespy.com/v1
@@ -106,15 +109,44 @@ paths:
       - APIKeyHeader: []
 components:
   schemas:
-    HTTPValidationError:
+    SearchCreate:
       properties:
-        detail:
+        store:
+          type: string
+          title: Store
+        term:
+          type: string
+          title: Term
+        country:
+          type: string
+          title: Country
+          default: US
+        lang:
+          type: string
+          title: Lang
+          default: en_US
+        repeat:
+          type: integer
+          title: Repeat
+        id_user:
+          type: string
+          title: Id User
+        limit:
+          type: integer
+          maximum: 250.0
+          minimum: 1.0
+          title: Limit
+          default: 1
+        limit_apps:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            type: string
           type: array
-          title: Detail
+          title: Limit Apps
       type: object
-      title: HTTPValidationError
+      required:
+      - store
+      - term
+      title: SearchCreate
     ValidationError:
       properties:
         loc:
@@ -136,6 +168,36 @@ components:
       - msg
       - type
       title: ValidationError
+    Cluster:
+      properties:
+        type:
+          type: string
+          title: Type
+        title:
+          type: string
+          title: Title
+        items:
+          items:
+            type: string
+          type: array
+          title: Items
+        layout:
+          type: string
+          title: Layout
+      type: object
+      required:
+      - type
+      - title
+      - items
+      - layout
+      title: Cluster
+    Store:
+      type: string
+      enum:
+      - play
+      - ios
+      title: Store
+      description: An enumeration.
     SearchResult:
       properties:
         store:
@@ -187,74 +249,15 @@ components:
       - term
       - id
       title: SearchResult
-    SearchCreate:
+    HTTPValidationError:
       properties:
-        store:
-          type: string
-          title: Store
-        term:
-          type: string
-          title: Term
-        country:
-          type: string
-          title: Country
-          default: US
-        lang:
-          type: string
-          title: Lang
-          default: en_US
-        repeat:
-          type: integer
-          title: Repeat
-        id_user:
-          type: string
-          title: Id User
-        limit:
-          type: integer
-          maximum: 250.0
-          minimum: 1.0
-          title: Limit
-          default: 1
-        limit_apps:
+        detail:
           items:
-            type: string
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Limit Apps
+          title: Detail
       type: object
-      required:
-      - store
-      - term
-      title: SearchCreate
-    Cluster:
-      properties:
-        type:
-          type: string
-          title: Type
-        title:
-          type: string
-          title: Title
-        items:
-          items:
-            type: string
-          type: array
-          title: Items
-        layout:
-          type: string
-          title: Layout
-      type: object
-      required:
-      - type
-      - title
-      - items
-      - layout
-      title: Cluster
-    Store:
-      type: string
-      enum:
-      - play
-      - ios
-      title: Store
-      description: An enumeration.
+      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey
