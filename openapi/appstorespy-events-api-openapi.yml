@@ -62,82 +62,6 @@ paths:
       - APIKeyHeader: []
 components:
   schemas:
-    AppCountries:
-      type: string
-      enum:
-      - US
-      - CA
-      - AT
-      - BE
-      - CY
-      - CZ
-      - DK
-      - FI
-      - FR
-      - DE
-      - GR
-      - HU
-      - IE
-      - IT
-      - NL
-      - 'NO'
-      - PL
-      - PT
-      - RU
-      - ES
-      - SE
-      - CH
-      - TR
-      - UA
-      - GB
-      - EG
-      - IN
-      - IL
-      - MA
-      - NG
-      - SA
-      - ZA
-      - AE
-      - AU
-      - HK
-      - ID
-      - JP
-      - KZ
-      - KR
-      - MY
-      - NZ
-      - PK
-      - PH
-      - SG
-      - TW
-      - TH
-      - VN
-      - AR
-      - BR
-      - MX
-      title: AppCountries
-      description: An enumeration.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     Event:
       properties:
         id:
@@ -196,13 +120,81 @@ components:
       - crawled
       - date_from
       title: Event
-    CacheTime:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AppCountries:
       type: string
       enum:
-      - 1d
-      - 7d
-      - 30d
-      title: CacheTime
+      - US
+      - CA
+      - AT
+      - BE
+      - CY
+      - CZ
+      - DK
+      - FI
+      - FR
+      - DE
+      - GR
+      - HU
+      - IE
+      - IT
+      - NL
+      - 'NO'
+      - PL
+      - PT
+      - RU
+      - ES
+      - SE
+      - CH
+      - TR
+      - UA
+      - GB
+      - EG
+      - IN
+      - IL
+      - MA
+      - NG
+      - SA
+      - ZA
+      - AE
+      - AU
+      - HK
+      - ID
+      - JP
+      - KZ
+      - KR
+      - MY
+      - NZ
+      - PK
+      - PH
+      - SG
+      - TW
+      - TH
+      - VN
+      - AR
+      - BR
+      - MX
+      title: AppCountries
       description: An enumeration.
     HTTPValidationError:
       properties:
@@ -213,6 +205,14 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    CacheTime:
+      type: string
+      enum:
+      - 1d
+      - 7d
+      - 30d
+      title: CacheTime
+      description: An enumeration.
   securitySchemes:
     APIKeyHeader:
       type: apiKey
