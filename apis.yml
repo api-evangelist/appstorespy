@@ -204,11 +204,6 @@ common:
   url: https://appstorespy.com/support
 - type: Blog
   url: https://appstorespy.com/blog
-x-enrichment:
-  date: '2026-08-22'
-  status: enriched
-  artifacts_added: 20
-  pass: local-v1
 x-correction-request:
   requested: '2026-09-28'
   source:
