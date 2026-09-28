@@ -209,3 +209,23 @@ x-enrichment:
   status: enriched
   artifacts_added: 20
   pass: local-v1
+x-correction-request:
+  requested: '2026-09-28'
+  source:
+  - https://github.com/api-evangelist/appstorespy/pull/1
+  - https://github.com/api-evangelist/appstorespy/pull/3
+  - https://github.com/api-evangelist/appstorespy/pull/4
+  - https://github.com/api-evangelist/appstorespy/pull/5
+  - https://github.com/api-evangelist/appstorespy/pull/6
+  request: 'Provider PRs #1 #3 #4 #5 #6 (romamo, 2026-09-20), verified live 2026-09-28. Spectral ruleset and vocabulary
+    from #1 are committed as rules/appstorespy-spectral-rules.yml and vocabulary/appstorespy-vocabulary.yaml: add
+    SpectralRules and Vocabulary pointers to them. Add common pointers: MCPServer https://api.appstorespy.com/mcp
+    (POST JSON-RPC, initialize OK, 14 tools on tools/list; re-probe the MCP manifest, the PR''s copy lists 13);
+    APICatalog https://api.appstorespy.com/.well-known/api-catalog (linkset+json); Security https://api.appstorespy.com/.well-known/security.txt;
+    provider-hosted index https://api.appstorespy.com/apis.yml (record as a pointer, keep our url); ChangeLog https://api.appstorespy.com/changelog;
+    StatusPage https://api.appstorespy.com/status; Deprecation https://api.appstorespy.com/deprecation-policy (90-day
+    notice, 12-month support after a successor); RoadMap https://api.appstorespy.com/roadmap; GitHubRepository https://github.com/romamo/appstorespy-api-docs;
+    Postman https://raw.githubusercontent.com/romamo/appstorespy-api-docs/main/postman/appstorespy.postman_collection.json
+    (38 requests); Examples https://github.com/romamo/appstorespy-api-docs/tree/main/examples. Re-run the well-known
+    harvest (api-catalog and security.txt now 200) and regenerate provenance.yml; the provider asked for their artifacts
+    to be labelled first-party.'

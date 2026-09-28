@@ -1,0 +1,185 @@
+# AppstoreSpy API ruleset
+#
+# What "good" means for the AppstoreSpy contract, written down so it is a
+# reviewable decision rather than reviewer taste. Extends spectral:oas for the
+# baseline OpenAPI rules and adds the conventions specific to this surface:
+# API-KEY header auth on every operation, the /play, /ios and /jobs namespaces,
+# the `fields` and `sort` query conventions, and snake_case parameters.
+#
+# Run against the published contract:
+#   spectral lint https://api.appstorespy.com/openapi.json \
+#     --ruleset rules/appstorespy-spectral-rules.yml
+
+extends:
+  - spectral:oas
+
+rules:
+  # ---------------------------------------------------------------- errors ---
+
+  appstorespy-operation-security:
+    description: >-
+      Every operation declares the security it requires. AppstoreSpy meters and
+      bills per call, so an operation with no declared scheme is either a
+      contract error or an unbilled surface.
+    message: '{{path}} declares no security requirement'
+    severity: error
+    given: $.paths[*][get,put,post,delete,patch]
+    then:
+      field: security
+      function: truthy
+
+  appstorespy-no-credential-in-query:
+    description: >-
+      The API key travels in the API-KEY request header, never in the query
+      string, where it would land in server, proxy and referrer logs.
+    message: 'securityScheme {{property}} places the credential in the query string'
+    severity: error
+    given: $.components.securitySchemes[?(@.type == 'apiKey')]
+    then:
+      field: in
+      function: pattern
+      functionOptions:
+        notMatch: '^query$'
+
+  appstorespy-operation-error-response:
+    description: >-
+      Every operation documents at least one failure response. Callers integrate
+      against the error path as much as the success path.
+    message: '{{path}} documents no 4xx response'
+    severity: error
+    given: $.paths[*][get,put,post,delete,patch].responses
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          anyOf:
+            - required: ['400']
+            - required: ['401']
+            - required: ['403']
+            - required: ['404']
+            - required: ['422']
+            - required: ['429']
+
+  # ----------------------------------------------------------------- warns ---
+
+  appstorespy-operation-description:
+    description: >-
+      Every operation carries a description. The summary names the operation;
+      the description is what a consumer, or an agent choosing between 37
+      operations, actually reads.
+    message: '{{path}} has no description'
+    severity: warn
+    given: $.paths[*][get,put,post,delete,patch]
+    then:
+      field: description
+      function: truthy
+
+  appstorespy-store-tag:
+    description: >-
+      Every operation is tagged with the surface it belongs to, so the reference
+      groups into navigable sections instead of one flat list.
+    message: '{{path}} carries no recognised surface tag'
+    severity: warn
+    given: $.paths[*][get,put,post,delete,patch]
+    then:
+      field: tags
+      function: schema
+      functionOptions:
+        schema:
+          type: array
+          contains:
+            enum:
+              - Google Play
+              - App Store
+              - Jobs
+              - Events
+              - Suggestions
+              - Search Filter v.2
+
+  appstorespy-path-namespace:
+    description: >-
+      Paths live under one of the three published namespaces: /play for Google
+      Play, /ios for the App Store, /jobs for asynchronous crawl jobs.
+    message: '{{property}} is outside the /play, /ios and /jobs namespaces'
+    severity: warn
+    given: $.paths
+    then:
+      field: '@key'
+      function: pattern
+      functionOptions:
+        match: '^/(play|ios|jobs)/'
+
+  appstorespy-fields-param-documented:
+    description: >-
+      The `fields` parameter selects which columns come back and takes a
+      comma-separated list. Its description has to say so, because the shape is
+      not inferable from the type.
+    message: 'the `fields` parameter does not document the comma-separated convention'
+    severity: warn
+    given: $.paths[*][*].parameters[?(@.name == 'fields')]
+    then:
+      field: description
+      function: pattern
+      functionOptions:
+        match: 'comma'
+
+  appstorespy-query-param-snake-case:
+    description: Query parameter names are snake_case across the whole surface.
+    message: 'query parameter {{value}} is not snake_case'
+    severity: warn
+    given: $.paths[*][*].parameters[?(@.in == 'query')]
+    then:
+      field: name
+      function: casing
+      functionOptions:
+        type: snake
+
+  # ----------------------------------------------------------------- infos ---
+
+  appstorespy-sort-param-example:
+    description: >-
+      Sorting uses a `-field` prefix for descending order. A `sort` parameter
+      carries an example, because the convention is not discoverable from the
+      type alone.
+    message: 'the `sort` parameter carries no example of the -field convention'
+    severity: info
+    given: $.paths[*][*].parameters[?(@.name == 'sort')]
+    then:
+      field: example
+      function: truthy
+
+  appstorespy-summary-length:
+    description: Summaries stay short enough to render in a reference index.
+    message: 'summary is longer than 60 characters'
+    severity: info
+    given: $.paths[*][get,put,post,delete,patch].summary
+    then:
+      function: length
+      functionOptions:
+        max: 60
+
+  appstorespy-info-version-released:
+    description: >-
+      info.version identifies a released contract rather than a framework
+      default. The callable surface is pinned at /v1 in servers[0].url.
+    message: 'info.version is the framework default and identifies no release'
+    severity: info
+    given: $.info
+    then:
+      field: version
+      function: pattern
+      functionOptions:
+        notMatch: '^0\.0\.1$'
+
+  appstorespy-problem-details:
+    description: >-
+      Failure responses should carry application/problem+json (RFC 9457) rather
+      than a bare vendor envelope. Recorded as guidance: the surface is on
+      vendor JSON today and moving is a breaking change for existing callers.
+    message: '{{path}} does not offer application/problem+json'
+    severity: info
+    given: $.paths[*][*].responses[?(@property.match(/^4/))].content
+    then:
+      field: application/problem+json
+      function: truthy
