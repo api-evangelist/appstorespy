@@ -204,6 +204,34 @@ common:
   url: https://appstorespy.com/support
 - type: Blog
   url: https://appstorespy.com/blog
+- type: MCPServer
+  url: https://api.appstorespy.com/mcp
+- type: APICatalog
+  url: https://api.appstorespy.com/.well-known/api-catalog
+- type: SecurityTxt
+  url: https://api.appstorespy.com/.well-known/security.txt
+- type: WellKnown
+  url: well-known/appstorespy-well-known.yml
+- type: APIsJSON
+  url: https://api.appstorespy.com/apis.yml
+- type: ChangeLog
+  url: https://api.appstorespy.com/changelog
+- type: StatusPage
+  url: https://api.appstorespy.com/status
+- type: Deprecation
+  url: https://api.appstorespy.com/deprecation-policy
+- type: Roadmap
+  url: https://api.appstorespy.com/roadmap
+- type: GitHubRepository
+  url: https://github.com/romamo/appstorespy-api-docs
+- type: PostmanCollection
+  url: https://raw.githubusercontent.com/romamo/appstorespy-api-docs/main/postman/appstorespy.postman_collection.json
+- type: Examples
+  url: https://github.com/romamo/appstorespy-api-docs/tree/main/examples
+- type: SpectralRules
+  url: rules/appstorespy-spectral-rules.yml
+- type: Vocabulary
+  url: vocabulary/appstorespy-vocabulary.yaml
 x-correction-request:
   requested: '2026-09-28'
   source:
@@ -224,3 +252,5 @@ x-correction-request:
     (38 requests); Examples https://github.com/romamo/appstorespy-api-docs/tree/main/examples. Re-run the well-known
     harvest (api-catalog and security.txt now 200) and regenerate provenance.yml; the provider asked for their artifacts
     to be labelled first-party.'
+  applied: '2026-10-03'
+  applied_note: 'Applied by hand: 14 common pointers (MCPServer, APICatalog, SecurityTxt, WellKnown, APIsJSON, ChangeLog, StatusPage, Deprecation, Roadmap, GitHubRepository, PostmanCollection, Examples, SpectralRules, Vocabulary), all re-verified live; MCP manifest re-probed (14 tools, remote, first-party); well-known probe updated (api-catalog + security.txt 200, saved verbatim); provenance regenerated. Not applied: the 6-vs-1 APIs badge label is an apis.io site fix, not a repo fact.'
