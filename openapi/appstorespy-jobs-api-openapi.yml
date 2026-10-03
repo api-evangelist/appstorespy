@@ -109,6 +109,72 @@ paths:
       - APIKeyHeader: []
 components:
   schemas:
+    SearchCreate:
+      properties:
+        store:
+          type: string
+          title: Store
+        term:
+          type: string
+          title: Term
+        country:
+          type: string
+          title: Country
+          default: US
+        lang:
+          type: string
+          title: Lang
+          default: en_US
+        repeat:
+          type: integer
+          title: Repeat
+        id_user:
+          type: string
+          title: Id User
+        limit:
+          type: integer
+          maximum: 250.0
+          minimum: 1.0
+          title: Limit
+          default: 1
+        limit_apps:
+          items:
+            type: string
+          type: array
+          title: Limit Apps
+      type: object
+      required:
+      - store
+      - term
+      title: SearchCreate
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    Store:
+      type: string
+      enum:
+      - play
+      - ios
+      title: Store
+      description: An enumeration.
     Cluster:
       properties:
         type:
@@ -132,36 +198,6 @@ components:
       - items
       - layout
       title: Cluster
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     SearchResult:
       properties:
         store:
@@ -213,51 +249,15 @@ components:
       - term
       - id
       title: SearchResult
-    SearchCreate:
+    HTTPValidationError:
       properties:
-        store:
-          type: string
-          title: Store
-        term:
-          type: string
-          title: Term
-        country:
-          type: string
-          title: Country
-          default: US
-        lang:
-          type: string
-          title: Lang
-          default: en_US
-        repeat:
-          type: integer
-          title: Repeat
-        id_user:
-          type: string
-          title: Id User
-        limit:
-          type: integer
-          maximum: 250.0
-          minimum: 1.0
-          title: Limit
-          default: 1
-        limit_apps:
+        detail:
           items:
-            type: string
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Limit Apps
+          title: Detail
       type: object
-      required:
-      - store
-      - term
-      title: SearchCreate
-    Store:
-      type: string
-      enum:
-      - play
-      - ios
-      title: Store
-      description: An enumeration.
+      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

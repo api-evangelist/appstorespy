@@ -68,27 +68,62 @@ paths:
       - APIKeyHeader: []
 components:
   schemas:
-    ValidationError:
+    CacheTime:
+      type: string
+      enum:
+      - 1d
+      - 7d
+      - 30d
+      title: CacheTime
+      description: An enumeration.
+    AppLanguages:
+      type: string
+      enum:
+      - en_US
+      - ar
+      - en_GB
+      - fr_FR
+      - es_419
+      - de_DE
+      - pt_BR
+      - it_IT
+      - ja_JP
+      - ko_KR
+      - tr_TR
+      - ru_RU
+      - vi
+      title: AppLanguages
+      description: An enumeration.
+    SuggestLite:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        id:
           type: string
-          title: Message
-        type:
+          title: Id
+        term:
           type: string
-          title: Error Type
+          title: Term
+        country:
+          type: string
+          title: Country
+        added:
+          type: string
+          format: date-time
+          title: Added
+        lang:
+          type: string
+          title: Lang
+        store:
+          type: string
+          title: Store
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - id
+      - term
+      - country
+      - added
+      - lang
+      - store
+      title: SuggestLite
     AppCountries:
       type: string
       enum:
@@ -144,33 +179,27 @@ components:
       - MX
       title: AppCountries
       description: An enumeration.
-    AppLanguages:
-      type: string
-      enum:
-      - en_US
-      - ar
-      - en_GB
-      - fr_FR
-      - es_419
-      - de_DE
-      - pt_BR
-      - it_IT
-      - ja_JP
-      - ko_KR
-      - tr_TR
-      - ru_RU
-      - vi
-      title: AppLanguages
-      description: An enumeration.
-    HTTPValidationError:
+    ValidationError:
       properties:
-        detail:
+        loc:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Detail
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
-      title: HTTPValidationError
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     Suggest:
       properties:
         id:
@@ -213,44 +242,15 @@ components:
       - lang
       - store
       title: Suggest
-    SuggestLite:
+    HTTPValidationError:
       properties:
-        id:
-          type: string
-          title: Id
-        term:
-          type: string
-          title: Term
-        country:
-          type: string
-          title: Country
-        added:
-          type: string
-          format: date-time
-          title: Added
-        lang:
-          type: string
-          title: Lang
-        store:
-          type: string
-          title: Store
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - id
-      - term
-      - country
-      - added
-      - lang
-      - store
-      title: SuggestLite
-    CacheTime:
-      type: string
-      enum:
-      - 1d
-      - 7d
-      - 30d
-      title: CacheTime
-      description: An enumeration.
+      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey
