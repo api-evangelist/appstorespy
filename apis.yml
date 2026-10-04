@@ -1,9 +1,11 @@
 name: AppstoreSpy
-description: >-
-  Mobile-app market-intelligence provider exposing a public REST API for App Store (iOS) and Google Play data, including
-  app metadata, reviews, rankings, download/revenue estimates, developer lookup, keyword suggestions, and LiveOps
-  events. Covers 13 million apps across 100 countries.
+
+description: Mobile-app market-intelligence provider exposing a public REST API for App Store (iOS) and Google Play data, including app metadata,
+  reviews, rankings, download/revenue estimates, developer lookup, keyword suggestions, and LiveOps events. Covers 13 million apps across 100
+  countries.
+
 url: https://raw.githubusercontent.com/api-evangelist/appstorespy/refs/heads/main/apis.yml
+
 deliveryModel:
   model: saas
   open_source: false
@@ -15,6 +17,7 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
+
 accessModel:
   pricing: freemium
   onboarding: self-serve
@@ -30,132 +33,67 @@ accessModel:
   - security
   generated: '2026-09-03'
   method: derived
+
 created: '2026-08-21'
+
 modified: '2026-08-22'
+
 specificationVersion: '0.21'
+
 x-docs-platform: swagger-ui
+
 x-docs-platform-confidence: medium
+
 x-docs-platform-checked: 2026-09-19
+
 tags:
-  - Mobile App
-  - App Store Optimization
-  - Market Intelligence
-  - App Analytics
-  - Google Play
-  - apple-app-store
-  - Reviews and Ratings
-  - download-revenue-estimates
-  - Marketing
+- Mobile App
+- App Store Optimization
+- Market Intelligence
+- App Analytics
+- Google Play
+- apple-app-store
+- Reviews and Ratings
+- download-revenue-estimates
+- Marketing
+
 tags_raw:
-  - mobile-apps
-  - app-store-optimization
-  - market-intelligence
-  - app-analytics
-  - google-play
-  - apple-app-store
-  - reviews-and-ratings
-  - download-revenue-estimates
-  - marketing
-apis:
-- aid: appstorespy:appstorespy-app-store-api
-  name: AppstoreSpy App Store API
-  description: The App Store API from AppstoreSpy — 14 operation(s) for app store.
-  humanURL: https://api.appstorespy.com/docs
-  baseURL: https://api.appstorespy.com/v1
-  tags:
-  - App Store
-  properties:
-  - type: OpenAPI
-    url: openapi/appstorespy-app-store-api-openapi.yml
-  - type: Documentation
-    url: https://api.appstorespy.com/docs
-  - type: Documentation
-    url: https://appstorespy.com/app-store-api
-- aid: appstorespy:appstorespy-events-api
-  name: AppstoreSpy Events API
-  description: The Events API from AppstoreSpy — 1 operation(s) for events.
-  humanURL: https://api.appstorespy.com/docs
-  baseURL: https://api.appstorespy.com/v1
-  tags:
-  - Event
-  tags_raw:
-  - Events
-  properties:
-  - type: OpenAPI
-    url: openapi/appstorespy-events-api-openapi.yml
-  - type: Documentation
-    url: https://api.appstorespy.com/docs
-  - type: Documentation
-    url: https://appstorespy.com/app-store-api
-- aid: appstorespy:appstorespy-google-play-api
-  name: AppstoreSpy Google Play API
-  description: The Google Play API from AppstoreSpy — 17 operation(s) for google play.
-  humanURL: https://api.appstorespy.com/docs
-  baseURL: https://api.appstorespy.com/v1
-  tags:
-  - Google Play
-  properties:
-  - type: OpenAPI
-    url: openapi/appstorespy-google-play-api-openapi.yml
-  - type: Documentation
-    url: https://api.appstorespy.com/docs
-  - type: Documentation
-    url: https://appstorespy.com/app-store-api
-- aid: appstorespy:appstorespy-jobs-api
-  name: AppstoreSpy Jobs API
-  description: The Jobs API from AppstoreSpy — 1 operation(s) for jobs.
-  humanURL: https://api.appstorespy.com/docs
-  baseURL: https://api.appstorespy.com/v1
-  tags:
-  - Job
-  tags_raw:
-  - Jobs
-  properties:
-  - type: OpenAPI
-    url: openapi/appstorespy-jobs-api-openapi.yml
-  - type: Documentation
-    url: https://api.appstorespy.com/docs
-  - type: Documentation
-    url: https://appstorespy.com/app-store-api
-- aid: appstorespy:appstorespy-search-filter-v-2-api
-  name: AppstoreSpy Search Filter v.2 API
-  description: The Search Filter v.2 API from AppstoreSpy — 1 operation(s) for search filter v.2.
-  humanURL: https://api.appstorespy.com/docs
-  baseURL: https://api.appstorespy.com/v1
-  tags:
-  - Search Filter v.2
-  properties:
-  - type: OpenAPI
-    url: openapi/appstorespy-search-filter-v-2-api-openapi.yml
-  - type: Documentation
-    url: https://api.appstorespy.com/docs
-  - type: Documentation
-    url: https://appstorespy.com/app-store-api
-- aid: appstorespy:appstorespy-suggestions-api
-  name: AppstoreSpy Suggestions API
-  description: The Suggestions API from AppstoreSpy — 1 operation(s) for suggestions.
-  humanURL: https://api.appstorespy.com/docs
-  baseURL: https://api.appstorespy.com/v1
-  tags:
-  - Suggestions
-  properties:
-  - type: OpenAPI
-    url: openapi/appstorespy-suggestions-api-openapi.yml
-  - type: Documentation
-    url: https://api.appstorespy.com/docs
-  - type: Documentation
-    url: https://appstorespy.com/app-store-api
+- mobile-apps
+- app-store-optimization
+- market-intelligence
+- app-analytics
+- google-play
+- apple-app-store
+- reviews-and-ratings
+- download-revenue-estimates
+- marketing
+
 image: https://appstorespy.com/s/icons/android-icon-192x192.png
+
 maintainers:
-  - FN: AppstoreSpy
-    url: https://appstorespy.com
-    email: support@appstorespy.com
-generated:
-  by: apis.io/add
-  model: claude-opus-4-8
-  confidence: 95
-  at: '2026-08-21T16:47:03.279Z'
+- FN: AppstoreSpy
+  url: https://appstorespy.com
+  email: support@appstorespy.com
+
 common:
+- type: Spectral
+  url: rules/appstorespy-spectral-rules.yml
+- type: Spectral
+  url: rules/appstorespy-rules.yml
+- type: JSONLD
+  url: json-ld/appstorespy-context.jsonld
+- type: Vocabulary
+  url: vocabulary/appstorespy-vocabulary.yml
+- type: Deprecation
+  url: lifecycle/appstorespy-lifecycle.yml
+- type: MCPServer
+  url: mcp/appstorespy-mcp.yml
+- type: Hosts
+  url: hosts/appstorespy-hosts.yml
+- type: Vendors
+  url: vendors/appstorespy-vendors.yml
+- type: SDKs
+  url: https://appstorespy.com/sdk
 - type: Website
   url: https://www.appstorespy.com/
 - type: AgenticAccess
@@ -164,8 +102,6 @@ common:
   url: security/appstorespy-domain-security.yml
 - type: Authentication
   url: authentication/appstorespy-authentication.yml
-- type: LLMsTxt
-  url: llms/appstorespy-llms.txt
 - type: Overlay
   url: overlays/appstorespy-openapi-overlay.yaml
 - type: Conformance
@@ -184,8 +120,6 @@ common:
   url: plans/appstorespy-plans-pricing.yml
 - type: RateLimits
   url: rate-limits/appstorespy-rate-limits.yml
-- type: Packages
-  url: packages/appstorespy-packages.yml
 - type: DeveloperPortal
   url: https://appstorespy.com/app-store-api
 - type: APIReference
@@ -204,6 +138,141 @@ common:
   url: https://appstorespy.com/support
 - type: Blog
   url: https://appstorespy.com/blog
+
+apis:
+- aid: appstorespy:appstorespy-app-store-api
+  name: AppstoreSpy App Store API
+  description: The App Store API from AppstoreSpy — 14 operation(s) for app store.
+  humanURL: https://api.appstorespy.com/docs
+  baseURL: https://api.appstorespy.com/v1
+  tags:
+  - App Store
+  properties:
+  - type: OpenAPI
+    url: openapi/appstorespy-app-store-api-openapi.yml
+  - type: Documentation
+    url: https://api.appstorespy.com/docs
+  - type: Documentation
+    url: https://appstorespy.com/app-store-api
+  - type: JSONSchema
+    url: json-schema/appstorespy-ios-app-schema.json
+  - type: JSONSchema
+    url: json-schema/appstorespy-ios-app-search-body-schema.json
+  - type: JSONSchema
+    url: json-schema/appstorespy-ios-similar-search-body-schema.json
+  - type: JSONSchema
+    url: json-schema/appstorespy-ios-dev-schema.json
+  - type: JSONSchema
+    url: json-schema/appstorespy-ios-review-schema.json
+  - type: JSONSchema
+    url: json-schema/appstorespy-summary-response-schema.json
+- aid: appstorespy:appstorespy-events-api
+  name: AppstoreSpy Events API
+  description: The Events API from AppstoreSpy — 1 operation(s) for events.
+  humanURL: https://api.appstorespy.com/docs
+  baseURL: https://api.appstorespy.com/v1
+  tags:
+  - Event
+  tags_raw:
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/appstorespy-events-api-openapi.yml
+  - type: Documentation
+    url: https://api.appstorespy.com/docs
+  - type: Documentation
+    url: https://appstorespy.com/app-store-api
+  - type: JSONSchema
+    url: json-schema/appstorespy-event-schema.json
+- aid: appstorespy:appstorespy-google-play-api
+  name: AppstoreSpy Google Play API
+  description: The Google Play API from AppstoreSpy — 17 operation(s) for google play.
+  humanURL: https://api.appstorespy.com/docs
+  baseURL: https://api.appstorespy.com/v1
+  tags:
+  - Google Play
+  properties:
+  - type: OpenAPI
+    url: openapi/appstorespy-google-play-api-openapi.yml
+  - type: Documentation
+    url: https://api.appstorespy.com/docs
+  - type: Documentation
+    url: https://appstorespy.com/app-store-api
+  - type: JSONSchema
+    url: json-schema/appstorespy-play-app-schema.json
+  - type: JSONSchema
+    url: json-schema/appstorespy-play-app-search-body-schema.json
+  - type: JSONSchema
+    url: json-schema/appstorespy-similar-search-body-schema.json
+  - type: JSONSchema
+    url: json-schema/appstorespy-play-dev-schema.json
+  - type: JSONSchema
+    url: json-schema/appstorespy-play-review-schema.json
+  - type: JSONSchema
+    url: json-schema/appstorespy-event-schema.json
+- aid: appstorespy:appstorespy-jobs-api
+  name: AppstoreSpy Jobs API
+  description: The Jobs API from AppstoreSpy — 1 operation(s) for jobs.
+  humanURL: https://api.appstorespy.com/docs
+  baseURL: https://api.appstorespy.com/v1
+  tags:
+  - Job
+  tags_raw:
+  - Jobs
+  properties:
+  - type: OpenAPI
+    url: openapi/appstorespy-jobs-api-openapi.yml
+  - type: Documentation
+    url: https://api.appstorespy.com/docs
+  - type: Documentation
+    url: https://appstorespy.com/app-store-api
+  - type: JSONSchema
+    url: json-schema/appstorespy-search-result-schema.json
+  - type: JSONSchema
+    url: json-schema/appstorespy-search-create-schema.json
+- aid: appstorespy:appstorespy-search-filter-v-2-api
+  name: AppstoreSpy Search Filter v.2 API
+  description: The Search Filter v.2 API from AppstoreSpy — 1 operation(s) for search filter v.2.
+  humanURL: https://api.appstorespy.com/docs
+  baseURL: https://api.appstorespy.com/v1
+  tags:
+  - Search Filter v.2
+  properties:
+  - type: OpenAPI
+    url: openapi/appstorespy-search-filter-v-2-api-openapi.yml
+  - type: Documentation
+    url: https://api.appstorespy.com/docs
+  - type: Documentation
+    url: https://appstorespy.com/app-store-api
+  - type: JSONSchema
+    url: json-schema/appstorespy-ios-app-search-body-schema.json
+  - type: JSONSchema
+    url: json-schema/appstorespy-ios-app-list-response-schema.json
+- aid: appstorespy:appstorespy-suggestions-api
+  name: AppstoreSpy Suggestions API
+  description: The Suggestions API from AppstoreSpy — 1 operation(s) for suggestions.
+  humanURL: https://api.appstorespy.com/docs
+  baseURL: https://api.appstorespy.com/v1
+  tags:
+  - Suggestions
+  properties:
+  - type: OpenAPI
+    url: openapi/appstorespy-suggestions-api-openapi.yml
+  - type: Documentation
+    url: https://api.appstorespy.com/docs
+  - type: Documentation
+    url: https://appstorespy.com/app-store-api
+  - type: JSONSchema
+    url: json-schema/appstorespy-suggest-schema.json
+  - type: JSONSchema
+    url: json-schema/appstorespy-suggest-lite-schema.json
+
+generated:
+  by: apis.io/add
+  model: claude-opus-4-8
+  confidence: 95
+  at: '2026-08-21T16:47:03.279Z'
+
 x-correction-request:
   requested: '2026-09-28'
   source:
@@ -212,15 +281,19 @@ x-correction-request:
   - https://github.com/api-evangelist/appstorespy/pull/4
   - https://github.com/api-evangelist/appstorespy/pull/5
   - https://github.com/api-evangelist/appstorespy/pull/6
-  request: 'Provider PRs #1 #3 #4 #5 #6 (romamo, 2026-09-20), verified live 2026-09-28. Spectral ruleset and vocabulary
-    from #1 are committed as rules/appstorespy-spectral-rules.yml and vocabulary/appstorespy-vocabulary.yaml: add
-    SpectralRules and Vocabulary pointers to them. Add common pointers: MCPServer https://api.appstorespy.com/mcp
-    (POST JSON-RPC, initialize OK, 14 tools on tools/list; re-probe the MCP manifest, the PR''s copy lists 13);
-    APICatalog https://api.appstorespy.com/.well-known/api-catalog (linkset+json); Security https://api.appstorespy.com/.well-known/security.txt;
+  request: 'Provider PRs #1 #3 #4 #5 #6 (romamo, 2026-09-20), verified live 2026-09-28. Spectral ruleset and vocabulary from #1 are committed
+    as rules/appstorespy-spectral-rules.yml and vocabulary/appstorespy-vocabulary.yaml: add SpectralRules and Vocabulary pointers to them. Add
+    common pointers: MCPServer https://api.appstorespy.com/mcp (POST JSON-RPC, initialize OK, 14 tools on tools/list; re-probe the MCP manifest,
+    the PR''s copy lists 13); APICatalog https://api.appstorespy.com/.well-known/api-catalog (linkset+json); Security https://api.appstorespy.com/.well-known/security.txt;
     provider-hosted index https://api.appstorespy.com/apis.yml (record as a pointer, keep our url); ChangeLog https://api.appstorespy.com/changelog;
-    StatusPage https://api.appstorespy.com/status; Deprecation https://api.appstorespy.com/deprecation-policy (90-day
-    notice, 12-month support after a successor); RoadMap https://api.appstorespy.com/roadmap; GitHubRepository https://github.com/romamo/appstorespy-api-docs;
-    Postman https://raw.githubusercontent.com/romamo/appstorespy-api-docs/main/postman/appstorespy.postman_collection.json
-    (38 requests); Examples https://github.com/romamo/appstorespy-api-docs/tree/main/examples. Re-run the well-known
-    harvest (api-catalog and security.txt now 200) and regenerate provenance.yml; the provider asked for their artifacts
+    StatusPage https://api.appstorespy.com/status; Deprecation https://api.appstorespy.com/deprecation-policy (90-day notice, 12-month support
+    after a successor); RoadMap https://api.appstorespy.com/roadmap; GitHubRepository https://github.com/romamo/appstorespy-api-docs; Postman
+    https://raw.githubusercontent.com/romamo/appstorespy-api-docs/main/postman/appstorespy.postman_collection.json (38 requests); Examples https://github.com/romamo/appstorespy-api-docs/tree/main/examples.
+    Re-run the well-known harvest (api-catalog and security.txt now 200) and regenerate provenance.yml; the provider asked for their artifacts
     to be labelled first-party.'
+x-enrichment:
+  date: '2026-09-28'
+  status: enriched
+  artifacts_added: 23
+  pass: modular-v1
+  engine: identity=local,contract=local,surfaces=local,docs=local,regulatory=local

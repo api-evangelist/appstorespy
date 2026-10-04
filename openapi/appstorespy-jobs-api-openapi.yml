@@ -132,27 +132,44 @@ components:
       - items
       - layout
       title: Cluster
-    ValidationError:
+    SearchCreate:
       properties:
-        loc:
+        store:
+          type: string
+          title: Store
+        term:
+          type: string
+          title: Term
+        country:
+          type: string
+          title: Country
+          default: US
+        lang:
+          type: string
+          title: Lang
+          default: en_US
+        repeat:
+          type: integer
+          title: Repeat
+        id_user:
+          type: string
+          title: Id User
+        limit:
+          type: integer
+          maximum: 250.0
+          minimum: 1.0
+          title: Limit
+          default: 1
+        limit_apps:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            type: string
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Limit Apps
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - store
+      - term
+      title: SearchCreate
     HTTPValidationError:
       properties:
         detail:
@@ -213,44 +230,27 @@ components:
       - term
       - id
       title: SearchResult
-    SearchCreate:
+    ValidationError:
       properties:
-        store:
-          type: string
-          title: Store
-        term:
-          type: string
-          title: Term
-        country:
-          type: string
-          title: Country
-          default: US
-        lang:
-          type: string
-          title: Lang
-          default: en_US
-        repeat:
-          type: integer
-          title: Repeat
-        id_user:
-          type: string
-          title: Id User
-        limit:
-          type: integer
-          maximum: 250.0
-          minimum: 1.0
-          title: Limit
-          default: 1
-        limit_apps:
+        loc:
           items:
-            type: string
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Limit Apps
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
       required:
-      - store
-      - term
-      title: SearchCreate
+      - loc
+      - msg
+      - type
+      title: ValidationError
     Store:
       type: string
       enum:
