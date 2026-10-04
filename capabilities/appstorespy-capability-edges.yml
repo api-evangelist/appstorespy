@@ -1,0 +1,35 @@
+slug: appstorespy
+provider: AppstoreSpy
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: App Store
+  spec_file: appstorespy-app-store-api-openapi.yml
+  capability_id: BC-400.30
+  capability_id_l1: BC-400
+  capability_name: Market Intelligence Management
+  confidence: 0.75
+  evidence: '"Mobile-app market-intelligence provider"; GET /ios/apps/{id}/reviews "Get App Store app
+    reviews by app ID"; GET /ios/estimates "Get Apps Estimates"; POST /ios/apps/similar "Get Similar"'
+  reason: Competitor app metadata, reviews, download/revenue estimates and similar-app lookup are market
+    research and competitive intelligence inputs, realising Market Intelligence Management.
+- tag: Google Play
+  spec_file: appstorespy-google-play-api-openapi.yml
+  capability_id: BC-400.30
+  capability_id_l1: BC-400
+  capability_name: Market Intelligence Management
+  confidence: 0.75
+  evidence: GET /play/apps get_app_search_play_apps_get "Search Google Play apps by query"; GET /play/developers/{id}/estimates
+    "Get Apps Estimates"; schema AppsDailyInstalls
+  reason: App store search, reviews, rankings, install estimates and developer lookup constitute competitive/market
+    research data, i.e. Market Intelligence Management.
