@@ -1,0 +1,39 @@
+generated: '2026-09-28'
+method: probed
+source: https://appstorespy.com/privacy
+signals:
+  data_subject_request:
+    evidence:
+      - source: https://appstorespy.com/privacy
+        http_status: 200
+        fetched: "true"
+        quote: "By using the Service, you agree to the collection and use of information in accordance with this policy."
+        note: "Indicates consent to data collection but does not detail request mechanisms."
+  data_retention:
+    evidence:
+      - source: https://appstorespy.com/privacy
+        http_status: 200
+        fetched: "true"
+        quote: "We use your data to provide and improve the Service."
+        note: "No explicit retention period disclosed."
+  subprocessors:
+    evidence:
+      - source: https://appstorespy.com/privacy
+        http_status: 200
+        fetched: "true"
+        quote: "We may employ third party companies and individuals to facilitate our Service (\"Service Providers\"), to provide the Service on our behalf, to perform Service-related services or to assist us in analyzing how our Service is used."
+        note: "Acknowledges use of subprocessors."
+  data_residency:
+    evidence:
+      - source: https://appstorespy.com/privacy
+        http_status: 200
+        fetched: "true"
+        quote: "Your information, including Personal Data, may be transferred to — and maintained on — computers located outside of your state, province, country or other governmental jurisdiction where the data protection laws may differ than those from your jurisdiction."
+        note: "Indicates cross‑border data transfers."
+  incident_notification:
+    evidence:
+      - source: https://appstorespy.com/privacy
+        http_status: 200
+        fetched: "true"
+        quote: "AppstoreSpy may disclose your Personal Data in the good faith belief that such action is necessary to: To comply with a legal obligation; To protect and defend the rights or property of appstoreSpy; To prevent or investigate possible wrongdoing in connection with the Service; To protect the personal safety of users of the Service or the public; To protect against legal liability."
+        note: "Covers lawful disclosures but not explicit breach notification."

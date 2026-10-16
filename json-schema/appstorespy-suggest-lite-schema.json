@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/appstorespy/main/json-schema/appstorespy-suggest-lite-schema.json",
+  "title": "SuggestLite",
+  "x-generated": "2026-09-28",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/appstorespy-suggestions-api-openapi.yml#/components/schemas/SuggestLite",
+  "properties": {
+    "id": {
+      "type": "string",
+      "title": "Id"
+    },
+    "term": {
+      "type": "string",
+      "title": "Term"
+    },
+    "country": {
+      "type": "string",
+      "title": "Country"
+    },
+    "added": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Added"
+    },
+    "lang": {
+      "type": "string",
+      "title": "Lang"
+    },
+    "store": {
+      "type": "string",
+      "title": "Store"
+    }
+  },
+  "type": "object",
+  "required": [
+    "id",
+    "term",
+    "country",
+    "added",
+    "lang",
+    "store"
+  ]
+}

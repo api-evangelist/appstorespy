@@ -105,6 +105,7 @@ rate_limit_signaling:
     /v1/play/info/countries (2026-08-22, HTTP 401, server nginx).
   cross_ref: rate-limits/appstorespy-rate-limits.yml
 idempotency:
+  coverage: na
   supported: false
   state: na
   header: null

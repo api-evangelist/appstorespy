@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/appstorespy/main/json-schema/appstorespy-summary-response-schema.json",
+  "title": "SummaryResponse",
+  "x-generated": "2026-09-28",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/SummaryResponse",
+  "properties": {
+    "total": {
+      "type": "integer",
+      "title": "Total"
+    },
+    "ipd": {
+      "type": "integer",
+      "title": "Ipd"
+    },
+    "revenue": {
+      "type": "integer",
+      "title": "Revenue"
+    },
+    "downloads": {
+      "type": "integer",
+      "title": "Downloads"
+    },
+    "available": {
+      "type": "integer",
+      "title": "Available"
+    },
+    "removed": {
+      "type": "integer",
+      "title": "Removed"
+    }
+  },
+  "type": "object",
+  "required": [
+    "total",
+    "ipd",
+    "revenue",
+    "downloads",
+    "available",
+    "removed"
+  ]
+}

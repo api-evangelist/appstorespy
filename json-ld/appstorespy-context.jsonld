@@ -1,0 +1,701 @@
+{
+  "@context": {
+    "@vocab": "https://appstorespy.com/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "appstorespy": "https://appstorespy.com/schema#",
+    "DateRange": "appstorespy:DateRange",
+    "lte": {
+      "@id": "appstorespy:lte",
+      "@type": "xsd:date"
+    },
+    "gte": {
+      "@id": "appstorespy:gte",
+      "@type": "xsd:date"
+    },
+    "SearchFilterIos": "appstorespy:SearchFilterIos",
+    "id": {
+      "@id": "appstorespy:id",
+      "@container": "@list"
+    },
+    "name": {
+      "@id": "appstorespy:name",
+      "@type": "xsd:string"
+    },
+    "published": {
+      "@id": "appstorespy:published",
+      "@type": "xsd:boolean"
+    },
+    "category_type": {
+      "@id": "appstorespy:category_type",
+      "@type": "@id"
+    },
+    "revenue_month": {
+      "@id": "appstorespy:revenue_month",
+      "@type": "@id"
+    },
+    "downloads_month": {
+      "@id": "appstorespy:downloads_month",
+      "@type": "@id"
+    },
+    "release_date": {
+      "@id": "appstorespy:release_date",
+      "@type": "@id"
+    },
+    "update_date": {
+      "@id": "appstorespy:update_date",
+      "@type": "@id"
+    },
+    "rating_count": {
+      "@id": "appstorespy:rating_count",
+      "@type": "@id"
+    },
+    "developer": {
+      "@id": "appstorespy:developer",
+      "@type": "xsd:string"
+    },
+    "developer_id": {
+      "@id": "appstorespy:developer_id",
+      "@type": "xsd:string"
+    },
+    "editorial": {
+      "@id": "appstorespy:editorial",
+      "@type": "xsd:boolean"
+    },
+    "iap": {
+      "@id": "appstorespy:iap",
+      "@type": "xsd:boolean"
+    },
+    "active_countries": {
+      "@id": "appstorespy:active_countries",
+      "@container": "@list"
+    },
+    "description_full": {
+      "@id": "appstorespy:description_full",
+      "@type": "xsd:string"
+    },
+    "description_short": {
+      "@id": "appstorespy:description_short",
+      "@type": "xsd:string"
+    },
+    "whatsnew": {
+      "@id": "appstorespy:whatsnew",
+      "@type": "xsd:string"
+    },
+    "hosts": {
+      "@id": "appstorespy:hosts",
+      "@type": "xsd:string"
+    },
+    "with_ads": {
+      "@id": "appstorespy:with_ads",
+      "@type": "xsd:boolean"
+    },
+    "advertised": {
+      "@id": "appstorespy:advertised",
+      "@type": "xsd:boolean"
+    },
+    "collection_id": {
+      "@id": "appstorespy:collection_id",
+      "@type": "xsd:string"
+    },
+    "discovered": {
+      "@id": "appstorespy:discovered",
+      "@container": "@list"
+    },
+    "website": {
+      "@id": "appstorespy:website",
+      "@type": "xsd:string"
+    },
+    "bundle": {
+      "@id": "appstorespy:bundle",
+      "@container": "@list"
+    },
+    "transferred": {
+      "@id": "appstorespy:transferred",
+      "@type": "xsd:boolean"
+    },
+    "transfer_date": {
+      "@id": "appstorespy:transfer_date"
+    },
+    "removal_date": {
+      "@id": "appstorespy:removal_date"
+    },
+    "category": {
+      "@id": "appstorespy:category",
+      "@type": "@id"
+    },
+    "chart_filter": {
+      "@id": "appstorespy:chart_filter",
+      "@type": "@id"
+    },
+    "developer_name": {
+      "@id": "appstorespy:developer_name",
+      "@type": "xsd:string"
+    },
+    "rating_avg": {
+      "@id": "appstorespy:rating_avg",
+      "@type": "@id"
+    },
+    "review_count": {
+      "@id": "appstorespy:review_count",
+      "@type": "@id"
+    },
+    "copyright": {
+      "@id": "appstorespy:copyright",
+      "@type": "xsd:string"
+    },
+    "seller": {
+      "@id": "appstorespy:seller",
+      "@type": "xsd:string"
+    },
+    "similar_apps": {
+      "@id": "appstorespy:similar_apps",
+      "@type": "xsd:string"
+    },
+    "reverse_similar_apps": {
+      "@id": "appstorespy:reverse_similar_apps",
+      "@type": "xsd:string"
+    },
+    "previous_developer_id": {
+      "@id": "appstorespy:previous_developer_id",
+      "@type": "xsd:string"
+    },
+    "previous_developer_name": {
+      "@id": "appstorespy:previous_developer_name",
+      "@type": "xsd:string"
+    },
+    "pre_order": {
+      "@id": "appstorespy:pre_order",
+      "@type": "xsd:boolean"
+    },
+    "IosDev": "appstorespy:IosDev",
+    "type": {
+      "@id": "appstorespy:type",
+      "@type": "xsd:string"
+    },
+    "total_apps": {
+      "@id": "appstorespy:total_apps",
+      "@type": "xsd:integer"
+    },
+    "published_apps": {
+      "@id": "appstorespy:published_apps",
+      "@type": "xsd:integer"
+    },
+    "last_updated": {
+      "@id": "appstorespy:last_updated",
+      "@type": "xsd:string"
+    },
+    "first_released": {
+      "@id": "appstorespy:first_released",
+      "@type": "xsd:string"
+    },
+    "downloads": {
+      "@id": "appstorespy:downloads",
+      "@type": "xsd:integer"
+    },
+    "revenue": {
+      "@id": "appstorespy:revenue",
+      "@type": "xsd:integer"
+    },
+    "top_apps": {
+      "@id": "appstorespy:top_apps",
+      "@container": "@list"
+    },
+    "hq_country": {
+      "@id": "appstorespy:hq_country",
+      "@type": "xsd:string"
+    },
+    "email": {
+      "@id": "appstorespy:email",
+      "@container": "@list"
+    },
+    "url": {
+      "@id": "appstorespy:url",
+      "@type": "xsd:string"
+    },
+    "IosApp": "appstorespy:IosApp",
+    "country": {
+      "@id": "appstorespy:country",
+      "@type": "xsd:string"
+    },
+    "lang": {
+      "@id": "appstorespy:lang",
+      "@type": "xsd:string"
+    },
+    "available": {
+      "@id": "appstorespy:available",
+      "@type": "xsd:boolean"
+    },
+    "available_in": {
+      "@id": "appstorespy:available_in",
+      "@container": "@list"
+    },
+    "available_not": {
+      "@id": "appstorespy:available_not",
+      "@container": "@list"
+    },
+    "emails": {
+      "@id": "appstorespy:emails",
+      "@container": "@list"
+    },
+    "privacy_policy": {
+      "@id": "appstorespy:privacy_policy",
+      "@type": "xsd:string"
+    },
+    "version": {
+      "@id": "appstorespy:version",
+      "@type": "xsd:string"
+    },
+    "released": {
+      "@id": "appstorespy:released",
+      "@type": "xsd:string"
+    },
+    "updated": {
+      "@id": "appstorespy:updated",
+      "@type": "xsd:string"
+    },
+    "size": {
+      "@id": "appstorespy:size",
+      "@type": "xsd:integer"
+    },
+    "rating_value": {
+      "@id": "appstorespy:rating_value",
+      "@type": "xsd:decimal"
+    },
+    "devices": {
+      "@id": "appstorespy:devices",
+      "@container": "@list"
+    },
+    "arcade": {
+      "@id": "appstorespy:arcade",
+      "@type": "xsd:boolean"
+    },
+    "short": {
+      "@id": "appstorespy:short",
+      "@type": "xsd:string"
+    },
+    "description": {
+      "@id": "appstorespy:description",
+      "@type": "xsd:string"
+    },
+    "icon": {
+      "@id": "appstorespy:icon",
+      "@type": "xsd:string"
+    },
+    "trailer": {
+      "@id": "appstorespy:trailer",
+      "@type": "xsd:string"
+    },
+    "languages": {
+      "@id": "appstorespy:languages",
+      "@container": "@list"
+    },
+    "crawled": {
+      "@id": "appstorespy:crawled",
+      "@type": "xsd:string"
+    },
+    "removed": {
+      "@id": "appstorespy:removed",
+      "@type": "xsd:string"
+    },
+    "age": {
+      "@id": "appstorespy:age",
+      "@type": "xsd:integer"
+    },
+    "screenshots": {
+      "@id": "appstorespy:screenshots",
+      "@container": "@list"
+    },
+    "top_countries_revenue": {
+      "@id": "appstorespy:top_countries_revenue",
+      "@container": "@list"
+    },
+    "top_countries_downloads": {
+      "@id": "appstorespy:top_countries_downloads",
+      "@container": "@list"
+    },
+    "countries_list": {
+      "@id": "appstorespy:countries_list",
+      "@container": "@list"
+    },
+    "url_appstorespy": {
+      "@id": "appstorespy:url_appstorespy",
+      "@type": "xsd:string"
+    },
+    "ads": {
+      "@id": "appstorespy:ads"
+    },
+    "IosAppSearchBody": "appstorespy:IosAppSearchBody",
+    "limit": {
+      "@id": "appstorespy:limit",
+      "@type": "xsd:integer"
+    },
+    "page": {
+      "@id": "appstorespy:page",
+      "@type": "xsd:integer"
+    },
+    "sort": {
+      "@id": "appstorespy:sort"
+    },
+    "fields": {
+      "@id": "appstorespy:fields",
+      "@container": "@list"
+    },
+    "language": {
+      "@id": "appstorespy:language"
+    },
+    "filter": {
+      "@id": "appstorespy:filter",
+      "@type": "@id"
+    },
+    "IosSimilarSearchBody": "appstorespy:IosSimilarSearchBody",
+    "link": {
+      "@id": "appstorespy:link",
+      "@type": "@id"
+    },
+    "IosSortEnum": "appstorespy:IosSortEnum",
+    "Error": "appstorespy:Error",
+    "detail": {
+      "@id": "appstorespy:detail",
+      "@type": "xsd:string"
+    },
+    "IosRankingItem": "appstorespy:IosRankingItem",
+    "date": {
+      "@id": "appstorespy:date",
+      "@type": "xsd:string"
+    },
+    "app": {
+      "@id": "appstorespy:app",
+      "@type": "xsd:string"
+    },
+    "platform": {
+      "@id": "appstorespy:platform",
+      "@type": "xsd:string"
+    },
+    "collection": {
+      "@id": "appstorespy:collection",
+      "@type": "xsd:string"
+    },
+    "rank": {
+      "@id": "appstorespy:rank",
+      "@type": "xsd:integer"
+    },
+    "IosCategory": "appstorespy:IosCategory",
+    "DevAppsEstimates": "appstorespy:DevAppsEstimates",
+    "month": {
+      "@id": "appstorespy:month",
+      "@type": "xsd:string"
+    },
+    "AppCountries": "appstorespy:AppCountries",
+    "Creatives": "appstorespy:Creatives",
+    "video": {
+      "@id": "appstorespy:video",
+      "@type": "@id"
+    },
+    "image": {
+      "@id": "appstorespy:image",
+      "@type": "@id"
+    },
+    "fb": {
+      "@id": "appstorespy:fb",
+      "@container": "@list"
+    },
+    "network": {
+      "@id": "appstorespy:network"
+    },
+    "NewIosApp": "appstorespy:NewIosApp",
+    "listing_visible": {
+      "@id": "appstorespy:listing_visible",
+      "@type": "xsd:boolean"
+    },
+    "revenue_lifetime": {
+      "@id": "appstorespy:revenue_lifetime",
+      "@type": "xsd:integer"
+    },
+    "downloads_lifetime": {
+      "@id": "appstorespy:downloads_lifetime",
+      "@type": "xsd:integer"
+    },
+    "chart_info": {
+      "@id": "appstorespy:chart_info",
+      "@type": "@id"
+    },
+    "policy": {
+      "@id": "appstorespy:policy",
+      "@type": "xsd:string"
+    },
+    "support": {
+      "@id": "appstorespy:support",
+      "@type": "xsd:string"
+    },
+    "ValueRange": "appstorespy:ValueRange",
+    "Collection": "appstorespy:Collection",
+    "SimilarEnum": "appstorespy:SimilarEnum",
+    "IosSummarySearchBody": "appstorespy:IosSummarySearchBody",
+    "q": {
+      "@id": "appstorespy:q",
+      "@type": "xsd:string"
+    },
+    "Image": "appstorespy:Image",
+    "IosReview": "appstorespy:IosReview",
+    "user_name": {
+      "@id": "appstorespy:user_name",
+      "@type": "xsd:string"
+    },
+    "title": {
+      "@id": "appstorespy:title",
+      "@type": "xsd:string"
+    },
+    "created": {
+      "@id": "appstorespy:created",
+      "@type": "xsd:string"
+    },
+    "stars": {
+      "@id": "appstorespy:stars",
+      "@type": "xsd:integer"
+    },
+    "comment": {
+      "@id": "appstorespy:comment",
+      "@type": "xsd:string"
+    },
+    "AppCreativeVideo": "appstorespy:AppCreativeVideo",
+    "preview": {
+      "@id": "appstorespy:preview",
+      "@type": "xsd:string"
+    },
+    "StoreLanguages": "appstorespy:StoreLanguages",
+    "ValidationError": "appstorespy:ValidationError",
+    "loc": {
+      "@id": "appstorespy:loc",
+      "@container": "@list"
+    },
+    "msg": {
+      "@id": "appstorespy:msg",
+      "@type": "xsd:string"
+    },
+    "IosChart": "appstorespy:IosChart",
+    "position": {
+      "@id": "appstorespy:position",
+      "@type": "xsd:integer"
+    },
+    "AppLanguages": "appstorespy:AppLanguages",
+    "ApiResponse_list_models.responses.response.IosRankingItem__": "appstorespy:ApiResponse_list_models.responses.response.IosRankingItem__",
+    "data": {
+      "@id": "appstorespy:data",
+      "@container": "@list"
+    },
+    "errors": {
+      "@id": "appstorespy:errors",
+      "@container": "@list"
+    },
+    "total_count": {
+      "@id": "appstorespy:total_count",
+      "@type": "xsd:integer"
+    },
+    "TypeEnum": "appstorespy:TypeEnum",
+    "AppsEstimates": "appstorespy:AppsEstimates",
+    "IosAppListResponse": "appstorespy:IosAppListResponse",
+    "HTTPValidationError": "appstorespy:HTTPValidationError",
+    "ChartFilterIos": "appstorespy:ChartFilterIos",
+    "DetailedError": "appstorespy:DetailedError",
+    "location": {
+      "@id": "appstorespy:location",
+      "@type": "xsd:string"
+    },
+    "message": {
+      "@id": "appstorespy:message",
+      "@type": "xsd:string"
+    },
+    "value": {
+      "@id": "appstorespy:value"
+    },
+    "StoreCountries": "appstorespy:StoreCountries",
+    "countries": {
+      "@id": "appstorespy:countries",
+      "@container": "@list"
+    },
+    "SummaryResponse": "appstorespy:SummaryResponse",
+    "total": {
+      "@id": "appstorespy:total",
+      "@type": "xsd:integer"
+    },
+    "ipd": {
+      "@id": "appstorespy:ipd",
+      "@type": "xsd:integer"
+    },
+    "IosPlatform": "appstorespy:IosPlatform",
+    "Event": "appstorespy:Event",
+    "store": {
+      "@id": "appstorespy:store",
+      "@type": "xsd:string"
+    },
+    "text": {
+      "@id": "appstorespy:text",
+      "@type": "xsd:string"
+    },
+    "state": {
+      "@id": "appstorespy:state",
+      "@type": "xsd:string"
+    },
+    "date_from": {
+      "@id": "appstorespy:date_from",
+      "@type": "xsd:dateTime"
+    },
+    "date_to": {
+      "@id": "appstorespy:date_to",
+      "@type": "xsd:dateTime"
+    },
+    "CacheTime": "appstorespy:CacheTime",
+    "PlayAppSearchBody": "appstorespy:PlayAppSearchBody",
+    "PlaySortEnum": "appstorespy:PlaySortEnum",
+    "SearchFilterPlay": "appstorespy:SearchFilterPlay",
+    "downloads_mark": {
+      "@id": "appstorespy:downloads_mark",
+      "@type": "xsd:integer"
+    },
+    "downloads_daily": {
+      "@id": "appstorespy:downloads_daily"
+    },
+    "downloads_exact": {
+      "@id": "appstorespy:downloads_exact"
+    },
+    "installs_exact": {
+      "@id": "appstorespy:installs_exact"
+    },
+    "pre_register": {
+      "@id": "appstorespy:pre_register",
+      "@type": "xsd:boolean"
+    },
+    "PlayReview": "appstorespy:PlayReview",
+    "author_id": {
+      "@id": "appstorespy:author_id",
+      "@type": "xsd:string"
+    },
+    "author_name": {
+      "@id": "appstorespy:author_name",
+      "@type": "xsd:string"
+    },
+    "author_image": {
+      "@id": "appstorespy:author_image",
+      "@type": "xsd:string"
+    },
+    "likes": {
+      "@id": "appstorespy:likes",
+      "@type": "xsd:integer"
+    },
+    "reply": {
+      "@id": "appstorespy:reply",
+      "@type": "xsd:string"
+    },
+    "replied": {
+      "@id": "appstorespy:replied",
+      "@type": "xsd:string"
+    },
+    "ApiResponse_list_models.responses.response.PlayRankingItem__": "appstorespy:ApiResponse_list_models.responses.response.PlayRankingItem__",
+    "PlayDev": "appstorespy:PlayDev",
+    "installs": {
+      "@id": "appstorespy:installs",
+      "@type": "xsd:integer"
+    },
+    "ipd_max": {
+      "@id": "appstorespy:ipd_max",
+      "@type": "xsd:integer"
+    },
+    "header": {
+      "@id": "appstorespy:header",
+      "@type": "xsd:string"
+    },
+    "featured": {
+      "@id": "appstorespy:featured",
+      "@type": "xsd:string"
+    },
+    "AppsDailyInstalls": "appstorespy:AppsDailyInstalls",
+    "PlayApp": "appstorespy:PlayApp",
+    "feature": {
+      "@id": "appstorespy:feature",
+      "@type": "xsd:string"
+    },
+    "review_total": {
+      "@id": "appstorespy:review_total",
+      "@type": "xsd:decimal"
+    },
+    "about_phone": {
+      "@id": "appstorespy:about_phone",
+      "@type": "xsd:string"
+    },
+    "about_address": {
+      "@id": "appstorespy:about_address",
+      "@type": "xsd:string"
+    },
+    "support_phone": {
+      "@id": "appstorespy:support_phone",
+      "@type": "xsd:string"
+    },
+    "address_country": {
+      "@id": "appstorespy:address_country",
+      "@type": "xsd:string"
+    },
+    "PlayAppListResponse": "appstorespy:PlayAppListResponse",
+    "PlayCategory": "appstorespy:PlayCategory",
+    "PlayChart": "appstorespy:PlayChart",
+    "SuggestLite": "appstorespy:SuggestLite",
+    "term": {
+      "@id": "appstorespy:term",
+      "@type": "xsd:string"
+    },
+    "added": {
+      "@id": "appstorespy:added",
+      "@type": "xsd:dateTime"
+    },
+    "SummarySearchBody": "appstorespy:SummarySearchBody",
+    "SimilarSearchBody": "appstorespy:SimilarSearchBody",
+    "ChartFilterPlay": "appstorespy:ChartFilterPlay",
+    "PlayRankingItem": "appstorespy:PlayRankingItem",
+    "Suggest": "appstorespy:Suggest",
+    "results": {
+      "@id": "appstorespy:results",
+      "@container": "@list"
+    },
+    "NewPlayApp": "appstorespy:NewPlayApp",
+    "feature_graphic": {
+      "@id": "appstorespy:feature_graphic",
+      "@type": "xsd:string"
+    },
+    "Cluster": "appstorespy:Cluster",
+    "items": {
+      "@id": "appstorespy:items",
+      "@container": "@list"
+    },
+    "layout": {
+      "@id": "appstorespy:layout",
+      "@type": "xsd:string"
+    },
+    "SearchResult": "appstorespy:SearchResult",
+    "repeat": {
+      "@id": "appstorespy:repeat",
+      "@type": "xsd:integer"
+    },
+    "id_user": {
+      "@id": "appstorespy:id_user",
+      "@type": "xsd:string"
+    },
+    "limit_apps": {
+      "@id": "appstorespy:limit_apps",
+      "@container": "@list"
+    },
+    "SearchCreate": "appstorespy:SearchCreate",
+    "Store": "appstorespy:Store"
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "AppstoreSpy API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects AppstoreSpy's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-09-28) from openapi/appstorespy-app-store-api-openapi.yml, openapi/appstorespy-events-api-openapi.yml, openapi/appstorespy-google-play-api-openapi.yml.",
+  "dcterms:created": "2026-09-28",
+  "dcterms:source": [
+    "openapi/appstorespy-app-store-api-openapi.yml",
+    "openapi/appstorespy-events-api-openapi.yml",
+    "openapi/appstorespy-google-play-api-openapi.yml",
+    "openapi/appstorespy-jobs-api-openapi.yml",
+    "openapi/appstorespy-search-filter-v-2-api-openapi.yml"
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/appstorespy/main/json-schema/appstorespy-play-review-schema.json",
+  "title": "PlayReview",
+  "x-generated": "2026-09-28",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/PlayReview",
+  "properties": {
+    "id": {
+      "type": "string",
+      "title": "Id",
+      "description": "Review ID"
+    },
+    "lang": {
+      "type": "string",
+      "title": "Lang",
+      "description": "Review language"
+    },
+    "author_id": {
+      "type": "string",
+      "title": "Author Id",
+      "description": "ID of the review author"
+    },
+    "author_name": {
+      "type": "string",
+      "title": "Author Name",
+      "description": "Name of the review author"
+    },
+    "author_image": {
+      "type": "string",
+      "title": "Author Image",
+      "description": "Image URL of the review author"
+    },
+    "version": {
+      "type": "string",
+      "title": "Version",
+      "description": "App version"
+    },
+    "created": {
+      "type": "string",
+      "title": "Created",
+      "description": "Creation date"
+    },
+    "stars": {
+      "type": "integer",
+      "title": "Stars",
+      "description": "App rating"
+    },
+    "likes": {
+      "type": "integer",
+      "title": "Likes",
+      "description": "Review likes"
+    },
+    "comment": {
+      "type": "string",
+      "title": "Comment",
+      "description": "Review text"
+    },
+    "reply": {
+      "type": "string",
+      "title": "Reply",
+      "description": "Reply text"
+    },
+    "replied": {
+      "type": "string",
+      "title": "Replied",
+      "description": "Reply date"
+    }
+  },
+  "type": "object",
+  "required": [
+    "id",
+    "lang",
+    "author_id",
+    "author_name",
+    "author_image",
+    "created",
+    "stars",
+    "likes",
+    "comment"
+  ]
+}

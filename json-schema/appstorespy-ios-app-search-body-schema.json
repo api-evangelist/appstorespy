@@ -1,0 +1,547 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/appstorespy/main/json-schema/appstorespy-ios-app-search-body-schema.json",
+  "title": "IosAppSearchBody",
+  "x-generated": "2026-09-28",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/IosAppSearchBody",
+  "properties": {
+    "limit": {
+      "type": "integer",
+      "title": "Limit",
+      "description": "Count of apps in results",
+      "default": 10
+    },
+    "page": {
+      "type": "integer",
+      "title": "Page",
+      "description": "Offset page",
+      "default": 1
+    },
+    "sort": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/IosSortEnum"
+        }
+      ],
+      "description": "Field for sort"
+    },
+    "fields": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Fields",
+      "description": "Fields for select, empty for all",
+      "default": [
+        "id",
+        "url_appstorespy",
+        "name",
+        "bundle",
+        "description_full",
+        "published",
+        "listing_visible",
+        "category",
+        "category_type",
+        "revenue_month",
+        "revenue_lifetime",
+        "downloads_month",
+        "downloads_lifetime",
+        "update_date",
+        "release_date",
+        "developer_id",
+        "developer_name",
+        "description_short",
+        "whatsnew",
+        "icon",
+        "video",
+        "removal_date",
+        "version",
+        "size",
+        "rating_count",
+        "rating_value",
+        "review_count",
+        "rating_avg",
+        "iap",
+        "hosts",
+        "chart_info",
+        "url",
+        "policy",
+        "email",
+        "support",
+        "advertised",
+        "ads"
+      ]
+    },
+    "country": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/AppCountries"
+        }
+      ],
+      "description": "Country for which return data",
+      "default": "US"
+    },
+    "language": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/AppLanguages"
+        }
+      ],
+      "description": "Language of meta data. By default: en_US"
+    },
+    "filter": {
+      "$ref": "#/$defs/SearchFilterIos"
+    }
+  },
+  "type": "object",
+  "required": [
+    "filter"
+  ],
+  "$defs": {
+    "AppCountries": {
+      "type": "string",
+      "enum": [
+        "US",
+        "CA",
+        "AT",
+        "BE",
+        "CY",
+        "CZ",
+        "DK",
+        "FI",
+        "FR",
+        "DE",
+        "GR",
+        "HU",
+        "IE",
+        "IT",
+        "NL",
+        "NO",
+        "PL",
+        "PT",
+        "RU",
+        "ES",
+        "SE",
+        "CH",
+        "TR",
+        "UA",
+        "GB",
+        "EG",
+        "IN",
+        "IL",
+        "MA",
+        "NG",
+        "SA",
+        "ZA",
+        "AE",
+        "AU",
+        "HK",
+        "ID",
+        "JP",
+        "KZ",
+        "KR",
+        "MY",
+        "NZ",
+        "PK",
+        "PH",
+        "SG",
+        "TW",
+        "TH",
+        "VN",
+        "AR",
+        "BR",
+        "MX"
+      ],
+      "title": "AppCountries",
+      "description": "An enumeration."
+    },
+    "AppLanguages": {
+      "type": "string",
+      "enum": [
+        "en_US",
+        "ar",
+        "en_GB",
+        "fr_FR",
+        "es_419",
+        "de_DE",
+        "pt_BR",
+        "it_IT",
+        "ja_JP",
+        "ko_KR",
+        "tr_TR",
+        "ru_RU",
+        "vi"
+      ],
+      "title": "AppLanguages",
+      "description": "An enumeration."
+    },
+    "ChartFilterIos": {
+      "properties": {
+        "collection": {
+          "$ref": "#/$defs/Collection"
+        },
+        "country": {
+          "type": "string",
+          "title": "Country"
+        },
+        "date": {
+          "type": "string",
+          "title": "Date"
+        },
+        "category": {
+          "$ref": "#/$defs/IosCategory"
+        },
+        "platform": {
+          "$ref": "#/$defs/IosPlatform"
+        }
+      },
+      "type": "object",
+      "required": [
+        "country",
+        "platform"
+      ],
+      "title": "ChartFilterIos"
+    },
+    "Collection": {
+      "enum": [
+        "Free",
+        "Grossing",
+        "Paid",
+        "topselling_free",
+        "topgrossing",
+        "topselling_paid",
+        "topselling_new_free",
+        "topselling_new_paid",
+        "movers_shakers"
+      ],
+      "title": "Collection",
+      "description": "An enumeration."
+    },
+    "DateRange": {
+      "properties": {
+        "lte": {
+          "type": "string",
+          "format": "date",
+          "title": "Lte"
+        },
+        "gte": {
+          "type": "string",
+          "format": "date",
+          "title": "Gte"
+        }
+      },
+      "type": "object",
+      "title": "DateRange"
+    },
+    "IosCategory": {
+      "enum": [
+        "GAMES",
+        "GAMES_ACTION",
+        "GAMES_ADVENTURE",
+        "GAMES_ARCADE",
+        "GAMES_BOARD",
+        "GAMES_CARD",
+        "GAMES_CASINO",
+        "GAMES_FAMILY",
+        "GAMES_MUSIC",
+        "GAMES_PUZZLE",
+        "GAMES_RACING",
+        "GAMES_ROLE_PLAYING",
+        "GAMES_SIMULATION",
+        "GAMES_SPORTS",
+        "GAMES_STRATEGY",
+        "GAMES_TRIVIA",
+        "GAMES_WORD",
+        "BOOKS",
+        "BUSINESS",
+        "EDUCATION",
+        "ENTERTAINMENT",
+        "FINANCE",
+        "FOOD_AND_DRINK",
+        "HEALTH_AND_FITNESS",
+        "LIFESTYLE",
+        "MEDICAL",
+        "MUSIC",
+        "NAVIGATION",
+        "NEWS",
+        "PHOTO_AND_VIDEO",
+        "PRODUCTIVITY",
+        "REFERENCE",
+        "SHOPPING",
+        "SOCIAL_NETWORKING",
+        "SPORTS",
+        "TRAVEL",
+        "UTILITIES",
+        "WEATHER",
+        "DEVELOPER_TOOLS",
+        "GRAPHICS_AND_DESIGN",
+        "ALL"
+      ],
+      "title": "IosCategory",
+      "description": "An enumeration."
+    },
+    "IosPlatform": {
+      "enum": [
+        "iPad",
+        "iPhone"
+      ],
+      "title": "IosPlatform",
+      "description": "An enumeration."
+    },
+    "IosSortEnum": {
+      "type": "string",
+      "enum": [
+        "revenue_month",
+        "-revenue_month",
+        "downloads_month",
+        "-downloads_month",
+        "update_date",
+        "-update_date",
+        "release_date",
+        "-release_date",
+        "removal_date",
+        "-removal_date",
+        "downloads_exact",
+        "-downloads_exact",
+        "downloads_mark",
+        "-downloads_mark",
+        "rating_count",
+        "-rating_count",
+        "rating_value",
+        "-rating_value",
+        "review_count",
+        "-review_count",
+        "rating_avg",
+        "-rating_avg",
+        "chart_info",
+        "-chart_info"
+      ],
+      "title": "IosSortEnum",
+      "description": "An enumeration."
+    },
+    "SearchFilterIos": {
+      "properties": {
+        "id": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Id"
+        },
+        "name": {
+          "type": "string",
+          "title": "Name"
+        },
+        "published": {
+          "type": "boolean",
+          "title": "Published"
+        },
+        "category_type": {
+          "$ref": "#/$defs/TypeEnum"
+        },
+        "revenue_month": {
+          "$ref": "#/$defs/ValueRange"
+        },
+        "downloads_month": {
+          "$ref": "#/$defs/ValueRange"
+        },
+        "release_date": {
+          "$ref": "#/$defs/DateRange"
+        },
+        "update_date": {
+          "$ref": "#/$defs/DateRange"
+        },
+        "rating_count": {
+          "$ref": "#/$defs/ValueRange"
+        },
+        "developer": {
+          "type": "string",
+          "title": "Developer"
+        },
+        "developer_id": {
+          "type": "string",
+          "title": "Developer Id"
+        },
+        "editorial": {
+          "type": "boolean",
+          "title": "Editorial"
+        },
+        "iap": {
+          "type": "boolean",
+          "title": "Iap",
+          "description": "In app purchases"
+        },
+        "active_countries": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Active Countries"
+        },
+        "description_full": {
+          "type": "string",
+          "title": "Description Full"
+        },
+        "description_short": {
+          "type": "string",
+          "title": "Description Short"
+        },
+        "whatsnew": {
+          "type": "string",
+          "title": "Whatsnew",
+          "description": "Updates in app"
+        },
+        "hosts": {
+          "type": "string",
+          "title": "Hosts"
+        },
+        "with_ads": {
+          "type": "boolean",
+          "title": "With Ads"
+        },
+        "advertised": {
+          "type": "boolean",
+          "title": "Advertised"
+        },
+        "collection_id": {
+          "type": "string",
+          "title": "Collection Id",
+          "description": "Collection ID"
+        },
+        "discovered": {
+          "items": {
+            "type": "string",
+            "format": "date"
+          },
+          "type": "array",
+          "title": "Discovered"
+        },
+        "website": {
+          "type": "string",
+          "title": "Website",
+          "description": "Website"
+        },
+        "bundle": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Bundle",
+          "description": "App bundle ID(s); accepts a single string or a list"
+        },
+        "transferred": {
+          "type": "boolean",
+          "title": "Transferred",
+          "description": "Whether the app has been transferred to a new developer at least once"
+        },
+        "transfer_date": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/DateRange"
+            }
+          ],
+          "title": "Transfer Date",
+          "description": "Date range (gte/lte) of the last developer transfer"
+        },
+        "removal_date": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/DateRange"
+            }
+          ],
+          "title": "Removal Date",
+          "description": "Date range (gte/lte) of app removal from the store; matches removed (unavailable) apps"
+        },
+        "category": {
+          "$ref": "#/$defs/IosCategory"
+        },
+        "chart_filter": {
+          "$ref": "#/$defs/ChartFilterIos"
+        },
+        "developer_name": {
+          "type": "string",
+          "title": "Developer Name"
+        },
+        "rating_avg": {
+          "$ref": "#/$defs/ValueRange"
+        },
+        "review_count": {
+          "$ref": "#/$defs/ValueRange"
+        },
+        "copyright": {
+          "type": "string",
+          "title": "Copyright"
+        },
+        "seller": {
+          "type": "string",
+          "title": "Seller"
+        },
+        "similar_apps": {
+          "type": "string",
+          "title": "Similar Apps",
+          "description": "Similars apps"
+        },
+        "reverse_similar_apps": {
+          "type": "string",
+          "title": "Reverse Similar Apps",
+          "description": "Apps with app in similar`s lists"
+        },
+        "previous_developer_id": {
+          "type": "string",
+          "title": "Previous Developer Id",
+          "description": "Previous developer ID before transfer"
+        },
+        "previous_developer_name": {
+          "type": "string",
+          "title": "Previous Developer Name",
+          "description": "Previous developer name before transfer"
+        },
+        "pre_order": {
+          "type": "boolean",
+          "title": "Pre Order",
+          "description": "Pre-order apps only (True); matches apps whose release date is still in the future"
+        }
+      },
+      "type": "object",
+      "title": "SearchFilterIos"
+    },
+    "TypeEnum": {
+      "enum": [
+        "APP",
+        "GAME"
+      ],
+      "title": "TypeEnum",
+      "description": "An enumeration."
+    },
+    "ValueRange": {
+      "properties": {
+        "lte": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Lte"
+        },
+        "gte": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Gte"
+        }
+      },
+      "type": "object",
+      "title": "ValueRange"
+    }
+  }
+}

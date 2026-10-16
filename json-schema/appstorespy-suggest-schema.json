@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/appstorespy/main/json-schema/appstorespy-suggest-schema.json",
+  "title": "Suggest",
+  "x-generated": "2026-09-28",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/appstorespy-suggestions-api-openapi.yml#/components/schemas/Suggest",
+  "properties": {
+    "id": {
+      "type": "string",
+      "title": "Id"
+    },
+    "term": {
+      "type": "string",
+      "title": "Term"
+    },
+    "country": {
+      "type": "string",
+      "title": "Country"
+    },
+    "added": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Added"
+    },
+    "lang": {
+      "type": "string",
+      "title": "Lang"
+    },
+    "store": {
+      "type": "string",
+      "title": "Store"
+    },
+    "crawled": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Crawled"
+    },
+    "app": {
+      "type": "string",
+      "title": "App"
+    },
+    "results": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Results"
+    }
+  },
+  "type": "object",
+  "required": [
+    "id",
+    "term",
+    "country",
+    "added",
+    "lang",
+    "store"
+  ]
+}

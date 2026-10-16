@@ -106,6 +106,10 @@ problem_types:
       rate-limits/appstorespy-rate-limits.yml
     operations:
       - get_app_details_ios_apps__id__get
+problems:
+  - status: 200
+    title: OK
+    documented_in: info.description
 coverage:
   operations_total: 33
   operations_with_403: 1

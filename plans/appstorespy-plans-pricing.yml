@@ -1,6 +1,7 @@
 generated: '2026-08-22'
 method: searched
 source: https://appstorespy.com/pricing
+name: AppstoreSpy API Plans
 secondary_source: https://appstorespy.com/app-store-api
 currency: USD
 billing_periods:
@@ -17,10 +18,14 @@ plans:
     seats: 1
     api_credits_per_month: 100
     limits:
-      app_info_views_per_day: 100
-      collections: 1
-      apps_per_collection: 5
-      top_charts_export: 200
+      - name: app_info_views_per_day
+        value: 100
+      - name: collections
+        value: 1
+      - name: apps_per_collection
+        value: 5
+      - name: top_charts_export
+        value: 200
     included:
       - Analyze keywords on Google Play
       - Track 5 apps
@@ -31,10 +36,14 @@ plans:
     seats: 1
     api_credits_per_month: 1000
     limits:
-      app_info_views_per_day: 1000
-      collections: 1
-      apps_per_collection: 100
-      top_charts_export: 200
+      - name: app_info_views_per_day
+        value: 1000
+      - name: collections
+        value: 1
+      - name: apps_per_collection
+        value: 100
+      - name: top_charts_export
+        value: 200
     included:
       - Chrome Extension keyword analysis with daily installs and estimated revenue
       - Market Explorer
@@ -47,10 +56,14 @@ plans:
     seats: 1
     api_credits_per_month: 10000
     limits:
-      app_info_views_per_day: 10000
-      collections: 10
-      apps_per_collection: 1000
-      top_charts_export: 200
+      - name: app_info_views_per_day
+        value: 10000
+      - name: collections
+        value: 10
+      - name: apps_per_collection
+        value: 1000
+      - name: top_charts_export
+        value: 200
     included:
       - Full apps database
       - Niche comparison
@@ -65,10 +78,14 @@ plans:
     seats: 3
     api_credits_per_month: 100000
     limits:
-      app_info_views_per_day: 50000
-      collections: 100
-      apps_per_collection: 10000
-      top_charts_export: 200
+      - name: app_info_views_per_day
+        value: 50000
+      - name: collections
+        value: 100
+      - name: apps_per_collection
+        value: 10000
+      - name: top_charts_export
+        value: 200
     included:
       - All Pro features
       - CSV export

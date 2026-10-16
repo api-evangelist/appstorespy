@@ -1,0 +1,74 @@
+generated: '2026-09-28'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 3
+  own: 3
+  other_domain: 0
+  platform: 0
+  roles:
+  - docs
+  - portal
+  - website
+hosts:
+- host: api.appstorespy.com
+  found_by:
+  - pointer
+  - apis[]
+  - probed
+  - site-links
+  - docs-index
+  - spec-found
+  - contract-discovery
+  - well-known
+  - vendor-detect
+  types:
+  - APIReference
+  serves:
+  - api
+  - docs
+  - spec
+  - documentation
+  vendor: swagger-ui
+  registrable_domain: appstorespy.com
+  role: docs
+  relation: own
+- host: appstorespy.com
+  found_by:
+  - pointer
+  - probed
+  - site-links
+  - docs-index
+  - contract-discovery
+  - well-known
+  types:
+  - SDKs
+  - DeveloperPortal
+  - Pricing
+  - SignUp
+  - Login
+  - TermsOfService
+  - PrivacyPolicy
+  - Support
+  - Blog
+  serves:
+  - docs
+  registrable_domain: appstorespy.com
+  role: portal
+  relation: own
+- host: www.appstorespy.com
+  found_by:
+  - pointer
+  - probed
+  - contract-discovery
+  - well-known
+  - vendor-detect
+  types:
+  - Website
+  serves:
+  - cdn
+  vendor: cloudflare
+  registrable_domain: appstorespy.com
+  role: website
+  relation: own

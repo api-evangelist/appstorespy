@@ -1,0 +1,606 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/appstorespy/main/json-schema/appstorespy-play-app-search-body-schema.json",
+  "title": "PlayAppSearchBody",
+  "x-generated": "2026-09-28",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/PlayAppSearchBody",
+  "properties": {
+    "limit": {
+      "type": "integer",
+      "title": "Limit",
+      "description": "Count of apps in results",
+      "default": 10
+    },
+    "page": {
+      "type": "integer",
+      "title": "Page",
+      "description": "Offset page",
+      "default": 1
+    },
+    "sort": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/PlaySortEnum"
+        }
+      ],
+      "description": "Field for sort"
+    },
+    "fields": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Fields",
+      "description": "Fields for select, empty for all",
+      "default": [
+        "id",
+        "url_appstorespy",
+        "name",
+        "bundle",
+        "description_full",
+        "published",
+        "listing_visible",
+        "category",
+        "category_type",
+        "revenue_month",
+        "revenue_lifetime",
+        "downloads_month",
+        "downloads_lifetime",
+        "update_date",
+        "release_date",
+        "developer_name",
+        "description_short",
+        "whatsnew",
+        "icon",
+        "video",
+        "screenshots",
+        "feature_graphic",
+        "removal_date",
+        "version",
+        "size",
+        "downloads_exact",
+        "downloads_mark",
+        "rating_count",
+        "rating_value",
+        "review_count",
+        "rating_avg",
+        "iap",
+        "editorial",
+        "hosts",
+        "chart_info",
+        "country",
+        "advertised",
+        "ads"
+      ]
+    },
+    "country": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/AppCountries"
+        }
+      ],
+      "description": "Country for which return data",
+      "default": "US"
+    },
+    "language": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/AppLanguages"
+        }
+      ],
+      "description": "Language of meta data. By default: en_US"
+    },
+    "filter": {
+      "$ref": "#/$defs/SearchFilterPlay"
+    }
+  },
+  "type": "object",
+  "required": [
+    "filter"
+  ],
+  "$defs": {
+    "AppCountries": {
+      "type": "string",
+      "enum": [
+        "US",
+        "CA",
+        "AT",
+        "BE",
+        "CY",
+        "CZ",
+        "DK",
+        "FI",
+        "FR",
+        "DE",
+        "GR",
+        "HU",
+        "IE",
+        "IT",
+        "NL",
+        "NO",
+        "PL",
+        "PT",
+        "RU",
+        "ES",
+        "SE",
+        "CH",
+        "TR",
+        "UA",
+        "GB",
+        "EG",
+        "IN",
+        "IL",
+        "MA",
+        "NG",
+        "SA",
+        "ZA",
+        "AE",
+        "AU",
+        "HK",
+        "ID",
+        "JP",
+        "KZ",
+        "KR",
+        "MY",
+        "NZ",
+        "PK",
+        "PH",
+        "SG",
+        "TW",
+        "TH",
+        "VN",
+        "AR",
+        "BR",
+        "MX"
+      ],
+      "title": "AppCountries",
+      "description": "An enumeration."
+    },
+    "AppLanguages": {
+      "type": "string",
+      "enum": [
+        "en_US",
+        "ar",
+        "en_GB",
+        "fr_FR",
+        "es_419",
+        "de_DE",
+        "pt_BR",
+        "it_IT",
+        "ja_JP",
+        "ko_KR",
+        "tr_TR",
+        "ru_RU",
+        "vi"
+      ],
+      "title": "AppLanguages",
+      "description": "An enumeration."
+    },
+    "ChartFilterPlay": {
+      "properties": {
+        "collection": {
+          "$ref": "#/$defs/Collection"
+        },
+        "country": {
+          "type": "string",
+          "title": "Country"
+        },
+        "date": {
+          "type": "string",
+          "title": "Date"
+        },
+        "category": {
+          "$ref": "#/$defs/PlayCategory"
+        }
+      },
+      "type": "object",
+      "required": [
+        "country",
+        "category"
+      ],
+      "title": "ChartFilterPlay"
+    },
+    "Collection": {
+      "enum": [
+        "Free",
+        "Grossing",
+        "Paid",
+        "topselling_free",
+        "topgrossing",
+        "topselling_paid",
+        "topselling_new_free",
+        "topselling_new_paid",
+        "movers_shakers"
+      ],
+      "title": "Collection",
+      "description": "An enumeration."
+    },
+    "DateRange": {
+      "properties": {
+        "lte": {
+          "type": "string",
+          "format": "date",
+          "title": "Lte"
+        },
+        "gte": {
+          "type": "string",
+          "format": "date",
+          "title": "Gte"
+        }
+      },
+      "type": "object",
+      "title": "DateRange"
+    },
+    "PlayCategory": {
+      "enum": [
+        "APPLICATION",
+        "SOCIAL",
+        "FAMILY",
+        "ANDROID_WEAR",
+        "ART_AND_DESIGN",
+        "AUTO_AND_VEHICLES",
+        "BEAUTY",
+        "BOOKS_AND_REFERENCE",
+        "BUSINESS",
+        "COMICS",
+        "COMMUNICATION",
+        "DATING",
+        "EDUCATION",
+        "ENTERTAINMENT",
+        "EVENTS",
+        "FINANCE",
+        "FOOD_AND_DRINK",
+        "HEALTH_AND_FITNESS",
+        "HOUSE_AND_HOME",
+        "LIBRARIES_AND_DEMO",
+        "LIFESTYLE",
+        "MAPS_AND_NAVIGATION",
+        "MEDICAL",
+        "MUSIC_AND_AUDIO",
+        "NEWS_AND_MAGAZINES",
+        "PARENTING",
+        "PERSONALIZATION",
+        "PHOTOGRAPHY",
+        "PRODUCTIVITY",
+        "SHOPPING",
+        "SPORTS",
+        "TOOLS",
+        "TRAVEL_AND_LOCAL",
+        "VIDEO_PLAYERS",
+        "WEATHER",
+        "GAME",
+        "GAME_ACTION",
+        "GAME_ADVENTURE",
+        "GAME_ARCADE",
+        "GAME_BOARD",
+        "GAME_CARD",
+        "GAME_CASINO",
+        "GAME_CASUAL",
+        "GAME_EDUCATIONAL",
+        "GAME_MUSIC",
+        "GAME_PUZZLE",
+        "GAME_RACING",
+        "GAME_ROLE_PLAYING",
+        "GAME_SIMULATION",
+        "GAME_SPORTS",
+        "GAME_STRATEGY",
+        "GAME_TRIVIA",
+        "GAME_WORD",
+        "FAMILY_ACTION",
+        "FAMILY_BRAINGAMES",
+        "FAMILY_CREATE",
+        "FAMILY_MUSICVIDEO",
+        "FAMILY_PRETEND",
+        "FAMILY_EDUCATION"
+      ],
+      "title": "PlayCategory",
+      "description": "An enumeration."
+    },
+    "PlaySortEnum": {
+      "type": "string",
+      "enum": [
+        "revenue_month",
+        "-revenue_month",
+        "downloads_month",
+        "-downloads_month",
+        "update_date",
+        "-update_date",
+        "release_date",
+        "-release_date",
+        "removal_date",
+        "-removal_date",
+        "downloads_exact",
+        "-downloads_exact",
+        "downloads_mark",
+        "-downloads_mark",
+        "rating_count",
+        "-rating_count",
+        "rating_value",
+        "-rating_value",
+        "review_count",
+        "-review_count",
+        "rating_avg",
+        "-rating_avg",
+        "chart_info",
+        "-chart_info",
+        "downloads_daily",
+        "-downloads_daily"
+      ],
+      "title": "PlaySortEnum",
+      "description": "An enumeration."
+    },
+    "SearchFilterPlay": {
+      "properties": {
+        "id": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Id"
+        },
+        "name": {
+          "type": "string",
+          "title": "Name"
+        },
+        "published": {
+          "type": "boolean",
+          "title": "Published"
+        },
+        "category_type": {
+          "$ref": "#/$defs/TypeEnum"
+        },
+        "revenue_month": {
+          "$ref": "#/$defs/ValueRange"
+        },
+        "downloads_month": {
+          "$ref": "#/$defs/ValueRange"
+        },
+        "release_date": {
+          "$ref": "#/$defs/DateRange"
+        },
+        "update_date": {
+          "$ref": "#/$defs/DateRange"
+        },
+        "rating_count": {
+          "$ref": "#/$defs/ValueRange"
+        },
+        "developer": {
+          "type": "string",
+          "title": "Developer"
+        },
+        "developer_id": {
+          "type": "string",
+          "title": "Developer Id"
+        },
+        "editorial": {
+          "type": "boolean",
+          "title": "Editorial"
+        },
+        "iap": {
+          "type": "boolean",
+          "title": "Iap",
+          "description": "In app purchases"
+        },
+        "active_countries": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Active Countries"
+        },
+        "description_full": {
+          "type": "string",
+          "title": "Description Full"
+        },
+        "description_short": {
+          "type": "string",
+          "title": "Description Short"
+        },
+        "whatsnew": {
+          "type": "string",
+          "title": "Whatsnew",
+          "description": "Updates in app"
+        },
+        "hosts": {
+          "type": "string",
+          "title": "Hosts",
+          "description": "Hosts"
+        },
+        "with_ads": {
+          "type": "boolean",
+          "title": "With Ads"
+        },
+        "advertised": {
+          "type": "boolean",
+          "title": "Advertised"
+        },
+        "collection_id": {
+          "type": "string",
+          "title": "Collection Id",
+          "description": "Collection ID"
+        },
+        "discovered": {
+          "items": {
+            "type": "string",
+            "format": "date"
+          },
+          "type": "array",
+          "title": "Discovered"
+        },
+        "website": {
+          "type": "string",
+          "title": "Website",
+          "description": "Website"
+        },
+        "bundle": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Bundle",
+          "description": "App bundle ID(s); accepts a single string or a list"
+        },
+        "transferred": {
+          "type": "boolean",
+          "title": "Transferred",
+          "description": "Whether the app has been transferred to a new developer at least once"
+        },
+        "transfer_date": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/DateRange"
+            }
+          ],
+          "title": "Transfer Date",
+          "description": "Date range (gte/lte) of the last developer transfer"
+        },
+        "removal_date": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/DateRange"
+            }
+          ],
+          "title": "Removal Date",
+          "description": "Date range (gte/lte) of app removal from the store; matches removed (unavailable) apps"
+        },
+        "category": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/PlayCategory"
+            }
+          ],
+          "description": "Category of app"
+        },
+        "downloads_mark": {
+          "type": "integer",
+          "title": "Downloads Mark",
+          "description": "Installs"
+        },
+        "downloads_daily": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ValueRange"
+            }
+          ],
+          "title": "Downloads Daily",
+          "description": "Daily downloads or Daily installs"
+        },
+        "downloads_exact": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ValueRange"
+            }
+          ],
+          "title": "Downloads Exact",
+          "description": "Exact installs"
+        },
+        "installs_exact": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ValueRange"
+            }
+          ],
+          "title": "Installs Exact",
+          "description": "Exact installs(deprecated)"
+        },
+        "review_count": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ValueRange"
+            }
+          ],
+          "title": "Review Count",
+          "description": "Count of reviews"
+        },
+        "chart_filter": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ChartFilterPlay"
+            }
+          ],
+          "title": "Chart Filter",
+          "description": "Top Charts"
+        },
+        "similar_apps": {
+          "type": "string",
+          "title": "Similar Apps",
+          "description": "Similars apps"
+        },
+        "reverse_similar_apps": {
+          "type": "string",
+          "title": "Reverse Similar Apps",
+          "description": "Apps with app in similar`s lists"
+        },
+        "rating_avg": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ValueRange"
+            }
+          ],
+          "title": "Rating Avg",
+          "description": "Average rating"
+        },
+        "developer_name": {
+          "type": "string",
+          "title": "Developer Name",
+          "description": "Developer name"
+        },
+        "previous_developer_id": {
+          "type": "string",
+          "title": "Previous Developer Id",
+          "description": "Previous developer ID before transfer"
+        },
+        "previous_developer_name": {
+          "type": "string",
+          "title": "Previous Developer Name",
+          "description": "Previous developer name before transfer"
+        },
+        "pre_register": {
+          "type": "boolean",
+          "title": "Pre Register",
+          "description": "Pre-registration games only (True); matches apps in the pre-registration state in at least one tracked country"
+        }
+      },
+      "type": "object",
+      "title": "SearchFilterPlay"
+    },
+    "TypeEnum": {
+      "enum": [
+        "APP",
+        "GAME"
+      ],
+      "title": "TypeEnum",
+      "description": "An enumeration."
+    },
+    "ValueRange": {
+      "properties": {
+        "lte": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Lte"
+        },
+        "gte": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Gte"
+        }
+      },
+      "type": "object",
+      "title": "ValueRange"
+    }
+  }
+}

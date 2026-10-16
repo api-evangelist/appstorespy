@@ -1,5 +1,6 @@
 generated: '2026-08-22'
 method: searched
+name: AppstoreSpy API
 source: >-
   https://api.appstorespy.com/docs (info.description status-code reference),
   https://appstorespy.com/pricing, https://appstorespy.com/app-store-api,
@@ -15,6 +16,7 @@ limits:
     unit: API credits
     limit: 100
     plan: Free
+    name: Free
     source: https://appstorespy.com/pricing
   - scope: per-account
     type: quota
@@ -22,6 +24,7 @@ limits:
     unit: API credits
     limit: 1000
     plan: Premium
+    name: Premium
     source: https://appstorespy.com/pricing
   - scope: per-account
     type: quota
@@ -29,6 +32,7 @@ limits:
     unit: API credits
     limit: 10000
     plan: Pro
+    name: Pro
     source: https://appstorespy.com/pricing
   - scope: per-account
     type: quota
@@ -36,6 +40,7 @@ limits:
     unit: API credits
     limit: 100000
     plan: Business
+    name: Business
     source: https://appstorespy.com/pricing
     note: >-
       https://appstorespy.com/app-store-api states 12 000 credits per month for

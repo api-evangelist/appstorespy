@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/appstorespy/main/json-schema/appstorespy-ios-dev-schema.json",
+  "title": "IosDev",
+  "x-generated": "2026-09-28",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/IosDev",
+  "properties": {
+    "id": {
+      "type": "string",
+      "title": "Id"
+    },
+    "name": {
+      "type": "string",
+      "title": "Name"
+    },
+    "category": {
+      "type": "string",
+      "title": "Category"
+    },
+    "type": {
+      "type": "string",
+      "title": "Type"
+    },
+    "total_apps": {
+      "type": "integer",
+      "title": "Total Apps"
+    },
+    "published_apps": {
+      "type": "integer",
+      "title": "Published Apps"
+    },
+    "last_updated": {
+      "type": "string",
+      "title": "Last Updated"
+    },
+    "first_released": {
+      "type": "string",
+      "title": "First Released"
+    },
+    "rating_count": {
+      "type": "integer",
+      "title": "Rating Count"
+    },
+    "downloads": {
+      "type": "integer",
+      "title": "Downloads"
+    },
+    "revenue": {
+      "type": "integer",
+      "title": "Revenue"
+    },
+    "top_apps": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Top Apps"
+    },
+    "hq_country": {
+      "type": "string",
+      "title": "Hq Country"
+    },
+    "email": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Email"
+    },
+    "url": {
+      "type": "string",
+      "title": "Url"
+    }
+  },
+  "type": "object"
+}

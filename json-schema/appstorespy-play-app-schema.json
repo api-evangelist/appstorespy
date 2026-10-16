@@ -1,0 +1,389 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/appstorespy/main/json-schema/appstorespy-play-app-schema.json",
+  "title": "PlayApp",
+  "x-generated": "2026-09-28",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/PlayApp",
+  "properties": {
+    "id": {
+      "type": "string",
+      "title": "Id",
+      "description": "The app package name"
+    },
+    "bundle": {
+      "type": "string",
+      "title": "Bundle",
+      "description": "Bundle(the same as id)"
+    },
+    "published": {
+      "type": "boolean",
+      "title": "Published",
+      "description": "Published"
+    },
+    "available_in": {
+      "items": {},
+      "type": "array",
+      "title": "Available In",
+      "description": "Available in countries"
+    },
+    "available_not": {
+      "items": {},
+      "type": "array",
+      "title": "Available Not",
+      "description": "Not available in countries"
+    },
+    "country": {
+      "type": "string",
+      "title": "Country",
+      "description": "Country for which specific fields returned"
+    },
+    "lang": {
+      "type": "string",
+      "title": "Lang",
+      "description": "The language in which the app metadata is returned"
+    },
+    "languages": {
+      "items": {},
+      "type": "array",
+      "title": "Languages",
+      "description": "Translations detected by AppstoreSpy"
+    },
+    "type": {
+      "type": "string",
+      "title": "Type",
+      "description": "Category type: app or game"
+    },
+    "category": {
+      "type": "string",
+      "title": "Category",
+      "description": "Category ID. Refer to the Google Play categories for more information"
+    },
+    "name": {
+      "type": "string",
+      "title": "Name",
+      "description": "Name in the specified language"
+    },
+    "short": {
+      "type": "string",
+      "title": "Short",
+      "description": "Short description in the specified language"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description",
+      "description": "Description in the specified language"
+    },
+    "icon": {
+      "type": "string",
+      "title": "Icon",
+      "description": "Icon in the specified language"
+    },
+    "screenshots": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Screenshots",
+      "description": "Screenshots in the specified language"
+    },
+    "trailer": {
+      "type": "string",
+      "title": "Trailer",
+      "description": "Video trailer Youtube link in the specified language"
+    },
+    "feature": {
+      "type": "string",
+      "title": "Feature",
+      "description": "Feature in the specified language"
+    },
+    "whatsnew": {
+      "type": "string",
+      "title": "Whatsnew",
+      "description": "What's new in the specified language"
+    },
+    "developer_id": {
+      "type": "string",
+      "title": "Developer Id",
+      "description": "Developer ID"
+    },
+    "developer_name": {
+      "type": "string",
+      "title": "Developer Name",
+      "description": "Developer name"
+    },
+    "emails": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Emails",
+      "description": "Contact email"
+    },
+    "website": {
+      "type": "string",
+      "title": "Website",
+      "description": "Website"
+    },
+    "privacy_policy": {
+      "type": "string",
+      "title": "Privacy Policy",
+      "description": "Privacy policy link"
+    },
+    "url": {
+      "type": "string",
+      "title": "Url",
+      "description": "Link to Google Play"
+    },
+    "editorial": {
+      "type": "boolean",
+      "title": "Editorial",
+      "description": "Editor's choice"
+    },
+    "iap": {
+      "type": "boolean",
+      "title": "Iap",
+      "description": "App offers in-app purchases"
+    },
+    "ads": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Creatives"
+        }
+      ],
+      "title": "Ads",
+      "description": "App`s ads"
+    },
+    "advertised": {
+      "type": "boolean",
+      "title": "Advertised",
+      "description": "App is advertised in networks"
+    },
+    "installs": {
+      "type": "string",
+      "title": "Installs",
+      "description": "Installs checkpoint"
+    },
+    "installs_exact": {
+      "type": "integer",
+      "title": "Installs Exact",
+      "description": "Accurate installs value"
+    },
+    "ipd": {
+      "type": "integer",
+      "title": "Ipd",
+      "description": "Estimated daily installs"
+    },
+    "rating_count": {
+      "type": "integer",
+      "title": "Rating Count",
+      "description": "Total ratings"
+    },
+    "rating_value": {
+      "type": "number",
+      "title": "Rating Value",
+      "description": "Rating value in the specified country"
+    },
+    "review_count": {
+      "type": "integer",
+      "title": "Review Count",
+      "description": "Number of reviews in the specified country"
+    },
+    "rating_avg": {
+      "type": "number",
+      "title": "Rating Avg",
+      "description": "Weighted average Rating value"
+    },
+    "review_total": {
+      "type": "number",
+      "title": "Review Total",
+      "description": "Total reviews as detected by AppstoreSpy"
+    },
+    "revenue": {
+      "type": "integer",
+      "title": "Revenue"
+    },
+    "downloads": {
+      "type": "integer",
+      "title": "Downloads"
+    },
+    "version": {
+      "type": "string",
+      "title": "Version",
+      "description": "App version, optional if app has multiple versions"
+    },
+    "size": {
+      "type": "integer",
+      "title": "Size",
+      "description": "App size in bytes, optional if app has multiple versions"
+    },
+    "updated": {
+      "type": "string",
+      "title": "Updated",
+      "description": "The last time the app was updated on Google Play"
+    },
+    "released": {
+      "type": "string",
+      "title": "Released",
+      "description": "The release date as detected by AppstoreSpy"
+    },
+    "age": {
+      "type": "integer",
+      "title": "Age",
+      "description": "Age in days as detected by AppstoreSpy"
+    },
+    "removed": {
+      "type": "string",
+      "title": "Removed",
+      "description": "The removal date as detected by AppstoreSpy"
+    },
+    "crawled": {
+      "type": "string",
+      "title": "Crawled",
+      "description": "The last crawled time by AppstoreSpy"
+    },
+    "top_countries_revenue": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Top Countries Revenue",
+      "description": "Top 5 revenue country"
+    },
+    "top_countries_downloads": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Top Countries Downloads",
+      "description": "Top 5 downloads country"
+    },
+    "hosts": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Hosts",
+      "description": "Hosts"
+    },
+    "countries_list": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Countries List",
+      "description": "countries"
+    },
+    "url_appstorespy": {
+      "type": "string",
+      "title": "Url Appstorespy",
+      "description": "Url to AppstoreSpy"
+    },
+    "transferred": {
+      "type": "string",
+      "title": "Transferred",
+      "description": "The last transfer date as detected by AppstoreSpy"
+    },
+    "previous_developer_id": {
+      "type": "string",
+      "title": "Previous Developer Id",
+      "description": "Previous developer ID before transfer"
+    },
+    "previous_developer_name": {
+      "type": "string",
+      "title": "Previous Developer Name",
+      "description": "Previous developer name before transfer"
+    },
+    "about_phone": {
+      "type": "string",
+      "title": "About Phone",
+      "description": "About developer: phone number"
+    },
+    "about_address": {
+      "type": "string",
+      "title": "About Address",
+      "description": "About developer: address"
+    },
+    "support_phone": {
+      "type": "string",
+      "title": "Support Phone",
+      "description": "App support: phone number"
+    },
+    "address_country": {
+      "type": "string",
+      "title": "Address Country",
+      "description": "Address: country"
+    }
+  },
+  "type": "object",
+  "$defs": {
+    "AppCreativeVideo": {
+      "properties": {
+        "preview": {
+          "type": "string",
+          "title": "Preview"
+        },
+        "video": {
+          "type": "string",
+          "title": "Video"
+        },
+        "url": {
+          "type": "string",
+          "title": "Url"
+        }
+      },
+      "type": "object",
+      "title": "AppCreativeVideo"
+    },
+    "Creatives": {
+      "properties": {
+        "video": {
+          "$ref": "#/$defs/AppCreativeVideo"
+        },
+        "image": {
+          "$ref": "#/$defs/Image"
+        },
+        "fb": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Fb"
+        },
+        "network": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "title": "Network"
+        }
+      },
+      "type": "object",
+      "required": [
+        "video",
+        "image",
+        "fb",
+        "network"
+      ],
+      "title": "Creatives"
+    },
+    "Image": {
+      "properties": {
+        "url": {
+          "type": "string",
+          "title": "Url"
+        }
+      },
+      "type": "object",
+      "title": "Image"
+    }
+  }
+}

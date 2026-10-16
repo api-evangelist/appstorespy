@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/appstorespy/main/json-schema/appstorespy-ios-review-schema.json",
+  "title": "IosReview",
+  "x-generated": "2026-09-28",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/IosReview",
+  "properties": {
+    "id": {
+      "type": "string",
+      "title": "Id",
+      "description": "Review ID"
+    },
+    "app": {
+      "type": "string",
+      "title": "App",
+      "description": "App ID"
+    },
+    "country": {
+      "type": "string",
+      "title": "Country",
+      "description": "App storefront"
+    },
+    "user_name": {
+      "type": "string",
+      "title": "User Name",
+      "description": "Name of the review author"
+    },
+    "title": {
+      "type": "string",
+      "title": "Title",
+      "description": "Review title"
+    },
+    "created": {
+      "type": "string",
+      "title": "Created",
+      "description": "Creation date"
+    },
+    "stars": {
+      "type": "integer",
+      "title": "Stars",
+      "description": "App rating"
+    },
+    "comment": {
+      "type": "string",
+      "title": "Comment",
+      "description": "Review text"
+    }
+  },
+  "type": "object"
+}

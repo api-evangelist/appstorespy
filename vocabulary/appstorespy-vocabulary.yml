@@ -1,0 +1,320 @@
+generated: '2026-09-28'
+method: derived
+generator: derive-vocabulary.py
+source:
+- openapi/appstorespy-app-store-api-openapi.yml
+- openapi/appstorespy-events-api-openapi.yml
+- openapi/appstorespy-google-play-api-openapi.yml
+- openapi/appstorespy-jobs-api-openapi.yml
+- openapi/appstorespy-search-filter-v-2-api-openapi.yml
+vocabulary:
+  name: AppstoreSpy Domain Vocabulary
+  description: 'Terms declared by AppstoreSpy''s own API contract: its resource groups, objects and enumerations, with the contract''s definitions.
+    Derived, not authored.'
+  version: '2026-09-28'
+  terms:
+  - term: DateRange
+    definition: 'Object declared by the contract with fields: lte, gte.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/DateRange
+  - term: SearchFilterIos
+    definition: 'Object declared by the contract with fields: id, name, published, category_type, revenue_month, downloads_month, release_date,
+      update_date, rating_count, developer, developer_id, editorial. (27 more)'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/SearchFilterIos
+  - term: IosDev
+    definition: 'Object declared by the contract with fields: id, name, category, type, total_apps, published_apps, last_updated, first_released,
+      rating_count, downloads, revenue, top_apps. (3 more)'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/IosDev
+  - term: IosApp
+    definition: 'Object declared by the contract with fields: id, bundle, country, lang, published, available, available_in, available_not, category,
+      type, emails, website. (38 more)'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/IosApp
+  - term: IosAppSearchBody
+    definition: 'Object declared by the contract with fields: limit, page, sort, fields, country, language, filter.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/IosAppSearchBody
+  - term: IosSimilarSearchBody
+    definition: 'Object declared by the contract with fields: limit, page, sort, fields, country, language, filter, id, link.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/IosSimilarSearchBody
+  - term: IosSortEnum
+    definition: An enumeration.
+    tags:
+    - Enumeration
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/IosSortEnum
+  - term: Error
+    definition: 'Object declared by the contract with fields: detail.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/Error
+  - term: IosRankingItem
+    definition: 'Object declared by the contract with fields: date, app, platform, country, category, collection, rank.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/IosRankingItem
+  - term: IosCategory
+    definition: An enumeration.
+    tags:
+    - Enumeration
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/IosCategory
+  - term: DevAppsEstimates
+    definition: 'Object declared by the contract with fields: month, downloads, revenue.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/DevAppsEstimates
+  - term: AppCountries
+    definition: An enumeration.
+    tags:
+    - Enumeration
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/AppCountries
+  - term: Creatives
+    definition: 'Object declared by the contract with fields: video, image, fb, network.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/Creatives
+  - term: NewIosApp
+    definition: 'Object declared by the contract with fields: id, bundle, name, description_full, published, listing_visible, category, category_type,
+      revenue_month, revenue_lifetime, downloads_month, downloads_lifetime. (32 more)'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/NewIosApp
+  - term: ValueRange
+    definition: 'Object declared by the contract with fields: lte, gte.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/ValueRange
+  - term: Collection
+    definition: An enumeration.
+    tags:
+    - Enumeration
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/Collection
+  - term: SimilarEnum
+    definition: An enumeration.
+    tags:
+    - Enumeration
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/SimilarEnum
+  - term: IosSummarySearchBody
+    definition: 'Object declared by the contract with fields: q, filter.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/IosSummarySearchBody
+  - term: Image
+    definition: 'Object declared by the contract with fields: url.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/Image
+  - term: IosReview
+    definition: 'Object declared by the contract with fields: id, app, country, user_name, title, created, stars, comment.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/IosReview
+  - term: AppCreativeVideo
+    definition: 'Object declared by the contract with fields: preview, video, url.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/AppCreativeVideo
+  - term: StoreLanguages
+    definition: 'Object declared by the contract with fields: languages.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/StoreLanguages
+  - term: ValidationError
+    definition: 'Object declared by the contract with fields: loc, msg, type.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/ValidationError
+  - term: IosChart
+    definition: 'Object declared by the contract with fields: position, collection, category, platform.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/IosChart
+  - term: AppLanguages
+    definition: An enumeration.
+    tags:
+    - Enumeration
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/AppLanguages
+  - term: ApiResponse[list[models.responses.response.IosRankingItem]]
+    definition: 'Object declared by the contract with fields: data, errors, total_count.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/ApiResponse_list_models.responses.response.IosRankingItem__
+  - term: TypeEnum
+    definition: An enumeration.
+    tags:
+    - Enumeration
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/TypeEnum
+  - term: AppsEstimates
+    definition: 'Object declared by the contract with fields: id, month, downloads, revenue.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/AppsEstimates
+  - term: IosAppListResponse
+    definition: 'Object declared by the contract with fields: data, errors, total_count.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/IosAppListResponse
+  - term: HTTPValidationError
+    definition: 'Object declared by the contract with fields: detail.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/HTTPValidationError
+  - term: ChartFilterIos
+    definition: 'Object declared by the contract with fields: collection, country, date, category, platform.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/ChartFilterIos
+  - term: DetailedError
+    definition: 'Object declared by the contract with fields: location, message, value.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/DetailedError
+  - term: StoreCountries
+    definition: 'Object declared by the contract with fields: countries.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/StoreCountries
+  - term: SummaryResponse
+    definition: 'Object declared by the contract with fields: total, ipd, revenue, downloads, available, removed.'
+    tags:
+    - Object
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/SummaryResponse
+  - term: IosPlatform
+    definition: An enumeration.
+    tags:
+    - Enumeration
+    source: openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/IosPlatform
+  - term: Event
+    definition: 'Object declared by the contract with fields: id, app, store, type, title, text, image, country, state, crawled, date_from, date_to.
+      (1 more)'
+    tags:
+    - Object
+    source: openapi/appstorespy-events-api-openapi.yml#/components/schemas/Event
+  - term: CacheTime
+    definition: An enumeration.
+    tags:
+    - Enumeration
+    source: openapi/appstorespy-events-api-openapi.yml#/components/schemas/CacheTime
+  - term: PlayAppSearchBody
+    definition: 'Object declared by the contract with fields: limit, page, sort, fields, country, language, filter.'
+    tags:
+    - Object
+    source: openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/PlayAppSearchBody
+  - term: PlaySortEnum
+    definition: An enumeration.
+    tags:
+    - Enumeration
+    source: openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/PlaySortEnum
+  - term: SearchFilterPlay
+    definition: 'Object declared by the contract with fields: id, name, published, category_type, revenue_month, downloads_month, release_date,
+      update_date, rating_count, developer, developer_id, editorial. (29 more)'
+    tags:
+    - Object
+    source: openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/SearchFilterPlay
+  - term: PlayReview
+    definition: 'Object declared by the contract with fields: id, lang, author_id, author_name, author_image, version, created, stars, likes,
+      comment, reply, replied.'
+    tags:
+    - Object
+    source: openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/PlayReview
+  - term: ApiResponse[list[models.responses.response.PlayRankingItem]]
+    definition: 'Object declared by the contract with fields: data, errors, total_count.'
+    tags:
+    - Object
+    source: openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/ApiResponse_list_models.responses.response.PlayRankingItem__
+  - term: PlayDev
+    definition: 'Object declared by the contract with fields: id, name, category, type, total_apps, published_apps, last_updated, first_released,
+      rating_count, downloads, revenue, top_apps. (10 more)'
+    tags:
+    - Object
+    source: openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/PlayDev
+  - term: AppsDailyInstalls
+    definition: 'Object declared by the contract with fields: id, date, ipd, installs.'
+    tags:
+    - Object
+    source: openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/AppsDailyInstalls
+  - term: PlayApp
+    definition: 'Object declared by the contract with fields: id, bundle, published, available_in, available_not, country, lang, languages, type,
+      category, name, short. (45 more)'
+    tags:
+    - Object
+    source: openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/PlayApp
+  - term: PlayAppListResponse
+    definition: 'Object declared by the contract with fields: data, errors, total_count.'
+    tags:
+    - Object
+    source: openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/PlayAppListResponse
+  - term: PlayCategory
+    definition: An enumeration.
+    tags:
+    - Enumeration
+    source: openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/PlayCategory
+  - term: PlayChart
+    definition: 'Object declared by the contract with fields: position, collection, category.'
+    tags:
+    - Object
+    source: openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/PlayChart
+  - term: SuggestLite
+    definition: 'Object declared by the contract with fields: id, term, country, added, lang, store.'
+    tags:
+    - Object
+    source: openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/SuggestLite
+  - term: SummarySearchBody
+    definition: 'Object declared by the contract with fields: q, filter.'
+    tags:
+    - Object
+    source: openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/SummarySearchBody
+  - term: SimilarSearchBody
+    definition: 'Object declared by the contract with fields: limit, page, sort, fields, country, language, filter, id, link.'
+    tags:
+    - Object
+    source: openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/SimilarSearchBody
+  - term: ChartFilterPlay
+    definition: 'Object declared by the contract with fields: collection, country, date, category.'
+    tags:
+    - Object
+    source: openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/ChartFilterPlay
+  - term: PlayRankingItem
+    definition: 'Object declared by the contract with fields: date, app, country, category, collection, rank.'
+    tags:
+    - Object
+    source: openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/PlayRankingItem
+  - term: Suggest
+    definition: 'Object declared by the contract with fields: id, term, country, added, lang, store, crawled, app, results.'
+    tags:
+    - Object
+    source: openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/Suggest
+  - term: NewPlayApp
+    definition: 'Object declared by the contract with fields: id, country, language, bundle, name, description_full, published, listing_visible,
+      category, category_type, revenue_month, revenue_lifetime. (41 more)'
+    tags:
+    - Object
+    source: openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/NewPlayApp
+  - term: Cluster
+    definition: 'Object declared by the contract with fields: type, title, items, layout.'
+    tags:
+    - Object
+    source: openapi/appstorespy-jobs-api-openapi.yml#/components/schemas/Cluster
+  - term: SearchResult
+    definition: 'Object declared by the contract with fields: store, term, country, lang, repeat, id_user, limit, limit_apps, crawled, id, results.'
+    tags:
+    - Object
+    source: openapi/appstorespy-jobs-api-openapi.yml#/components/schemas/SearchResult
+  - term: SearchCreate
+    definition: 'Object declared by the contract with fields: store, term, country, lang, repeat, id_user, limit, limit_apps.'
+    tags:
+    - Object
+    source: openapi/appstorespy-jobs-api-openapi.yml#/components/schemas/SearchCreate
+  - term: Store
+    definition: An enumeration.
+    tags:
+    - Enumeration
+    source: openapi/appstorespy-jobs-api-openapi.yml#/components/schemas/Store
