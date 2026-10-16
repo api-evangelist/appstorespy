@@ -2,25 +2,23 @@
 kin_checks:
   slug: appstorespy
   schema_version: 0.23.0
-  scored_at: '2026-10-03'
-  run_ts: 2026-10-03T024842
+  scored_at: '2026-10-11'
+  run_ts: 2026-10-11T110117
   note: Actionable checks (missed + partial) in `checks`, plus the ids that did not
     apply in `na`. Everything else in rubric/scoring-0.23.0.yml was earned; counts
     below let you verify that.
   counts:
     total: 153
-    earned: 31
-    partial: 27
-    missed: 70
-    na: 25
+    earned: 41
+    partial: 29
+    missed: 59
+    na: 24
   checks:
   - id: newsroom_present
     status: missed
   - id: leadership_present
     status: missed
   - id: multiple_apis
-    status: missed
-  - id: well_known_published
     status: missed
   - id: apis_json_self_hosted
     status: missed
@@ -60,25 +58,11 @@ kin_checks:
     status: missed
   - id: domain_standard_conformance
     status: missed
-  - id: vocabulary_published
-    status: missed
   - id: overlay_published
-    status: missed
-  - id: change_log_present
-    status: missed
-  - id: status_page_present
-    status: missed
-  - id: deprecation_policy
     status: missed
   - id: security_disclosure
     status: missed
   - id: webhooks_advertised
-    status: missed
-  - id: github_org_present
-    status: missed
-  - id: roadmap_present
-    status: missed
-  - id: examples_published
     status: missed
   - id: getting_started_present
     status: missed
@@ -89,8 +73,6 @@ kin_checks:
   - id: cli_present
     status: missed
   - id: console_or_sandbox
-    status: missed
-  - id: postman_present
     status: missed
   - id: finops_mapped
     status: missed
@@ -140,13 +122,9 @@ kin_checks:
     status: missed
   - id: reversibility_documented
     status: missed
-  - id: mcp_server
-    status: missed
   - id: idempotency
     status: missed
   - id: event_surface_described
-    status: missed
-  - id: well_known_catalog
     status: missed
   - id: consent_identity
     status: missed
@@ -250,6 +228,9 @@ kin_checks:
   - id: balanced_severities
     status: partial
     earned: 2.7
+  - id: vocabulary_published
+    status: partial
+    earned: 4.5
   - id: conformance_declared
     status: partial
     earned: 1.5
@@ -260,6 +241,10 @@ kin_checks:
     status: partial
     earned: 2.5
     detail: 'authorship: derived'
+  - id: mcp_server
+    status: partial
+    earned: 1.2
+    detail: 'grade: documented'
   - id: auth_clarity
     status: partial
     earned: 3.5
@@ -283,7 +268,6 @@ kin_checks:
   - fhir_capability_statement
   - fhir_resource_coverage
   - inbound_contract_published
-  - mcp_endpoint_discoverable
   - messages_with_schema
   - os_code_of_conduct
   - os_contribution_guide
