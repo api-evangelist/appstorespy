@@ -1,28 +1,28 @@
-# Kin Score artifact — appstorespy — 2026-10-04T202412
+# Kin Score artifact — appstorespy — 2026-09-24T161608
 # The API Evangelist rating (https://github.com/api-evangelist/kin-score). Generated; do not edit.
 ---
 kin_score:
   slug: appstorespy
-  schema_version: 0.23.0
-  scored_at: '2026-10-04'
-  run_ts: 2026-10-04T202412
-  composite: 58.4
-  band: strong
+  schema_version: 0.22.0
+  scored_at: '2026-09-24'
+  run_ts: 2026-09-24T161608
+  composite: 49.6
+  band: developing
   facets:
-    discoverability: 75.0
-    contract_quality: 60.9
-    contract_governance: 31.8
-    operational_transparency: 39.5
-    developer_ergonomics: 54.2
+    discoverability: 75.9
+    contract_quality: 53.7
+    contract_governance: 4.5
+    operational_transparency: 31.6
+    developer_ergonomics: 47.0
     access_clarity: 76.3
   agent_readiness:
-    score: 32.4
+    score: 29.0
     band: agent-ready
     dimensions:
       spec_presence: true
       agentic_access: derived
       reversibility_documented: false
-      mcp_server: documented
+      mcp_server: false
       auth_clarity: bearer
       idempotency: false
       error_semantics: verified
@@ -38,14 +38,8 @@ kin_score:
       protected_resource_metadata: false
       dynamic_client_registration: false
       agentic_commerce: false
-  regulatory:
-    applies: true
-    regime: Horizontal (data, software, accessibility, platform)
-    regime_id: horizontal
-    score: 24.5
-    matched_via: fallback
   provenance:
-    mcp: first-party
+    mcp: derived
     skills: derived
     agentic_access: derived
     conformance: derived

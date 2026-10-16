@@ -143,6 +143,150 @@ paths:
       - APIKeyHeader: []
 components:
   schemas:
+    ValueRange:
+      properties:
+        lte:
+          anyOf:
+          - type: integer
+          - type: number
+          title: Lte
+        gte:
+          anyOf:
+          - type: integer
+          - type: number
+          title: Gte
+      type: object
+      title: ValueRange
+    Collection:
+      enum:
+      - Free
+      - Grossing
+      - Paid
+      - topselling_free
+      - topgrossing
+      - topselling_paid
+      - topselling_new_free
+      - topselling_new_paid
+      - movers_shakers
+      title: Collection
+      description: An enumeration.
+    IosCategory:
+      enum:
+      - GAMES
+      - GAMES_ACTION
+      - GAMES_ADVENTURE
+      - GAMES_ARCADE
+      - GAMES_BOARD
+      - GAMES_CARD
+      - GAMES_CASINO
+      - GAMES_FAMILY
+      - GAMES_MUSIC
+      - GAMES_PUZZLE
+      - GAMES_RACING
+      - GAMES_ROLE_PLAYING
+      - GAMES_SIMULATION
+      - GAMES_SPORTS
+      - GAMES_STRATEGY
+      - GAMES_TRIVIA
+      - GAMES_WORD
+      - BOOKS
+      - BUSINESS
+      - EDUCATION
+      - ENTERTAINMENT
+      - FINANCE
+      - FOOD_AND_DRINK
+      - HEALTH_AND_FITNESS
+      - LIFESTYLE
+      - MEDICAL
+      - MUSIC
+      - NAVIGATION
+      - NEWS
+      - PHOTO_AND_VIDEO
+      - PRODUCTIVITY
+      - REFERENCE
+      - SHOPPING
+      - SOCIAL_NETWORKING
+      - SPORTS
+      - TRAVEL
+      - UTILITIES
+      - WEATHER
+      - DEVELOPER_TOOLS
+      - GRAPHICS_AND_DESIGN
+      - ALL
+      title: IosCategory
+      description: An enumeration.
+    Creatives:
+      properties:
+        video:
+          $ref: '#/components/schemas/AppCreativeVideo'
+        image:
+          $ref: '#/components/schemas/Image'
+        fb:
+          items:
+            type: string
+          type: array
+          title: Fb
+        network:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Network
+      type: object
+      required:
+      - video
+      - image
+      - fb
+      - network
+      title: Creatives
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DateRange:
+      properties:
+        lte:
+          type: string
+          format: date
+          title: Lte
+        gte:
+          type: string
+          format: date
+          title: Gte
+      type: object
+      title: DateRange
+    Image:
+      properties:
+        url:
+          type: string
+          title: Url
+      type: object
+      title: Image
+    ChartFilterIos:
+      properties:
+        collection:
+          $ref: '#/components/schemas/Collection'
+        country:
+          type: string
+          title: Country
+        date:
+          type: string
+          title: Date
+        category:
+          $ref: '#/components/schemas/IosCategory'
+        platform:
+          $ref: '#/components/schemas/IosPlatform'
+      type: object
+      required:
+      - country
+      - platform
+      title: ChartFilterIos
     IosAppListResponse:
       properties:
         data:
@@ -215,6 +359,32 @@ components:
       - BR
       - MX
       title: AppCountries
+      description: An enumeration.
+    DetailedError:
+      properties:
+        location:
+          type: string
+          title: Location
+        message:
+          type: string
+          title: Message
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+      type: object
+      required:
+      - location
+      - message
+      title: DetailedError
+    TypeEnum:
+      enum:
+      - APP
+      - GAME
+      title: TypeEnum
       description: An enumeration.
     IosPlatform:
       enum:
@@ -381,58 +551,105 @@ components:
           description: Previous developer name before transfer
       type: object
       title: NewIosApp
-    IosCategory:
-      enum:
-      - GAMES
-      - GAMES_ACTION
-      - GAMES_ADVENTURE
-      - GAMES_ARCADE
-      - GAMES_BOARD
-      - GAMES_CARD
-      - GAMES_CASINO
-      - GAMES_FAMILY
-      - GAMES_MUSIC
-      - GAMES_PUZZLE
-      - GAMES_RACING
-      - GAMES_ROLE_PLAYING
-      - GAMES_SIMULATION
-      - GAMES_SPORTS
-      - GAMES_STRATEGY
-      - GAMES_TRIVIA
-      - GAMES_WORD
-      - BOOKS
-      - BUSINESS
-      - EDUCATION
-      - ENTERTAINMENT
-      - FINANCE
-      - FOOD_AND_DRINK
-      - HEALTH_AND_FITNESS
-      - LIFESTYLE
-      - MEDICAL
-      - MUSIC
-      - NAVIGATION
-      - NEWS
-      - PHOTO_AND_VIDEO
-      - PRODUCTIVITY
-      - REFERENCE
-      - SHOPPING
-      - SOCIAL_NETWORKING
-      - SPORTS
-      - TRAVEL
-      - UTILITIES
-      - WEATHER
-      - DEVELOPER_TOOLS
-      - GRAPHICS_AND_DESIGN
-      - ALL
-      title: IosCategory
-      description: An enumeration.
-    Image:
+    IosAppSearchBody:
       properties:
-        url:
-          type: string
-          title: Url
+        limit:
+          type: integer
+          title: Limit
+          description: Count of apps in results
+          default: 10
+        page:
+          type: integer
+          title: Page
+          description: Offset page
+          default: 1
+        sort:
+          allOf:
+          - $ref: '#/components/schemas/IosSortEnum'
+          description: Field for sort
+        fields:
+          items:
+            type: string
+          type: array
+          title: Fields
+          description: Fields for select, empty for all
+          default:
+          - id
+          - url_appstorespy
+          - name
+          - bundle
+          - description_full
+          - published
+          - listing_visible
+          - category
+          - category_type
+          - revenue_month
+          - revenue_lifetime
+          - downloads_month
+          - downloads_lifetime
+          - update_date
+          - release_date
+          - developer_id
+          - developer_name
+          - description_short
+          - whatsnew
+          - icon
+          - video
+          - removal_date
+          - version
+          - size
+          - rating_count
+          - rating_value
+          - review_count
+          - rating_avg
+          - iap
+          - hosts
+          - chart_info
+          - url
+          - policy
+          - email
+          - support
+          - advertised
+          - ads
+        country:
+          allOf:
+          - $ref: '#/components/schemas/AppCountries'
+          description: Country for which return data
+          default: US
+        language:
+          allOf:
+          - $ref: '#/components/schemas/AppLanguages'
+          description: 'Language of meta data. By default: en_US'
+        filter:
+          $ref: '#/components/schemas/SearchFilterIos'
       type: object
-      title: Image
+      required:
+      - filter
+      title: IosAppSearchBody
+      example:
+        sort: -downloads_month
+        fields:
+        - id
+        - name
+        - icon
+        - video
+        - category_type
+        - category
+        - url_appstorespy
+        language: en_US
+        filter:
+          name: twitter
+          published: true
+          category_type: APP
+          release_date:
+            lte: '2026-08-22'
+          update_date:
+            lte: '2026-08-22'
+          rating_count:
+            lte: 1000000
+            gte: 0
+          active_countries:
+          - US
     AppLanguages:
       type: string
       enum:
@@ -451,12 +668,90 @@ components:
       - vi
       title: AppLanguages
       description: An enumeration.
-    TypeEnum:
+    IosSortEnum:
+      type: string
       enum:
-      - APP
-      - GAME
-      title: TypeEnum
+      - revenue_month
+      - -revenue_month
+      - downloads_month
+      - -downloads_month
+      - update_date
+      - -update_date
+      - release_date
+      - -release_date
+      - removal_date
+      - -removal_date
+      - downloads_exact
+      - -downloads_exact
+      - downloads_mark
+      - -downloads_mark
+      - rating_count
+      - -rating_count
+      - rating_value
+      - -rating_value
+      - review_count
+      - -review_count
+      - rating_avg
+      - -rating_avg
+      - chart_info
+      - -chart_info
+      title: IosSortEnum
       description: An enumeration.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    IosChart:
+      properties:
+        position:
+          type: integer
+          title: Position
+        collection:
+          type: string
+          title: Collection
+        category:
+          type: string
+          title: Category
+        platform:
+          type: string
+          title: Platform
+      type: object
+      required:
+      - position
+      - collection
+      - category
+      - platform
+      title: IosChart
+    AppCreativeVideo:
+      properties:
+        preview:
+          type: string
+          title: Preview
+        video:
+          type: string
+          title: Video
+        url:
+          type: string
+          title: Url
+      type: object
+      title: AppCreativeVideo
     SearchFilterIos:
       properties:
         id:
@@ -592,301 +887,6 @@ components:
           description: Pre-order apps only (True); matches apps whose release date is still in the future
       type: object
       title: SearchFilterIos
-    DetailedError:
-      properties:
-        location:
-          type: string
-          title: Location
-        message:
-          type: string
-          title: Message
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-      type: object
-      required:
-      - location
-      - message
-      title: DetailedError
-    Collection:
-      enum:
-      - Free
-      - Grossing
-      - Paid
-      - topselling_free
-      - topgrossing
-      - topselling_paid
-      - topselling_new_free
-      - topselling_new_paid
-      - movers_shakers
-      title: Collection
-      description: An enumeration.
-    IosSortEnum:
-      type: string
-      enum:
-      - revenue_month
-      - -revenue_month
-      - downloads_month
-      - -downloads_month
-      - update_date
-      - -update_date
-      - release_date
-      - -release_date
-      - removal_date
-      - -removal_date
-      - downloads_exact
-      - -downloads_exact
-      - downloads_mark
-      - -downloads_mark
-      - rating_count
-      - -rating_count
-      - rating_value
-      - -rating_value
-      - review_count
-      - -review_count
-      - rating_avg
-      - -rating_avg
-      - chart_info
-      - -chart_info
-      title: IosSortEnum
-      description: An enumeration.
-    IosChart:
-      properties:
-        position:
-          type: integer
-          title: Position
-        collection:
-          type: string
-          title: Collection
-        category:
-          type: string
-          title: Category
-        platform:
-          type: string
-          title: Platform
-      type: object
-      required:
-      - position
-      - collection
-      - category
-      - platform
-      title: IosChart
-    Creatives:
-      properties:
-        video:
-          $ref: '#/components/schemas/AppCreativeVideo'
-        image:
-          $ref: '#/components/schemas/Image'
-        fb:
-          items:
-            type: string
-          type: array
-          title: Fb
-        network:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Network
-      type: object
-      required:
-      - video
-      - image
-      - fb
-      - network
-      title: Creatives
-    IosAppSearchBody:
-      properties:
-        limit:
-          type: integer
-          title: Limit
-          description: Count of apps in results
-          default: 10
-        page:
-          type: integer
-          title: Page
-          description: Offset page
-          default: 1
-        sort:
-          allOf:
-          - $ref: '#/components/schemas/IosSortEnum'
-          description: Field for sort
-        fields:
-          items:
-            type: string
-          type: array
-          title: Fields
-          description: Fields for select, empty for all
-          default:
-          - id
-          - url_appstorespy
-          - name
-          - bundle
-          - description_full
-          - published
-          - listing_visible
-          - category
-          - category_type
-          - revenue_month
-          - revenue_lifetime
-          - downloads_month
-          - downloads_lifetime
-          - update_date
-          - release_date
-          - developer_id
-          - developer_name
-          - description_short
-          - whatsnew
-          - icon
-          - video
-          - removal_date
-          - version
-          - size
-          - rating_count
-          - rating_value
-          - review_count
-          - rating_avg
-          - iap
-          - hosts
-          - chart_info
-          - url
-          - policy
-          - email
-          - support
-          - advertised
-          - ads
-        country:
-          allOf:
-          - $ref: '#/components/schemas/AppCountries'
-          description: Country for which return data
-          default: US
-        language:
-          allOf:
-          - $ref: '#/components/schemas/AppLanguages'
-          description: 'Language of meta data. By default: en_US'
-        filter:
-          $ref: '#/components/schemas/SearchFilterIos'
-      type: object
-      required:
-      - filter
-      title: IosAppSearchBody
-      example:
-        sort: -downloads_month
-        fields:
-        - id
-        - name
-        - icon
-        - video
-        - category_type
-        - category
-        - url_appstorespy
-        language: en_US
-        filter:
-          name: twitter
-          published: true
-          category_type: APP
-          release_date:
-            lte: '2026-08-22'
-          update_date:
-            lte: '2026-08-22'
-          rating_count:
-            lte: 1000000
-            gte: 0
-          active_countries:
-          - US
-    AppCreativeVideo:
-      properties:
-        preview:
-          type: string
-          title: Preview
-        video:
-          type: string
-          title: Video
-        url:
-          type: string
-          title: Url
-      type: object
-      title: AppCreativeVideo
-    DateRange:
-      properties:
-        lte:
-          type: string
-          format: date
-          title: Lte
-        gte:
-          type: string
-          format: date
-          title: Gte
-      type: object
-      title: DateRange
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ChartFilterIos:
-      properties:
-        collection:
-          $ref: '#/components/schemas/Collection'
-        country:
-          type: string
-          title: Country
-        date:
-          type: string
-          title: Date
-        category:
-          $ref: '#/components/schemas/IosCategory'
-        platform:
-          $ref: '#/components/schemas/IosPlatform'
-      type: object
-      required:
-      - country
-      - platform
-      title: ChartFilterIos
-    ValueRange:
-      properties:
-        lte:
-          anyOf:
-          - type: integer
-          - type: number
-          title: Lte
-        gte:
-          anyOf:
-          - type: integer
-          - type: number
-          title: Gte
-      type: object
-      title: ValueRange
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey

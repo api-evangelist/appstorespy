@@ -1,17 +1,19 @@
-generated: '2026-08-22'
+generated: '2026-09-23'
 method: generated
-source: openapi/appstorespy-openapi.json
+source: openapi/appstorespy-app-store-api-openapi.yml, openapi/appstorespy-events-api-openapi.yml,
+  openapi/appstorespy-google-play-api-openapi.yml, openapi/appstorespy-jobs-api-openapi.yml,
+  openapi/appstorespy-search-filter-v-2-api-openapi.yml, openapi/appstorespy-suggestions-api-openapi.yml
 description: Recommended x-agentic-access execution contracts, classified heuristically from
   the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
   audience per deployment. See research/curity/agentic-governance/.
 summary:
-  operations: 33
+  operations: 36
   by_action_class:
-    connected: 26
-    acting: 7
+    connected: 35
+    acting: 1
   by_consequence:
-    read: 26
-    write: 7
+    read: 35
+    write: 1
   human_in_the_loop_required: 0
 operations:
 - path: /ios/apps/{id}
@@ -48,50 +50,32 @@ operations:
   method: post
   operationId: get_filter_search_ios_apps_query_post
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /ios/apps/similar
   method: post
   operationId: get_similar_ios_apps_similar_post
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /ios/apps/summary
   method: post
   operationId: get_summary_ios_apps_summary_post
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /ios/apps/{id}/recrawl
   method: get
   operationId: get_recrawl_ios_apps__id__recrawl_get
@@ -172,9 +156,9 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /jobs/search
+- path: /play/liveops
   method: get
-  operationId: get_search_jobs_search_get
+  operationId: get_events_play_liveops_get
   x-agentic-access:
     action-class: connected
     consequence: read
@@ -182,22 +166,6 @@ operations:
     token:
       max-ttl: 3600
     audit: none
-- path: /jobs/search
-  method: post
-  operationId: create_search_jobs_search_post
-  x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
-    token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
 - path: /play/apps
   method: get
   operationId: get_app_search_play_apps_get
@@ -232,50 +200,32 @@ operations:
   method: post
   operationId: get_filter_search_play_apps_query_post
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /play/apps/similar
   method: post
   operationId: get_similar_play_apps_similar_post
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /play/apps/summary
   method: post
   operationId: get_summary_play_apps_summary_post
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /play/apps/{id}
   method: get
   operationId: get_app_details_play_apps__id__get
@@ -379,6 +329,52 @@ operations:
 - path: /play/rankings
   method: get
   operationId: get_play_rankings_play_rankings_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /jobs/search
+  method: get
+  operationId: get_search_jobs_search_get
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /jobs/search
+  method: post
+  operationId: create_search_jobs_search_post
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /ios/apps/query
+  method: post
+  operationId: get_filter_search_ios_apps_query_post
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /play/suggestions
+  method: get
+  operationId: get_suggests_play_suggestions_get
   x-agentic-access:
     action-class: connected
     consequence: read

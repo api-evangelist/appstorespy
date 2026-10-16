@@ -1,0 +1,4 @@
+Contact: mailto:support@appstorespy.com
+Expires: 2027-10-03T23:41:02Z
+Preferred-Languages: en
+Canonical: https://api.appstorespy.com/.well-known/security.txt

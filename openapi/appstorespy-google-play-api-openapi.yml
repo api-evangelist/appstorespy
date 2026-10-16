@@ -882,880 +882,34 @@ paths:
       - APIKeyHeader: []
 components:
   schemas:
-    AppCountries:
+    ValueRange:
+      properties:
+        lte:
+          anyOf:
+          - type: integer
+          - type: number
+          title: Lte
+        gte:
+          anyOf:
+          - type: integer
+          - type: number
+          title: Gte
+      type: object
+      title: ValueRange
+    SimilarEnum:
+      enum:
+      - to
+      - from
+      title: SimilarEnum
+      description: An enumeration.
+    CacheTime:
       type: string
       enum:
-      - US
-      - CA
-      - AT
-      - BE
-      - CY
-      - CZ
-      - DK
-      - FI
-      - FR
-      - DE
-      - GR
-      - HU
-      - IE
-      - IT
-      - NL
-      - 'NO'
-      - PL
-      - PT
-      - RU
-      - ES
-      - SE
-      - CH
-      - TR
-      - UA
-      - GB
-      - EG
-      - IN
-      - IL
-      - MA
-      - NG
-      - SA
-      - ZA
-      - AE
-      - AU
-      - HK
-      - ID
-      - JP
-      - KZ
-      - KR
-      - MY
-      - NZ
-      - PK
-      - PH
-      - SG
-      - TW
-      - TH
-      - VN
-      - AR
-      - BR
-      - MX
-      title: AppCountries
+      - 1d
+      - 7d
+      - 30d
+      title: CacheTime
       description: An enumeration.
-    AppsDailyInstalls:
-      properties:
-        id:
-          type: string
-          title: Id
-        date:
-          type: string
-          format: date
-          title: Date
-        ipd:
-          type: integer
-          title: Ipd
-        installs:
-          type: integer
-          title: Installs
-      type: object
-      required:
-      - id
-      - date
-      - ipd
-      title: AppsDailyInstalls
-    SummaryResponse:
-      properties:
-        total:
-          type: integer
-          title: Total
-        ipd:
-          type: integer
-          title: Ipd
-        revenue:
-          type: integer
-          title: Revenue
-        downloads:
-          type: integer
-          title: Downloads
-        available:
-          type: integer
-          title: Available
-        removed:
-          type: integer
-          title: Removed
-      type: object
-      required:
-      - total
-      - ipd
-      - revenue
-      - downloads
-      - available
-      - removed
-      title: SummaryResponse
-    StoreCountries:
-      properties:
-        countries:
-          items:
-            type: string
-          type: array
-          title: Countries
-      type: object
-      required:
-      - countries
-      title: StoreCountries
-    NewPlayApp:
-      properties:
-        id:
-          type: string
-          title: Id
-        country:
-          type: string
-          title: Country
-        language:
-          type: string
-          title: Language
-        bundle:
-          type: string
-          title: Bundle
-        name:
-          type: string
-          title: Name
-        description_full:
-          type: string
-          title: Description Full
-        published:
-          type: boolean
-          title: Published
-        listing_visible:
-          type: boolean
-          title: Listing Visible
-        category:
-          type: string
-          title: Category
-        category_type:
-          type: string
-          title: Category Type
-        revenue_month:
-          type: integer
-          title: Revenue Month
-        revenue_lifetime:
-          type: integer
-          title: Revenue Lifetime
-        downloads_month:
-          type: integer
-          title: Downloads Month
-        downloads_lifetime:
-          type: integer
-          title: Downloads Lifetime
-        release_date:
-          type: string
-          format: date
-          title: Release Date
-        update_date:
-          type: string
-          format: date
-          title: Update Date
-        developer_name:
-          type: string
-          title: Developer Name
-        description_short:
-          type: string
-          title: Description Short
-        whatsnew:
-          type: string
-          title: Whatsnew
-        icon:
-          type: string
-          title: Icon
-        video:
-          type: string
-          title: Video
-        screenshots:
-          items:
-            type: string
-          type: array
-          title: Screenshots
-        feature_graphic:
-          type: string
-          title: Feature Graphic
-        removal_date:
-          type: string
-          format: date
-          title: Removal Date
-        version:
-          type: string
-          title: Version
-        size:
-          type: number
-          title: Size
-        downloads_daily:
-          type: integer
-          title: Downloads Daily
-        downloads_exact:
-          type: integer
-          title: Downloads Exact
-        downloads_mark:
-          type: integer
-          title: Downloads Mark
-        rating_count:
-          type: integer
-          title: Rating Count
-        rating_value:
-          type: number
-          title: Rating Value
-        review_count:
-          type: integer
-          title: Review Count
-        rating_avg:
-          type: number
-          title: Rating Avg
-        iap:
-          type: boolean
-          title: Iap
-        editorial:
-          type: boolean
-          title: Editorial
-        chart_info:
-          $ref: '#/components/schemas/PlayChart'
-        hosts:
-          items:
-            type: string
-          type: array
-          title: Hosts
-        url_appstorespy:
-          type: string
-          title: Url Appstorespy
-          description: Url to AppstoreSpy
-        ipd:
-          type: integer
-          title: Ipd
-          description: Estimated daily installs
-        email:
-          items:
-            type: string
-          type: array
-          title: Email
-          description: App's developer email
-        url:
-          type: string
-          title: Url
-          description: Link to App Store
-        policy:
-          type: string
-          title: Policy
-          description: '...'
-        website:
-          type: string
-          title: Website
-          description: App website
-        developer_id:
-          type: string
-          title: Developer Id
-        ads:
-          allOf:
-          - $ref: '#/components/schemas/Creatives'
-          title: Ads
-          description: App`s ads
-        advertised:
-          type: boolean
-          title: Advertised
-          description: App is advertised in networks
-        about_phone:
-          type: string
-          title: About Phone
-          description: 'About developer: phone number'
-        about_address:
-          type: string
-          title: About Address
-          description: 'About developer: address'
-        address_country:
-          type: string
-          title: Address Country
-          description: 'Address: country'
-        support_phone:
-          type: string
-          title: Support Phone
-          description: 'App support: phone number'
-        transferred:
-          type: string
-          title: Transferred
-          description: The last transfer date as detected by AppstoreSpy
-        previous_developer_id:
-          type: string
-          title: Previous Developer Id
-          description: Previous developer ID before transfer
-        previous_developer_name:
-          type: string
-          title: Previous Developer Name
-          description: Previous developer name before transfer
-      type: object
-      required:
-      - id
-      - country
-      - language
-      title: NewPlayApp
-    StoreLanguages:
-      properties:
-        languages:
-          items:
-            type: string
-          type: array
-          title: Languages
-      type: object
-      required:
-      - languages
-      title: StoreLanguages
-    SearchFilterPlay:
-      properties:
-        id:
-          items:
-            type: string
-          type: array
-          title: Id
-        name:
-          type: string
-          title: Name
-        published:
-          type: boolean
-          title: Published
-        category_type:
-          $ref: '#/components/schemas/TypeEnum'
-        revenue_month:
-          $ref: '#/components/schemas/ValueRange'
-        downloads_month:
-          $ref: '#/components/schemas/ValueRange'
-        release_date:
-          $ref: '#/components/schemas/DateRange'
-        update_date:
-          $ref: '#/components/schemas/DateRange'
-        rating_count:
-          $ref: '#/components/schemas/ValueRange'
-        developer:
-          type: string
-          title: Developer
-        developer_id:
-          type: string
-          title: Developer Id
-        editorial:
-          type: boolean
-          title: Editorial
-        iap:
-          type: boolean
-          title: Iap
-          description: In app purchases
-        active_countries:
-          items:
-            type: string
-          type: array
-          title: Active Countries
-        description_full:
-          type: string
-          title: Description Full
-        description_short:
-          type: string
-          title: Description Short
-        whatsnew:
-          type: string
-          title: Whatsnew
-          description: Updates in app
-        hosts:
-          type: string
-          title: Hosts
-          description: Hosts
-        with_ads:
-          type: boolean
-          title: With Ads
-        advertised:
-          type: boolean
-          title: Advertised
-        collection_id:
-          type: string
-          title: Collection Id
-          description: Collection ID
-        discovered:
-          items:
-            type: string
-            format: date
-          type: array
-          title: Discovered
-        website:
-          type: string
-          title: Website
-          description: Website
-        bundle:
-          items:
-            type: string
-          type: array
-          title: Bundle
-          description: App bundle ID(s); accepts a single string or a list
-        transferred:
-          type: boolean
-          title: Transferred
-          description: Whether the app has been transferred to a new developer at least once
-        transfer_date:
-          allOf:
-          - $ref: '#/components/schemas/DateRange'
-          title: Transfer Date
-          description: Date range (gte/lte) of the last developer transfer
-        removal_date:
-          allOf:
-          - $ref: '#/components/schemas/DateRange'
-          title: Removal Date
-          description: Date range (gte/lte) of app removal from the store; matches removed (unavailable) apps
-        category:
-          allOf:
-          - $ref: '#/components/schemas/PlayCategory'
-          description: Category of app
-        downloads_mark:
-          type: integer
-          title: Downloads Mark
-          description: Installs
-        downloads_daily:
-          allOf:
-          - $ref: '#/components/schemas/ValueRange'
-          title: Downloads Daily
-          description: Daily downloads or Daily installs
-        downloads_exact:
-          allOf:
-          - $ref: '#/components/schemas/ValueRange'
-          title: Downloads Exact
-          description: Exact installs
-        installs_exact:
-          allOf:
-          - $ref: '#/components/schemas/ValueRange'
-          title: Installs Exact
-          description: Exact installs(deprecated)
-        review_count:
-          allOf:
-          - $ref: '#/components/schemas/ValueRange'
-          title: Review Count
-          description: Count of reviews
-        chart_filter:
-          allOf:
-          - $ref: '#/components/schemas/ChartFilterPlay'
-          title: Chart Filter
-          description: Top Charts
-        similar_apps:
-          type: string
-          title: Similar Apps
-          description: Similars apps
-        reverse_similar_apps:
-          type: string
-          title: Reverse Similar Apps
-          description: Apps with app in similar`s lists
-        rating_avg:
-          allOf:
-          - $ref: '#/components/schemas/ValueRange'
-          title: Rating Avg
-          description: Average rating
-        developer_name:
-          type: string
-          title: Developer Name
-          description: Developer name
-        previous_developer_id:
-          type: string
-          title: Previous Developer Id
-          description: Previous developer ID before transfer
-        previous_developer_name:
-          type: string
-          title: Previous Developer Name
-          description: Previous developer name before transfer
-        pre_register:
-          type: boolean
-          title: Pre Register
-          description: Pre-registration games only (True); matches apps in the pre-registration state in at least one tracked country
-      type: object
-      title: SearchFilterPlay
-    DevAppsEstimates:
-      properties:
-        month:
-          type: string
-          title: Month
-        downloads:
-          type: integer
-          title: Downloads
-        revenue:
-          type: integer
-          title: Revenue
-      type: object
-      required:
-      - month
-      title: DevAppsEstimates
-    PlayChart:
-      properties:
-        position:
-          type: integer
-          title: Position
-        collection:
-          type: string
-          title: Collection
-        category:
-          type: string
-          title: Category
-      type: object
-      required:
-      - position
-      - collection
-      - category
-      title: PlayChart
-    PlayAppSearchBody:
-      properties:
-        limit:
-          type: integer
-          title: Limit
-          description: Count of apps in results
-          default: 10
-        page:
-          type: integer
-          title: Page
-          description: Offset page
-          default: 1
-        sort:
-          allOf:
-          - $ref: '#/components/schemas/PlaySortEnum'
-          description: Field for sort
-        fields:
-          items:
-            type: string
-          type: array
-          title: Fields
-          description: Fields for select, empty for all
-          default:
-          - id
-          - url_appstorespy
-          - name
-          - bundle
-          - description_full
-          - published
-          - listing_visible
-          - category
-          - category_type
-          - revenue_month
-          - revenue_lifetime
-          - downloads_month
-          - downloads_lifetime
-          - update_date
-          - release_date
-          - developer_name
-          - description_short
-          - whatsnew
-          - icon
-          - video
-          - screenshots
-          - feature_graphic
-          - removal_date
-          - version
-          - size
-          - downloads_exact
-          - downloads_mark
-          - rating_count
-          - rating_value
-          - review_count
-          - rating_avg
-          - iap
-          - editorial
-          - hosts
-          - chart_info
-          - country
-          - advertised
-          - ads
-        country:
-          allOf:
-          - $ref: '#/components/schemas/AppCountries'
-          description: Country for which return data
-          default: US
-        language:
-          allOf:
-          - $ref: '#/components/schemas/AppLanguages'
-          description: 'Language of meta data. By default: en_US'
-        filter:
-          $ref: '#/components/schemas/SearchFilterPlay'
-      type: object
-      required:
-      - filter
-      title: PlayAppSearchBody
-      example:
-        sort: -downloads_daily
-        fields:
-        - id
-        - name
-        - icon
-        - video
-        - downloads_mark
-        - category_type
-        - category
-        - url_appstorespy
-        language: en_US
-        filter:
-          name: twitter
-          bundle:
-          - com.twitter.android
-          - com.facebook.katana
-          published: true
-          category_type: APP
-          release_date:
-            lte: '2026-08-22'
-          update_date:
-            lte: '2026-08-22'
-          rating_avg:
-            lte: 5.0
-            gte: 3.0
-          rating_count:
-            lte: 1000000
-            gte: 0
-          active_countries:
-          - US
-          downloads_daily:
-            lte: 100000
-            gte: 0
-          downloads_exact:
-            lte: 1000000
-            gte: 0
-    Event:
-      properties:
-        id:
-          type: string
-          title: Id
-        app:
-          type: string
-          title: App
-        store:
-          type: string
-          title: Store
-        type:
-          type: string
-          title: Type
-        title:
-          type: string
-          title: Title
-        text:
-          type: string
-          title: Text
-        image:
-          type: string
-          title: Image
-        country:
-          type: string
-          title: Country
-        state:
-          type: string
-          title: State
-        crawled:
-          type: string
-          format: date-time
-          title: Crawled
-        date_from:
-          type: string
-          format: date-time
-          title: Date From
-        date_to:
-          type: string
-          format: date-time
-          title: Date To
-        video:
-          type: string
-          title: Video
-      type: object
-      required:
-      - id
-      - app
-      - store
-      - type
-      - title
-      - text
-      - image
-      - country
-      - state
-      - crawled
-      - date_from
-      title: Event
-    Image:
-      properties:
-        url:
-          type: string
-          title: Url
-      type: object
-      title: Image
-    AppLanguages:
-      type: string
-      enum:
-      - en_US
-      - ar
-      - en_GB
-      - fr_FR
-      - es_419
-      - de_DE
-      - pt_BR
-      - it_IT
-      - ja_JP
-      - ko_KR
-      - tr_TR
-      - ru_RU
-      - vi
-      title: AppLanguages
-      description: An enumeration.
-    TypeEnum:
-      enum:
-      - APP
-      - GAME
-      title: TypeEnum
-      description: An enumeration.
-    PlayReview:
-      properties:
-        id:
-          type: string
-          title: Id
-          description: Review ID
-        lang:
-          type: string
-          title: Lang
-          description: Review language
-        author_id:
-          type: string
-          title: Author Id
-          description: ID of the review author
-        author_name:
-          type: string
-          title: Author Name
-          description: Name of the review author
-        author_image:
-          type: string
-          title: Author Image
-          description: Image URL of the review author
-        version:
-          type: string
-          title: Version
-          description: App version
-        created:
-          type: string
-          title: Created
-          description: Creation date
-        stars:
-          type: integer
-          title: Stars
-          description: App rating
-        likes:
-          type: integer
-          title: Likes
-          description: Review likes
-        comment:
-          type: string
-          title: Comment
-          description: Review text
-        reply:
-          type: string
-          title: Reply
-          description: Reply text
-        replied:
-          type: string
-          title: Replied
-          description: Reply date
-      type: object
-      required:
-      - id
-      - lang
-      - author_id
-      - author_name
-      - author_image
-      - created
-      - stars
-      - likes
-      - comment
-      title: PlayReview
-    SimilarSearchBody:
-      properties:
-        limit:
-          type: integer
-          title: Limit
-          description: Count of apps in results
-          default: 10
-        page:
-          type: integer
-          title: Page
-          description: Offset page
-          default: 1
-        sort:
-          allOf:
-          - $ref: '#/components/schemas/PlaySortEnum'
-          description: Field for sort
-        fields:
-          items:
-            type: string
-          type: array
-          title: Fields
-          description: Fields for select, empty for all
-          default:
-          - id
-          - url_appstorespy
-          - name
-          - bundle
-          - description_full
-          - published
-          - listing_visible
-          - category
-          - category_type
-          - revenue_month
-          - revenue_lifetime
-          - downloads_month
-          - downloads_lifetime
-          - update_date
-          - release_date
-          - developer_name
-          - description_short
-          - whatsnew
-          - icon
-          - video
-          - screenshots
-          - feature_graphic
-          - removal_date
-          - version
-          - size
-          - downloads_exact
-          - downloads_mark
-          - rating_count
-          - rating_value
-          - review_count
-          - rating_avg
-          - iap
-          - editorial
-          - hosts
-          - chart_info
-          - country
-          - advertised
-          - ads
-        country:
-          allOf:
-          - $ref: '#/components/schemas/AppCountries'
-          description: Country for which return data
-          default: US
-        language:
-          allOf:
-          - $ref: '#/components/schemas/AppLanguages'
-          description: 'Language of meta data. By default: en_US'
-        filter:
-          $ref: '#/components/schemas/SearchFilterPlay'
-        id:
-          type: string
-          title: Id
-        link:
-          $ref: '#/components/schemas/SimilarEnum'
-      type: object
-      required:
-      - filter
-      - id
-      - link
-      title: SimilarSearchBody
-      example:
-        id: com.twitter.android
-        link: from
-        filter:
-          published: true
-        sort: -downloads_daily
-        fields:
-        - id
-        - name
-        - icon
-        - video
-        - downloads_mark
-        - category_type
-        - category
-        - url_appstorespy
-        language: en_US
     PlayApp:
       properties:
         id:
@@ -2002,6 +1156,68 @@ components:
           description: 'Address: country'
       type: object
       title: PlayApp
+    PlayReview:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Review ID
+        lang:
+          type: string
+          title: Lang
+          description: Review language
+        author_id:
+          type: string
+          title: Author Id
+          description: ID of the review author
+        author_name:
+          type: string
+          title: Author Name
+          description: Name of the review author
+        author_image:
+          type: string
+          title: Author Image
+          description: Image URL of the review author
+        version:
+          type: string
+          title: Version
+          description: App version
+        created:
+          type: string
+          title: Created
+          description: Creation date
+        stars:
+          type: integer
+          title: Stars
+          description: App rating
+        likes:
+          type: integer
+          title: Likes
+          description: Review likes
+        comment:
+          type: string
+          title: Comment
+          description: Review text
+        reply:
+          type: string
+          title: Reply
+          description: Reply text
+        replied:
+          type: string
+          title: Replied
+          description: Reply date
+      type: object
+      required:
+      - id
+      - lang
+      - author_id
+      - author_name
+      - author_image
+      - created
+      - stars
+      - likes
+      - comment
+      title: PlayReview
     PlaySortEnum:
       type: string
       enum:
@@ -2033,6 +1249,326 @@ components:
       - -downloads_daily
       title: PlaySortEnum
       description: An enumeration.
+    StoreCountries:
+      properties:
+        countries:
+          items:
+            type: string
+          type: array
+          title: Countries
+      type: object
+      required:
+      - countries
+      title: StoreCountries
+    Collection:
+      enum:
+      - Free
+      - Grossing
+      - Paid
+      - topselling_free
+      - topgrossing
+      - topselling_paid
+      - topselling_new_free
+      - topselling_new_paid
+      - movers_shakers
+      title: Collection
+      description: An enumeration.
+    AppsDailyInstalls:
+      properties:
+        id:
+          type: string
+          title: Id
+        date:
+          type: string
+          format: date
+          title: Date
+        ipd:
+          type: integer
+          title: Ipd
+        installs:
+          type: integer
+          title: Installs
+      type: object
+      required:
+      - id
+      - date
+      - ipd
+      title: AppsDailyInstalls
+    Creatives:
+      properties:
+        video:
+          $ref: '#/components/schemas/AppCreativeVideo'
+        image:
+          $ref: '#/components/schemas/Image'
+        fb:
+          items:
+            type: string
+          type: array
+          title: Fb
+        network:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Network
+      type: object
+      required:
+      - video
+      - image
+      - fb
+      - network
+      title: Creatives
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DateRange:
+      properties:
+        lte:
+          type: string
+          format: date
+          title: Lte
+        gte:
+          type: string
+          format: date
+          title: Gte
+      type: object
+      title: DateRange
+    Image:
+      properties:
+        url:
+          type: string
+          title: Url
+      type: object
+      title: Image
+    ApiResponse_list_models.responses.response.PlayRankingItem__:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/PlayRankingItem'
+          type: array
+          title: Data
+        errors:
+          items:
+            $ref: '#/components/schemas/DetailedError'
+          type: array
+          title: Errors
+        total_count:
+          type: integer
+          title: Total Count
+          default: 0
+      type: object
+      title: ApiResponse[list[models.responses.response.PlayRankingItem]]
+    AppCountries:
+      type: string
+      enum:
+      - US
+      - CA
+      - AT
+      - BE
+      - CY
+      - CZ
+      - DK
+      - FI
+      - FR
+      - DE
+      - GR
+      - HU
+      - IE
+      - IT
+      - NL
+      - 'NO'
+      - PL
+      - PT
+      - RU
+      - ES
+      - SE
+      - CH
+      - TR
+      - UA
+      - GB
+      - EG
+      - IN
+      - IL
+      - MA
+      - NG
+      - SA
+      - ZA
+      - AE
+      - AU
+      - HK
+      - ID
+      - JP
+      - KZ
+      - KR
+      - MY
+      - NZ
+      - PK
+      - PH
+      - SG
+      - TW
+      - TH
+      - VN
+      - AR
+      - BR
+      - MX
+      title: AppCountries
+      description: An enumeration.
+    DetailedError:
+      properties:
+        location:
+          type: string
+          title: Location
+        message:
+          type: string
+          title: Message
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
+      type: object
+      required:
+      - location
+      - message
+      title: DetailedError
+    PlayCategory:
+      enum:
+      - APPLICATION
+      - SOCIAL
+      - FAMILY
+      - ANDROID_WEAR
+      - ART_AND_DESIGN
+      - AUTO_AND_VEHICLES
+      - BEAUTY
+      - BOOKS_AND_REFERENCE
+      - BUSINESS
+      - COMICS
+      - COMMUNICATION
+      - DATING
+      - EDUCATION
+      - ENTERTAINMENT
+      - EVENTS
+      - FINANCE
+      - FOOD_AND_DRINK
+      - HEALTH_AND_FITNESS
+      - HOUSE_AND_HOME
+      - LIBRARIES_AND_DEMO
+      - LIFESTYLE
+      - MAPS_AND_NAVIGATION
+      - MEDICAL
+      - MUSIC_AND_AUDIO
+      - NEWS_AND_MAGAZINES
+      - PARENTING
+      - PERSONALIZATION
+      - PHOTOGRAPHY
+      - PRODUCTIVITY
+      - SHOPPING
+      - SPORTS
+      - TOOLS
+      - TRAVEL_AND_LOCAL
+      - VIDEO_PLAYERS
+      - WEATHER
+      - GAME
+      - GAME_ACTION
+      - GAME_ADVENTURE
+      - GAME_ARCADE
+      - GAME_BOARD
+      - GAME_CARD
+      - GAME_CASINO
+      - GAME_CASUAL
+      - GAME_EDUCATIONAL
+      - GAME_MUSIC
+      - GAME_PUZZLE
+      - GAME_RACING
+      - GAME_ROLE_PLAYING
+      - GAME_SIMULATION
+      - GAME_SPORTS
+      - GAME_STRATEGY
+      - GAME_TRIVIA
+      - GAME_WORD
+      - FAMILY_ACTION
+      - FAMILY_BRAINGAMES
+      - FAMILY_CREATE
+      - FAMILY_MUSICVIDEO
+      - FAMILY_PRETEND
+      - FAMILY_EDUCATION
+      title: PlayCategory
+      description: An enumeration.
+    ChartFilterPlay:
+      properties:
+        collection:
+          $ref: '#/components/schemas/Collection'
+        country:
+          type: string
+          title: Country
+        date:
+          type: string
+          title: Date
+        category:
+          $ref: '#/components/schemas/PlayCategory'
+      type: object
+      required:
+      - country
+      - category
+      title: ChartFilterPlay
+    TypeEnum:
+      enum:
+      - APP
+      - GAME
+      title: TypeEnum
+      description: An enumeration.
+    PlayChart:
+      properties:
+        position:
+          type: integer
+          title: Position
+        collection:
+          type: string
+          title: Collection
+        category:
+          type: string
+          title: Category
+      type: object
+      required:
+      - position
+      - collection
+      - category
+      title: PlayChart
+    DevAppsEstimates:
+      properties:
+        month:
+          type: string
+          title: Month
+        downloads:
+          type: integer
+          title: Downloads
+        revenue:
+          type: integer
+          title: Revenue
+      type: object
+      required:
+      - month
+      title: DevAppsEstimates
+    StoreLanguages:
+      properties:
+        languages:
+          items:
+            type: string
+          type: array
+          title: Languages
+      type: object
+      required:
+      - languages
+      title: StoreLanguages
     SuggestLite:
       properties:
         id:
@@ -2063,72 +1599,197 @@ components:
       - lang
       - store
       title: SuggestLite
-    PlayRankingItem:
+    NewPlayApp:
       properties:
-        date:
+        id:
           type: string
-          title: Date
-        app:
-          type: string
-          title: App
+          title: Id
         country:
           type: string
           title: Country
+        language:
+          type: string
+          title: Language
+        bundle:
+          type: string
+          title: Bundle
+        name:
+          type: string
+          title: Name
+        description_full:
+          type: string
+          title: Description Full
+        published:
+          type: boolean
+          title: Published
+        listing_visible:
+          type: boolean
+          title: Listing Visible
         category:
           type: string
           title: Category
-        collection:
+        category_type:
           type: string
-          title: Collection
-        rank:
+          title: Category Type
+        revenue_month:
           type: integer
-          title: Rank
+          title: Revenue Month
+        revenue_lifetime:
+          type: integer
+          title: Revenue Lifetime
+        downloads_month:
+          type: integer
+          title: Downloads Month
+        downloads_lifetime:
+          type: integer
+          title: Downloads Lifetime
+        release_date:
+          type: string
+          format: date
+          title: Release Date
+        update_date:
+          type: string
+          format: date
+          title: Update Date
+        developer_name:
+          type: string
+          title: Developer Name
+        description_short:
+          type: string
+          title: Description Short
+        whatsnew:
+          type: string
+          title: Whatsnew
+        icon:
+          type: string
+          title: Icon
+        video:
+          type: string
+          title: Video
+        screenshots:
+          items:
+            type: string
+          type: array
+          title: Screenshots
+        feature_graphic:
+          type: string
+          title: Feature Graphic
+        removal_date:
+          type: string
+          format: date
+          title: Removal Date
+        version:
+          type: string
+          title: Version
+        size:
+          type: number
+          title: Size
+        downloads_daily:
+          type: integer
+          title: Downloads Daily
+        downloads_exact:
+          type: integer
+          title: Downloads Exact
+        downloads_mark:
+          type: integer
+          title: Downloads Mark
+        rating_count:
+          type: integer
+          title: Rating Count
+        rating_value:
+          type: number
+          title: Rating Value
+        review_count:
+          type: integer
+          title: Review Count
+        rating_avg:
+          type: number
+          title: Rating Avg
+        iap:
+          type: boolean
+          title: Iap
+        editorial:
+          type: boolean
+          title: Editorial
+        chart_info:
+          $ref: '#/components/schemas/PlayChart'
+        hosts:
+          items:
+            type: string
+          type: array
+          title: Hosts
+        url_appstorespy:
+          type: string
+          title: Url Appstorespy
+          description: Url to AppstoreSpy
+        ipd:
+          type: integer
+          title: Ipd
+          description: Estimated daily installs
+        email:
+          items:
+            type: string
+          type: array
+          title: Email
+          description: App's developer email
+        url:
+          type: string
+          title: Url
+          description: Link to App Store
+        policy:
+          type: string
+          title: Policy
+          description: '...'
+        website:
+          type: string
+          title: Website
+          description: App website
+        developer_id:
+          type: string
+          title: Developer Id
+        ads:
+          allOf:
+          - $ref: '#/components/schemas/Creatives'
+          title: Ads
+          description: App`s ads
+        advertised:
+          type: boolean
+          title: Advertised
+          description: App is advertised in networks
+        about_phone:
+          type: string
+          title: About Phone
+          description: 'About developer: phone number'
+        about_address:
+          type: string
+          title: About Address
+          description: 'About developer: address'
+        address_country:
+          type: string
+          title: Address Country
+          description: 'Address: country'
+        support_phone:
+          type: string
+          title: Support Phone
+          description: 'App support: phone number'
+        transferred:
+          type: string
+          title: Transferred
+          description: The last transfer date as detected by AppstoreSpy
+        previous_developer_id:
+          type: string
+          title: Previous Developer Id
+          description: Previous developer ID before transfer
+        previous_developer_name:
+          type: string
+          title: Previous Developer Name
+          description: Previous developer name before transfer
       type: object
       required:
-      - date
-      - app
+      - id
       - country
-      - category
-      - collection
-      - rank
-      title: PlayRankingItem
-    ChartFilterPlay:
-      properties:
-        collection:
-          $ref: '#/components/schemas/Collection'
-        country:
-          type: string
-          title: Country
-        date:
-          type: string
-          title: Date
-        category:
-          $ref: '#/components/schemas/PlayCategory'
-      type: object
-      required:
-      - country
-      - category
-      title: ChartFilterPlay
-    DetailedError:
-      properties:
-        location:
-          type: string
-          title: Location
-        message:
-          type: string
-          title: Message
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
-      type: object
-      required:
-      - location
-      - message
-      title: DetailedError
+      - language
+      title: NewPlayApp
     AppsEstimates:
       properties:
         id:
@@ -2148,43 +1809,6 @@ components:
       - id
       - month
       title: AppsEstimates
-    ApiResponse_list_models.responses.response.PlayRankingItem__:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/PlayRankingItem'
-          type: array
-          title: Data
-        errors:
-          items:
-            $ref: '#/components/schemas/DetailedError'
-          type: array
-          title: Errors
-        total_count:
-          type: integer
-          title: Total Count
-          default: 0
-      type: object
-      title: ApiResponse[list[models.responses.response.PlayRankingItem]]
-    SimilarEnum:
-      enum:
-      - to
-      - from
-      title: SimilarEnum
-      description: An enumeration.
-    Collection:
-      enum:
-      - Free
-      - Grossing
-      - Paid
-      - topselling_free
-      - topgrossing
-      - topselling_paid
-      - topselling_new_free
-      - topselling_new_paid
-      - movers_shakers
-      title: Collection
-      description: An enumeration.
     Suggest:
       properties:
         id:
@@ -2227,6 +1851,280 @@ components:
       - lang
       - store
       title: Suggest
+    PlayAppSearchBody:
+      properties:
+        limit:
+          type: integer
+          title: Limit
+          description: Count of apps in results
+          default: 10
+        page:
+          type: integer
+          title: Page
+          description: Offset page
+          default: 1
+        sort:
+          allOf:
+          - $ref: '#/components/schemas/PlaySortEnum'
+          description: Field for sort
+        fields:
+          items:
+            type: string
+          type: array
+          title: Fields
+          description: Fields for select, empty for all
+          default:
+          - id
+          - url_appstorespy
+          - name
+          - bundle
+          - description_full
+          - published
+          - listing_visible
+          - category
+          - category_type
+          - revenue_month
+          - revenue_lifetime
+          - downloads_month
+          - downloads_lifetime
+          - update_date
+          - release_date
+          - developer_name
+          - description_short
+          - whatsnew
+          - icon
+          - video
+          - screenshots
+          - feature_graphic
+          - removal_date
+          - version
+          - size
+          - downloads_exact
+          - downloads_mark
+          - rating_count
+          - rating_value
+          - review_count
+          - rating_avg
+          - iap
+          - editorial
+          - hosts
+          - chart_info
+          - country
+          - advertised
+          - ads
+        country:
+          allOf:
+          - $ref: '#/components/schemas/AppCountries'
+          description: Country for which return data
+          default: US
+        language:
+          allOf:
+          - $ref: '#/components/schemas/AppLanguages'
+          description: 'Language of meta data. By default: en_US'
+        filter:
+          $ref: '#/components/schemas/SearchFilterPlay'
+      type: object
+      required:
+      - filter
+      title: PlayAppSearchBody
+      example:
+        sort: -downloads_daily
+        fields:
+        - id
+        - name
+        - icon
+        - video
+        - downloads_mark
+        - category_type
+        - category
+        - url_appstorespy
+        language: en_US
+        filter:
+          name: twitter
+          bundle:
+          - com.twitter.android
+          - com.facebook.katana
+          published: true
+          category_type: APP
+          release_date:
+            lte: '2026-08-22'
+          update_date:
+            lte: '2026-08-22'
+          rating_avg:
+            lte: 5.0
+            gte: 3.0
+          rating_count:
+            lte: 1000000
+            gte: 0
+          active_countries:
+          - US
+          downloads_daily:
+            lte: 100000
+            gte: 0
+          downloads_exact:
+            lte: 1000000
+            gte: 0
+    SearchFilterPlay:
+      properties:
+        id:
+          items:
+            type: string
+          type: array
+          title: Id
+        name:
+          type: string
+          title: Name
+        published:
+          type: boolean
+          title: Published
+        category_type:
+          $ref: '#/components/schemas/TypeEnum'
+        revenue_month:
+          $ref: '#/components/schemas/ValueRange'
+        downloads_month:
+          $ref: '#/components/schemas/ValueRange'
+        release_date:
+          $ref: '#/components/schemas/DateRange'
+        update_date:
+          $ref: '#/components/schemas/DateRange'
+        rating_count:
+          $ref: '#/components/schemas/ValueRange'
+        developer:
+          type: string
+          title: Developer
+        developer_id:
+          type: string
+          title: Developer Id
+        editorial:
+          type: boolean
+          title: Editorial
+        iap:
+          type: boolean
+          title: Iap
+          description: In app purchases
+        active_countries:
+          items:
+            type: string
+          type: array
+          title: Active Countries
+        description_full:
+          type: string
+          title: Description Full
+        description_short:
+          type: string
+          title: Description Short
+        whatsnew:
+          type: string
+          title: Whatsnew
+          description: Updates in app
+        hosts:
+          type: string
+          title: Hosts
+          description: Hosts
+        with_ads:
+          type: boolean
+          title: With Ads
+        advertised:
+          type: boolean
+          title: Advertised
+        collection_id:
+          type: string
+          title: Collection Id
+          description: Collection ID
+        discovered:
+          items:
+            type: string
+            format: date
+          type: array
+          title: Discovered
+        website:
+          type: string
+          title: Website
+          description: Website
+        bundle:
+          items:
+            type: string
+          type: array
+          title: Bundle
+          description: App bundle ID(s); accepts a single string or a list
+        transferred:
+          type: boolean
+          title: Transferred
+          description: Whether the app has been transferred to a new developer at least once
+        transfer_date:
+          allOf:
+          - $ref: '#/components/schemas/DateRange'
+          title: Transfer Date
+          description: Date range (gte/lte) of the last developer transfer
+        removal_date:
+          allOf:
+          - $ref: '#/components/schemas/DateRange'
+          title: Removal Date
+          description: Date range (gte/lte) of app removal from the store; matches removed (unavailable) apps
+        category:
+          allOf:
+          - $ref: '#/components/schemas/PlayCategory'
+          description: Category of app
+        downloads_mark:
+          type: integer
+          title: Downloads Mark
+          description: Installs
+        downloads_daily:
+          allOf:
+          - $ref: '#/components/schemas/ValueRange'
+          title: Downloads Daily
+          description: Daily downloads or Daily installs
+        downloads_exact:
+          allOf:
+          - $ref: '#/components/schemas/ValueRange'
+          title: Downloads Exact
+          description: Exact installs
+        installs_exact:
+          allOf:
+          - $ref: '#/components/schemas/ValueRange'
+          title: Installs Exact
+          description: Exact installs(deprecated)
+        review_count:
+          allOf:
+          - $ref: '#/components/schemas/ValueRange'
+          title: Review Count
+          description: Count of reviews
+        chart_filter:
+          allOf:
+          - $ref: '#/components/schemas/ChartFilterPlay'
+          title: Chart Filter
+          description: Top Charts
+        similar_apps:
+          type: string
+          title: Similar Apps
+          description: Similars apps
+        reverse_similar_apps:
+          type: string
+          title: Reverse Similar Apps
+          description: Apps with app in similar`s lists
+        rating_avg:
+          allOf:
+          - $ref: '#/components/schemas/ValueRange'
+          title: Rating Avg
+          description: Average rating
+        developer_name:
+          type: string
+          title: Developer Name
+          description: Developer name
+        previous_developer_id:
+          type: string
+          title: Previous Developer Id
+          description: Previous developer ID before transfer
+        previous_developer_name:
+          type: string
+          title: Previous Developer Name
+          description: Previous developer name before transfer
+        pre_register:
+          type: boolean
+          title: Pre Register
+          description: Pre-registration games only (True); matches apps in the pre-registration state in at least one tracked country
+      type: object
+      title: SearchFilterPlay
     SummarySearchBody:
       properties:
         q:
@@ -2243,31 +2141,42 @@ components:
         filter:
           name: twitter
           published: true
-    Creatives:
+    AppLanguages:
+      type: string
+      enum:
+      - en_US
+      - ar
+      - en_GB
+      - fr_FR
+      - es_419
+      - de_DE
+      - pt_BR
+      - it_IT
+      - ja_JP
+      - ko_KR
+      - tr_TR
+      - ru_RU
+      - vi
+      title: AppLanguages
+      description: An enumeration.
+    PlayAppListResponse:
       properties:
-        video:
-          $ref: '#/components/schemas/AppCreativeVideo'
-        image:
-          $ref: '#/components/schemas/Image'
-        fb:
+        data:
           items:
-            type: string
+            $ref: '#/components/schemas/NewPlayApp'
           type: array
-          title: Fb
-        network:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Network
+          title: Data
+        errors:
+          items:
+            $ref: '#/components/schemas/DetailedError'
+          type: array
+          title: Errors
+        total_count:
+          type: integer
+          title: Total Count
+          default: 0
       type: object
-      required:
-      - video
-      - image
-      - fb
-      - network
-      title: Creatives
+      title: PlayAppListResponse
     PlayDev:
       properties:
         id:
@@ -2342,135 +2251,6 @@ components:
           title: Featured
       type: object
       title: PlayDev
-    AppCreativeVideo:
-      properties:
-        preview:
-          type: string
-          title: Preview
-        video:
-          type: string
-          title: Video
-        url:
-          type: string
-          title: Url
-      type: object
-      title: AppCreativeVideo
-    DateRange:
-      properties:
-        lte:
-          type: string
-          format: date
-          title: Lte
-        gte:
-          type: string
-          format: date
-          title: Gte
-      type: object
-      title: DateRange
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    PlayCategory:
-      enum:
-      - APPLICATION
-      - SOCIAL
-      - FAMILY
-      - ANDROID_WEAR
-      - ART_AND_DESIGN
-      - AUTO_AND_VEHICLES
-      - BEAUTY
-      - BOOKS_AND_REFERENCE
-      - BUSINESS
-      - COMICS
-      - COMMUNICATION
-      - DATING
-      - EDUCATION
-      - ENTERTAINMENT
-      - EVENTS
-      - FINANCE
-      - FOOD_AND_DRINK
-      - HEALTH_AND_FITNESS
-      - HOUSE_AND_HOME
-      - LIBRARIES_AND_DEMO
-      - LIFESTYLE
-      - MAPS_AND_NAVIGATION
-      - MEDICAL
-      - MUSIC_AND_AUDIO
-      - NEWS_AND_MAGAZINES
-      - PARENTING
-      - PERSONALIZATION
-      - PHOTOGRAPHY
-      - PRODUCTIVITY
-      - SHOPPING
-      - SPORTS
-      - TOOLS
-      - TRAVEL_AND_LOCAL
-      - VIDEO_PLAYERS
-      - WEATHER
-      - GAME
-      - GAME_ACTION
-      - GAME_ADVENTURE
-      - GAME_ARCADE
-      - GAME_BOARD
-      - GAME_CARD
-      - GAME_CASINO
-      - GAME_CASUAL
-      - GAME_EDUCATIONAL
-      - GAME_MUSIC
-      - GAME_PUZZLE
-      - GAME_RACING
-      - GAME_ROLE_PLAYING
-      - GAME_SIMULATION
-      - GAME_SPORTS
-      - GAME_STRATEGY
-      - GAME_TRIVIA
-      - GAME_WORD
-      - FAMILY_ACTION
-      - FAMILY_BRAINGAMES
-      - FAMILY_CREATE
-      - FAMILY_MUSICVIDEO
-      - FAMILY_PRETEND
-      - FAMILY_EDUCATION
-      title: PlayCategory
-      description: An enumeration.
-    PlayAppListResponse:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/NewPlayApp'
-          type: array
-          title: Data
-        errors:
-          items:
-            $ref: '#/components/schemas/DetailedError'
-          type: array
-          title: Errors
-        total_count:
-          type: integer
-          title: Total Count
-          default: 0
-      type: object
-      title: PlayAppListResponse
-    ValueRange:
-      properties:
-        lte:
-          anyOf:
-          - type: integer
-          - type: number
-          title: Lte
-        gte:
-          anyOf:
-          - type: integer
-          - type: number
-          title: Gte
-      type: object
-      title: ValueRange
     ValidationError:
       properties:
         loc:
@@ -2492,14 +2272,234 @@ components:
       - msg
       - type
       title: ValidationError
-    CacheTime:
-      type: string
-      enum:
-      - 1d
-      - 7d
-      - 30d
-      title: CacheTime
-      description: An enumeration.
+    SimilarSearchBody:
+      properties:
+        limit:
+          type: integer
+          title: Limit
+          description: Count of apps in results
+          default: 10
+        page:
+          type: integer
+          title: Page
+          description: Offset page
+          default: 1
+        sort:
+          allOf:
+          - $ref: '#/components/schemas/PlaySortEnum'
+          description: Field for sort
+        fields:
+          items:
+            type: string
+          type: array
+          title: Fields
+          description: Fields for select, empty for all
+          default:
+          - id
+          - url_appstorespy
+          - name
+          - bundle
+          - description_full
+          - published
+          - listing_visible
+          - category
+          - category_type
+          - revenue_month
+          - revenue_lifetime
+          - downloads_month
+          - downloads_lifetime
+          - update_date
+          - release_date
+          - developer_name
+          - description_short
+          - whatsnew
+          - icon
+          - video
+          - screenshots
+          - feature_graphic
+          - removal_date
+          - version
+          - size
+          - downloads_exact
+          - downloads_mark
+          - rating_count
+          - rating_value
+          - review_count
+          - rating_avg
+          - iap
+          - editorial
+          - hosts
+          - chart_info
+          - country
+          - advertised
+          - ads
+        country:
+          allOf:
+          - $ref: '#/components/schemas/AppCountries'
+          description: Country for which return data
+          default: US
+        language:
+          allOf:
+          - $ref: '#/components/schemas/AppLanguages'
+          description: 'Language of meta data. By default: en_US'
+        filter:
+          $ref: '#/components/schemas/SearchFilterPlay'
+        id:
+          type: string
+          title: Id
+        link:
+          $ref: '#/components/schemas/SimilarEnum'
+      type: object
+      required:
+      - filter
+      - id
+      - link
+      title: SimilarSearchBody
+      example:
+        id: com.twitter.android
+        link: from
+        filter:
+          published: true
+        sort: -downloads_daily
+        fields:
+        - id
+        - name
+        - icon
+        - video
+        - downloads_mark
+        - category_type
+        - category
+        - url_appstorespy
+        language: en_US
+    Event:
+      properties:
+        id:
+          type: string
+          title: Id
+        app:
+          type: string
+          title: App
+        store:
+          type: string
+          title: Store
+        type:
+          type: string
+          title: Type
+        title:
+          type: string
+          title: Title
+        text:
+          type: string
+          title: Text
+        image:
+          type: string
+          title: Image
+        country:
+          type: string
+          title: Country
+        state:
+          type: string
+          title: State
+        crawled:
+          type: string
+          format: date-time
+          title: Crawled
+        date_from:
+          type: string
+          format: date-time
+          title: Date From
+        date_to:
+          type: string
+          format: date-time
+          title: Date To
+        video:
+          type: string
+          title: Video
+      type: object
+      required:
+      - id
+      - app
+      - store
+      - type
+      - title
+      - text
+      - image
+      - country
+      - state
+      - crawled
+      - date_from
+      title: Event
+    AppCreativeVideo:
+      properties:
+        preview:
+          type: string
+          title: Preview
+        video:
+          type: string
+          title: Video
+        url:
+          type: string
+          title: Url
+      type: object
+      title: AppCreativeVideo
+    SummaryResponse:
+      properties:
+        total:
+          type: integer
+          title: Total
+        ipd:
+          type: integer
+          title: Ipd
+        revenue:
+          type: integer
+          title: Revenue
+        downloads:
+          type: integer
+          title: Downloads
+        available:
+          type: integer
+          title: Available
+        removed:
+          type: integer
+          title: Removed
+      type: object
+      required:
+      - total
+      - ipd
+      - revenue
+      - downloads
+      - available
+      - removed
+      title: SummaryResponse
+    PlayRankingItem:
+      properties:
+        date:
+          type: string
+          title: Date
+        app:
+          type: string
+          title: App
+        country:
+          type: string
+          title: Country
+        category:
+          type: string
+          title: Category
+        collection:
+          type: string
+          title: Collection
+        rank:
+          type: integer
+          title: Rank
+      type: object
+      required:
+      - date
+      - app
+      - country
+      - category
+      - collection
+      - rank
+      title: PlayRankingItem
   securitySchemes:
     APIKeyHeader:
       type: apiKey

@@ -109,29 +109,6 @@ paths:
       - APIKeyHeader: []
 components:
   schemas:
-    Cluster:
-      properties:
-        type:
-          type: string
-          title: Type
-        title:
-          type: string
-          title: Title
-        items:
-          items:
-            type: string
-          type: array
-          title: Items
-        layout:
-          type: string
-          title: Layout
-      type: object
-      required:
-      - type
-      - title
-      - items
-      - layout
-      title: Cluster
     SearchCreate:
       properties:
         store:
@@ -170,15 +147,57 @@ components:
       - store
       - term
       title: SearchCreate
-    HTTPValidationError:
+    ValidationError:
       properties:
-        detail:
+        loc:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Detail
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
       type: object
-      title: HTTPValidationError
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    Store:
+      type: string
+      enum:
+      - play
+      - ios
+      title: Store
+      description: An enumeration.
+    Cluster:
+      properties:
+        type:
+          type: string
+          title: Type
+        title:
+          type: string
+          title: Title
+        items:
+          items:
+            type: string
+          type: array
+          title: Items
+        layout:
+          type: string
+          title: Layout
+      type: object
+      required:
+      - type
+      - title
+      - items
+      - layout
+      title: Cluster
     SearchResult:
       properties:
         store:
@@ -230,34 +249,15 @@ components:
       - term
       - id
       title: SearchResult
-    ValidationError:
+    HTTPValidationError:
       properties:
-        loc:
+        detail:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Detail
       type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    Store:
-      type: string
-      enum:
-      - play
-      - ios
-      title: Store
-      description: An enumeration.
+      title: HTTPValidationError
   securitySchemes:
     APIKeyHeader:
       type: apiKey
