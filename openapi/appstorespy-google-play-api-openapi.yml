@@ -4,18 +4,137 @@ info:
   description: '# Authentication
 
 
-    The Appstorespy API uses API-KEY authentication.'
-  version: 0.0.1
-servers:
-- url: https://api.appstorespy.com/v1
+    The Appstorespy API uses API-KEY authentication.
+
+
+    If you do not have an API Key token, you can get it on your account page https://appstorespy.com/account.
+
+
+    An API Key is required to be sent as part of every request in request header.
+
+
+    ```
+
+
+    -H ''accept: application/json''
+
+
+    -H ''API-KEY: ''
+
+
+    ```
+
+
+    # Agents and MCP
+
+
+    AI agents can call the same endpoints as MCP tools at https://api.appstorespy.com/mcp, with the same API-KEY header and the same credits per call.
+
+
+    https://api.appstorespy.com/agentic-access lists what each operation costs and whether it reads, queues or writes; https://api.appstorespy.com/skills/ holds one agent skill per capability; https://api.appstorespy.com/llms.txt links every agent document.
+
+
+    # Fields
+
+
+    Use the fields parameter to specify which fields should be returned.
+
+
+    Example:
+
+
+    ```
+
+
+    Request: fields=name,developer_name,ipd,downloads,...
+
+
+    Response: {name: ..., developer_name: ..., ipd: ..., downloads: ..., ...}
+
+
+    ```
+
+
+    Don`t use fields parameter if you need to get all fields.
+
+
+    # Sort
+
+
+    When you use search, you can add a sort parameter.
+
+
+    ```
+
+
+    Request: sort=ratingCount
+
+
+    Response: [{name: app1, ratingCount: 4.2}, {name: app2, ratingCount: 4.4}, ...]
+
+
+    ```
+
+
+    If you need DESC sorting add "-" before sort parametr.
+
+
+    ```
+
+
+    Request: sort=-ratingCount
+
+
+    Response: [{name: app2, ratingCount: 4.4}, {name: app1, ratingCount: 4.2}, ...]
+
+
+    ```
+
+
+    # County & Language params
+
+
+    ...
+
+
+    # Status codes / Error codes
+
+
+    * 200 OK.
+
+
+    * 202 Accepted - The app was not present in our databases and has been submitted for crawling. If the app is available anywhere, it will be available soon.
+
+
+    * 204 No Content - No data for requested country.
+
+
+    * 403 Forbidden - Your access token is not valid.
+
+
+    * 429 Too Many Requests - Your request rate is over the limit.'
+  termsOfService: https://appstorespy.com/agreement
+  contact:
+    name: AppstoreSpy Support
+    url: https://appstorespy.com/support
+    email: support@appstorespy.com
+  license:
+    name: Proprietary
+    url: https://appstorespy.com/agreement
+  version: 1.1.1
 tags:
 - name: Google Play
+  description: 'Google Play apps and developers: lookup, search, reviews, rankings, similar apps, daily installs, download and revenue estimates, live store listings and reference data.'
+  externalDocs:
+    description: Fields, daily installs and live listings
+    url: https://github.com/romamo/appstorespy-api-docs
 paths:
   /play/apps:
     get:
       tags:
       - Google Play
       summary: Search Google Play apps by query
+      description: Free-text search across Google Play listings, returning a ranked list of matching apps. To filter on structured criteria such as revenue, installs or category, use `POST /play/apps/query`.
       operationId: get_app_search_play_apps_get
       parameters:
       - description: Word or phrase for search.
@@ -97,20 +216,104 @@ paths:
                   $ref: '#/components/schemas/PlayApp'
                 type: array
                 title: Response Get App Search Play Apps Get
+              example:
+              - id: com.spotify.music
+                name: 'Spotify: Music and Podcasts'
+                developer_id: '6523013212965523194'
+                developer_name: Spotify AB
+                category: MUSIC_AND_AUDIO
+                published: true
+                rating_count: 36433795
+                rating_value: 4.2
+                revenue: 39000000
+                downloads: 24000000
+                url_appstorespy: https://appstorespy.com/android-google-play/com.spotify.music-trends-revenue-statistics-downloads-ratings
+              - id: dev.netlob.spotistats
+                name: stats.fm for Spotify
+                developer_id: '7791363214102462004'
+                developer_name: StatsFM B.V.
+                category: MUSIC_AND_AUDIO
+                published: true
+                rating_count: 113181
+                rating_value: 4.2
+                revenue: 60000
+                downloads: 100000
+                url_appstorespy: https://appstorespy.com/android-google-play/dev.netlob.spotistats-trends-revenue-statistics-downloads-ratings
             text/csv: {}
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 1
   /play/apps/{id}/reviews:
     get:
       tags:
       - Google Play
       summary: Get Google Play app reviews by app ID
+      description: Returns user reviews for a single Google Play app. Reviews are country- and language-specific, so `country` and `language` change which set is returned.
       operationId: get_reviews_play_apps__id__reviews_get
       parameters:
       - description: App ID(bundle)
@@ -164,19 +367,91 @@ paths:
                   $ref: '#/components/schemas/PlayReview'
                 type: array
                 title: Response Get Reviews Play Apps  Id  Reviews Get
+              example:
+              - id: 00000000-0000-0000-0000-000000000000
+                lang: en_US
+                author_id: '000000000000000000000'
+                author_name: Jane Doe
+                author_image: https://example.com/avatar.png
+                version: 2.16.206
+                created: '2025-10-10T14:03:23'
+                stars: 1
+                likes: 28608
+                comment: 'Easy to use and just an amazing app to stay connected and share pictures and videos with everyone! EDIT: down to 1 star after update.'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 1
   /play/apps/{id}/recrawl:
     get:
       tags:
       - Google Play
-      summary: Get Recrawl
+      summary: Queue a recrawl of a Google Play app
+      description: Queues a fresh crawl of one Google Play app for the given country and language. Returns 200 once the job is accepted; the updated data appears on the app endpoints after the crawl completes.
       operationId: get_recrawl_play_apps__id__recrawl_get
       parameters:
       - description: App ID(bundle)
@@ -208,29 +483,485 @@ paths:
         in: query
       responses:
         '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
+          description: The recrawl is queued; the body is empty
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 1
+  /play/apps/{id}/listing:
+    get:
+      tags:
+      - Google Play
+      summary: Get the Google Play listing of an app in any language
+      description: 'Returns the store listing of one app for a country and language exactly as Google Play serves it: title, short and full description, what''s new, icon, feature graphic, trailer and screenshots. Any language Google Play Console accepts can be requested. The listing is crawled on demand and kept; `freshness` sets how old a kept listing may be before it is crawled again. A call waits for a running crawl for up to about 30 seconds and answers 202 with the crawl state if it is still running; repeat the same request to get the listing. Pass `wait=false` to get the 202 immediately. Repeated requests for the same listing share one crawl. `translated` tells whether Google Play machine-translated the texts instead of showing a translation the developer supplied. The call that queues a crawl costs the crawl price, even when it answers 202; a call served from a kept listing, including a kept not-found, costs the read price; a 202 to a call that found the crawl already running costs nothing, and so do a 422, a 429 and any 5xx, a failed crawl (502) included.'
+      operationId: get_listing_play_apps__id__listing_get
+      parameters:
+      - description: App ID(bundle)
+        required: true
+        schema:
+          type: string
+          title: Id
+          description: App ID(bundle)
+        example: com.twitter.android
+        name: id
+        in: path
+      - description: 'Country of the listing (Google Play `gl`). By default: US.'
+        required: false
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/AppCountries'
+          description: 'Country of the listing (Google Play `gl`). By default: US.'
+          default: US
+        name: country
+        in: query
+      - description: 'Language of the listing (Google Play `hl`), any Google Play Console locale. By default: en_US.'
+        required: false
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/PlayListingLanguages'
+          description: 'Language of the listing (Google Play `hl`), any Google Play Console locale. By default: en_US.'
+          default: en_US
+        name: language
+        in: query
+      - description: How old a kept listing may be before it is crawled again.
+        required: false
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/CacheTime'
+          description: How old a kept listing may be before it is crawled again.
+          default: 1d
+        name: freshness
+        in: query
+      - description: Wait for a running crawl, or answer 202 right away.
+        required: false
+        schema:
+          type: boolean
+          title: Wait
+          description: Wait for a running crawl, or answer 202 right away.
+          default: true
+        name: wait
+        in: query
+      responses:
+        '200':
+          description: The listing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayListing'
+                anyOf:
+                - $ref: '#/components/schemas/PlayListing'
+                - $ref: '#/components/schemas/PlayListingPending'
+                title: Response Get Listing Play Apps  Id  Listing Get
+              example:
+                id: com.whatsapp
+                country: US
+                language: en_US
+                crawled: '2026-10-02T08:52:53+00:00'
+                url: https://play.google.com/store/apps/details?id=com.whatsapp&hl=en_US&gl=US
+                name: WhatsApp Messenger
+                short: Simple. Reliable. Private.
+                description: WhatsApp from Meta is a FREE messaging and video calling app.
+                whatsnew: You can now choose to share recent group history with new members when you add them to a group
+                icon: https://lh3.googleusercontent.com/Gqxk4T0uZsDwFp07DE-508hkyvcNmgFuRwPiwTEfF7D7OzGv1FdHDzEyMxNsSBZLOJlGpe3ULvVM2RgrRAlBqA
+                feature: https://lh3.googleusercontent.com/eLX_xvno2Kq_zvpkkP8yPBRfo2TEQSrv7m7WrQ6xloPsDRJ85XQ28kGYuoR-_EBWh2Uoq2GMlDvlBEIxHRyhuSg
+                screenshots:
+                - https://lh3.googleusercontent.com/GQF4h3VL-kklOrVS_f1QRAJJZa2zQyVNcFbKdOIkvI_Pcu1op0Sy3uiryiTxpdcCDs7vEDA9eq0eWbxo0fx_wc8
+                - https://lh3.googleusercontent.com/Q042rTbs53V_jW_c5fMqnNLCf-FBKiO2KiFKJJACa65oMCkaxqDSFKPQ7TH8nYetS-js-fMV7ptXSsF-aCkvcw
+                translated: false
+          headers:
+            RateLimit-Limit:
+              description: Requests allowed per window for this API key (30/minute)
+              schema:
+                type: integer
+            RateLimit-Remaining:
+              description: Requests left in the current window
+              schema:
+                type: integer
+            RateLimit-Reset:
+              description: Seconds until the current window resets
+              schema:
+                type: integer
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '202':
+          description: The crawl is queued or running
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayListingPending'
+              example:
+                id: com.whatsapp
+                country: US
+                language: en_US
+                status: pending
+                requested: '2026-10-02T08:52:41+00:00'
+                message: The crawl is in progress. Repeat the same request to get the listing once it is done.
+          headers:
+            RateLimit-Limit:
+              description: Requests allowed per window for this API key (30/minute)
+              schema:
+                type: integer
+            RateLimit-Remaining:
+              description: Requests left in the current window
+              schema:
+                type: integer
+            RateLimit-Reset:
+              description: Seconds until the current window resets
+              schema:
+                type: integer
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '404':
+          description: The app is not on Google Play for this country
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '502':
+          description: Google Play could not be crawled; the credit was refunded
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '429':
+          description: The per-key rate limit of this operation is exhausted; retry after `Retry-After` seconds. It costs no credits, except on job endpoints (https://github.com/romamo/as-rest/issues/99)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                - error
+              example:
+                error: 'Rate limit exceeded: 30 per 1 minute'
+          headers:
+            RateLimit-Limit:
+              description: Requests allowed per window for this API key (30/minute)
+              schema:
+                type: integer
+            RateLimit-Remaining:
+              description: Requests left in the current window
+              schema:
+                type: integer
+            RateLimit-Reset:
+              description: Seconds until the current window resets
+              schema:
+                type: integer
+            Retry-After:
+              description: Seconds to wait before retrying
+              schema:
+                type: integer
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
+      security:
+      - APIKeyHeader: []
+      x-cost-credits: 3
   /play/apps/query:
     post:
       tags:
       - Google Play
       summary: Get Filter Search
+      description: '|**Fields**||||
+
+        |---|---|---|---|
+
+        |**Name** |**Type** |**Sort**|**Description**|
+
+        |name |string |- |Name|
+
+        |bundle |string |- |Bundle|
+
+        |description_full |string |- |Description|
+
+        |published |boolean |- |Published|
+
+        |listing_visible |boolean |- |Published in request country|
+
+        |category |string |- |Category|
+
+        |category_type |string |- |Type|
+
+        |revenue_month |integer |+ |Monthly Revenue|
+
+        |revenue_lifetime |integer |- |Lifetime Revenue|
+
+        |downloads_month |integer |+ |Monthly Downloads|
+
+        |downloads_lifetime|integer |- |Lifetime Downloads|
+
+        |update_date |date ISO8601|+ |Last Updated|
+
+        |release_date |date ISO8601|+ |Release date|
+
+        |developer_name |string |- |Developer name|
+
+        |description_short|string |- |Short description|
+
+        |whatsnew |string |- |Whatsnew|
+
+        |icon |string |- |Image|
+
+        |video |string |- |Trailer|
+
+        |screenshots |[]string |- |Screenshots|
+
+        |feature_graphic |string |- |Feature graphic|
+
+        |removal_date |date ISO8601|+ |Removal date|
+
+        |version |string |- |Version|
+
+        |size |float |- |Size|
+
+        |downloads_daily |integer |+ |Daily Installs|
+
+        |downloads_exact |integer |+ |Total Installs|
+
+        |downloads_mark |integer |+ |Installs|
+
+        |rating_count |integer |+ |Ratings|
+
+        |rating_value |float |+ |Rating in request country|
+
+        |review_count |integer |+ |Reviews|
+
+        |rating_avg |float |+ |Rating|
+
+        |iap |boolean |- |Inapp|
+
+        |editorial |boolean |- |Editor''s choise|
+
+        |hosts |[]string |- |Hosts|
+
+        |chart_info |object |+ |App''s chart info: category, collection, country, position for today|
+
+
+        |**Filters**|||
+
+        |---|---|---|
+
+        |**Name**|**Type**|**Description**|
+
+        |name|string|Name|
+
+        |published|boolean|Published|
+
+        |category_type|string|APP or GAME|
+
+        |revenue_month|ValueRange|{"gte": 100, "lte": 500} (In this field you need write values in thousands: 100 = 100000, 500 = 500000)|
+
+        |downloads_month|ValueRange|{"gte": 100, "lte": 500} (In this field you need write values in thousands: 100 = 100000, 500 = 500000)|
+
+        |update_date|DateRange|{"gte": "2021-01-01", "lte": "2022-01-01"}|
+
+        |release_date|DateRange|{"gte": "2021-01-01", "lte": "2022-01-01"}|
+
+        |rating_count|ValueRange|{"gte": 1000, "lte": 5000}|
+
+        |developer|string|Developer name|
+
+        |developer_id|string|Developer id|
+
+        |editorial|boolean|Editor''s choise|
+
+        |iap|boolean|Inapp|
+
+        |active_countries|[]string|["US", "DE", "FR"] - List of countries where app is available (At least one country)|
+
+        |category|string|Google Play category: "GAME_ARCADE", "SOCIAL", "ART_AND_DESIGN", "LIFESTYLE" etc|
+
+        |downloads_mark|integer|100, 500, 1000, 5000, 10000 etc|
+
+        |downloads_daily|ValueRange|{"gte": 1000, "lte": 5000}|
+
+        |downloads_exact|ValueRange|{"gte": 1000, "lte": 5000}|
+
+        |review_count|ValueRange|{"gte": 1000, "lte": 5000}|
+
+        |similar_apps|string|"com.twitter.android" - Twitter similar apps|
+
+        |reverse_similar_apps|string|"com.twitter.android" - Apps with Twitter in similar''s list|
+
+        |rating_avg|ValueRange|{"gte": 3.5, "lte": 5.0}|
+
+        |hosts|string||
+
+        |with_ads|boolean|With Ads|
+
+        |advertised|boolean|Advertised|'
       operationId: get_filter_search_play_apps_query_post
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/PlayAppSearchBody'
+            example:
+              limit: 2
+              sort: -downloads_month
+              fields:
+              - id
+              - name
+              - developer_name
+              - category
+              - downloads_month
+              - revenue_month
+              - rating_value
+              filter:
+                developer_id: '6523013212965523194'
+                published: true
       responses:
         '200':
           description: Successful Response
@@ -238,25 +969,119 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PlayAppListResponse'
+              example:
+                data:
+                - id: com.spotify.music
+                  country: US
+                  language: en_US
+                  name: 'Spotify: Music and Podcasts'
+                  category: MUSIC_AND_AUDIO
+                  revenue_month: 39000000
+                  downloads_month: 24000000
+                  developer_name: Spotify AB
+                  rating_value: 4.3
+                - id: com.spotify.tv.android
+                  country: US
+                  language: en_US
+                  name: 'Spotify: Music & Podcasts'
+                  category: MUSIC_AND_AUDIO
+                  downloads_month: 1000000
+                  developer_name: Spotify AB
+                  rating_value: 3.9
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 1
   /play/apps/similar:
     post:
       tags:
       - Google Play
-      summary: Get Similar
+      summary: Get similar Google Play apps
+      description: Returns the apps Google Play lists as similar to the given app. Set `link` to the reverse direction to get the apps that list the given app as similar to them instead.
       operationId: get_similar_play_apps_similar_post
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SimilarSearchBody'
+            example:
+              id: com.whatsapp
+              link: to
+              limit: 2
+              sort: -downloads_month
+              fields:
+              - id
+              - name
+              - developer_name
+              - category
+              - downloads_month
+              - rating_value
+              filter:
+                published: true
       responses:
         '200':
           description: Successful Response
@@ -264,25 +1089,107 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PlayAppListResponse'
+              example:
+                data:
+                - id: com.openai.chatgpt
+                  country: US
+                  language: en_US
+                  name: ChatGPT
+                  category: PRODUCTIVITY
+                  downloads_month: 69000000
+                  developer_name: OpenAI
+                  rating_value: 4.8
+                - id: com.facebook.katana
+                  country: US
+                  language: en_US
+                  name: Facebook
+                  category: SOCIAL
+                  downloads_month: 36000000
+                  developer_name: Meta Platforms, Inc.
+                  rating_value: 4.6
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 1
   /play/apps/summary:
     post:
       tags:
       - Google Play
-      summary: Get Summary
+      summary: Summarise Google Play apps matching a filter
+      description: Returns aggregate totals for the set of Google Play apps matching a structured filter, without returning the apps themselves. Takes the same filter body as `POST /play/apps/query`.
       operationId: get_summary_play_apps_summary_post
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SummarySearchBody'
+            example:
+              filter:
+                published: true
         required: true
       responses:
         '200':
@@ -291,19 +1198,87 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SummaryResponse'
+              example:
+                total: 2046706
+                ipd: 870035547
+                revenue: 3336380000
+                downloads: 8864965000
+                available: 2046706
+                removed: 0
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 3
   /play/apps/{id}:
     get:
       tags:
       - Google Play
       summary: Get Google Play app by ID
+      description: Returns the full Google Play listing for a single app, looked up by its bundle id. Use `country` to select the storefront and `language` for the metadata language; `fields` limits the response to the columns you need.
       operationId: get_app_details_play_apps__id__get
       parameters:
       - description: App ID(bundle)
@@ -346,14 +1321,118 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PlayApp'
+              example:
+                id: com.whatsapp
+                bundle: com.whatsapp
+                published: true
+                country: US
+                lang: en_US
+                type: APP
+                category: COMMUNICATION
+                name: WhatsApp Messenger
+                short: Simple. Reliable. Private.
+                description: WhatsApp from Meta is a FREE messaging and video calling app.
+                icon: https://lh3.googleusercontent.com/Gqxk4T0uZsDwFp07DE-508hkyvcNmgFuRwPiwTEfF7D7OzGv1FdHDzEyMxNsSBZLOJlGpe3ULvVM2RgrRAlBqA=h300
+                developer_id: '5191370068110375942'
+                developer_name: WhatsApp LLC
+                emails:
+                - support@example.com
+                website: http://www.whatsapp.com/
+                url: https://play.google.com/store/apps/details?id=com.whatsapp&hl=en_US&gl=US
+                iap: true
+                installs: '10000000000'
+                installs_exact: 12373481525
+                ipd: 4525606
+                rating_count: 245123484
+                rating_value: 4.5
+                review_count: 13385602
+                revenue: 1000000
+                downloads: 82000000
+                version: 2.26.6.72
+                updated: '2026-10-03T02:15:46+00:00'
+                released: '2010-10-18'
+                crawled: '2026-10-06T00:22:05.526799+00:00'
+                top_countries_revenue:
+                - US
+                - BR
+                - MX
+                - ID
+                - UK
+                top_countries_downloads:
+                - IN
+                - PK
+                - ID
+                - NG
+                - MX
+                url_appstorespy: https://appstorespy.com/android-google-play/com.whatsapp-trends-revenue-statistics-downloads-ratings
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 1
   /play/info/countries:
     get:
       tags:
@@ -368,8 +1447,62 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StoreCountries'
+              example:
+                countries:
+                - US
+                - CA
+                - AT
+                - BE
+                - CY
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 0
   /play/info/languages:
     get:
       tags:
@@ -384,13 +1517,68 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StoreLanguages'
+              example:
+                languages:
+                - en_US
+                - ar
+                - en_GB
+                - fr_FR
+                - es_419
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 0
   /play/developers/{id}:
     get:
       tags:
       - Google Play
-      summary: Get Developer
+      summary: Get Google Play developer by ID
+      description: Returns the Google Play developer record for a single developer id, including the developer's publisher identifiers and headquarters country.
       operationId: get_developer_play_developers__id__get
       parameters:
       - description: Developer ID
@@ -417,19 +1605,102 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PlayDev'
+              example:
+                id: '5191370068110375942'
+                name: WhatsApp LLC
+                category: COMMUNICATION
+                type: APP
+                total_apps: 3
+                published_apps: 2
+                last_updated: '2026-10-03T02:15:46'
+                first_released: '2010-10-18T20:58:53'
+                downloads: 106000000
+                revenue: 3000000
+                top_apps:
+                - com.whatsapp
+                - com.whatsapp.w4b
+                - com.whatsapp.wallpaper
+                hq_country: US
+                email:
+                - support@example.com
+                url: https://play.google.com/store/apps/developer?id=WhatsApp+LLC
+                installs: 11100000000
+                installs_exact: 14932578534
+                ipd: 6070570
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 1
   /play/developers:
     get:
       tags:
       - Google Play
-      summary: Dev Search
+      summary: Search Google Play developers by query
+      description: Free-text search across Google Play developers using a `field:value` query such as `hq_country:US`. To filter on structured criteria, use `POST /play/developers/query`.
       operationId: dev_search_play_developers_get
       parameters:
       - description: Query for search
@@ -487,15 +1758,222 @@ paths:
                   $ref: '#/components/schemas/PlayDev'
                 type: array
                 title: Response Dev Search Play Developers Get
+              example:
+              - id: '6523013212965523194'
+                name: Spotify AB
+                category: MUSIC_AND_AUDIO
+                type: APP
+                total_apps: 11
+                published_apps: 6
+                last_updated: '2026-10-05T14:07:08'
+                first_released: '2010-07-14T00:00:00'
+                downloads: 25210000
+                revenue: 39000000
+                top_apps:
+                - com.spotify.music
+                - com.spotify.tv.android
+                - com.spotify.s4a
+                hq_country: SE
+                email:
+                - support@example.com
+                url: https://play.google.com/store/apps/developer?id=Spotify+AB
+                installs: 1218000000
+                installs_exact: 3449783228
+                ipd: 2089989
             text/csv: {}
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 1
+  /play/developers/query:
+    post:
+      tags:
+      - Google Play
+      summary: Search Google Play developers by structured filter
+      description: Searches Google Play developers by a structured JSON filter, with paging and sorting. `GET /play/developers` covers the free-text equivalent.
+      operationId: dev_filter_search_play_developers_query_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlayDevSearchBody'
+            example:
+              limit: 2
+              sort: -revenue
+              fields:
+              - id
+              - name
+              - hq_country
+              - category
+              - type
+              - total_apps
+              - revenue
+              - downloads
+              filter:
+                hq_country:
+                - SE
+                type: APP
+                total_apps:
+                  gte: 2
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayDevListResponse'
+              example:
+                data:
+                - id: '6523013212965523194'
+                  name: Spotify AB
+                  category: MUSIC_AND_AUDIO
+                  type: APP
+                  total_apps: 11
+                  downloads: 25210000
+                  revenue: 39000000
+                  hq_country: SE
+                - id: '6394047545173278103'
+                  name: Storytel Sweden AB
+                  category: BOOKS_AND_REFERENCE
+                  type: APP
+                  total_apps: 3
+                  downloads: 600000
+                  revenue: 1000000
+                  hq_country: SE
+                total_count: 2357
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
+      security:
+      - APIKeyHeader: []
+      x-cost-credits: 3
   /play/developers/{id}/estimates:
     get:
       tags:
@@ -541,14 +2019,81 @@ paths:
                   $ref: '#/components/schemas/DevAppsEstimates'
                 type: array
                 title: Response Get Apps Estimates Play Developers  Id  Estimates Get
+              example:
+              - month: 2026-09
+                downloads: 106000000
+                revenue: 3000000
+              - month: 2026-08
+                downloads: 112000000
+                revenue: 2900000
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 1
   /play/estimates:
     get:
       tags:
@@ -594,14 +2139,83 @@ paths:
                   $ref: '#/components/schemas/AppsEstimates'
                 type: array
                 title: Response Get Apps Estimates Play Estimates Get
+              example:
+              - id: com.whatsapp
+                month: 2026-09
+                downloads: 82000000
+                revenue: 1000000
+              - id: com.whatsapp
+                month: 2026-08
+                downloads: 86000000
+                revenue: 900000
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 3
   /play/apps/{id}/installs_daily:
     get:
       tags:
@@ -613,7 +2227,7 @@ paths:
         `ipd` is derived from the cumulative install total: each increase is spread evenly across the elapsed days since the total last changed, so collection gaps and lagging reports are amortised rather than reported as a single-day spike. Values are raw and never negative.
 
 
-        Note: these are unsmoothed figures. AppstoreSpy''s own charts additionally apply a moving average for readability, so a given day''s value may differ from what the UI plots. This endpoint is the underlying data.'
+        By default these are unsmoothed figures. AppstoreSpy''s Daily Installs chart additionally applies a moving average for readability. Pass `smooth=true` to get that series: a centered, triangular-weighted 9-day moving average of `ipd` (weights 1,2,3,4,5,4,3,2,1; days without data are skipped and the weights renormalised). Neighbouring days outside `start`/`end` are included in the window, so the first and last days are smoothed the same way as the rest.'
       operationId: get_apps_installs_daily_play_apps__id__installs_daily_get
       parameters:
       - description: Apps to return separated by comma(,)
@@ -625,23 +2239,32 @@ paths:
         example: com.twitter.android
         name: id
         in: path
-      - description: Start date. Format YYYY-MM-DD
+      - description: Start date. Format YYYY-MM-DD. Defaults to the 30 days ending at `end`
         required: false
         schema:
           type: string
           format: date
           title: Start
-          description: Start date. Format YYYY-MM-DD
+          description: Start date. Format YYYY-MM-DD. Defaults to the 30 days ending at `end`
         name: start
         in: query
-      - description: Start date. Format YYYY-MM-DD
+      - description: End date. Format YYYY-MM-DD
         required: false
         schema:
           type: string
           format: date
           title: End
-          description: Start date. Format YYYY-MM-DD
+          description: End date. Format YYYY-MM-DD
         name: end
+        in: query
+      - description: Return `ipd` smoothed as on the website chart
+        required: false
+        schema:
+          type: boolean
+          title: Smooth
+          description: Return `ipd` smoothed as on the website chart
+          default: false
+        name: smooth
         in: query
       responses:
         '200':
@@ -653,19 +2276,92 @@ paths:
                   $ref: '#/components/schemas/AppsDailyInstalls'
                 type: array
                 title: Response Get Apps Installs Daily Play Apps  Id  Installs Daily Get
+              example:
+              - id: com.whatsapp
+                date: '2026-09-10'
+                ipd: 3295060
+                installs: 12291013135
+              - id: com.whatsapp
+                date: '2026-09-11'
+                ipd: 12322868
+                installs: 12303336003
+              - id: com.whatsapp
+                date: '2026-09-12'
+                ipd: 2227521
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 3
   /play/suggestions:
     get:
       tags:
       - Google Play
-      summary: Get Suggests
+      summary: Get Google Play keyword suggestions
+      description: Returns Google Play search autocomplete suggestions for a term in one country and language. Responds 202 with a partial result while a fresh crawl is in progress; `freshness` sets how old a cached result may be before it is recrawled.
       operationId: get_suggests_play_suggestions_get
       parameters:
       - required: true
@@ -702,25 +2398,120 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Suggest'
+              example:
+                id: VX-6ooYBp4wlolkdJehv
+                term: spotify
+                country: US
+                added: '2023-03-02T14:29:13+00:00'
+                lang: en_US
+                store: play
+                crawled: '2023-03-02T14:29:42+00:00'
+                results:
+                - spotify
+                - spotify lite
+                - spotify downloader
+                - spotify for artists
+                - spotify kids
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '202':
           description: Response in progress
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/SuggestLite'
+              example:
+                id: VX-6ooYBp4wlolkdJehv
+                term: spotify
+                country: US
+                added: '2023-03-02T14:29:13+00:00'
+                lang: en_US
+                store: play
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 1
   /play/liveops:
     get:
       tags:
       - Google Play
-      summary: Get Events
+      summary: Get Google Play LiveOps events for an app
+      description: Returns the LiveOps events (sales, tournaments, updates, new content) Google Play shows for one app in one country. Responds 202 while a fresh crawl is in progress.
       operationId: get_events_play_liveops_get
       parameters:
       - required: true
@@ -753,23 +2544,110 @@ paths:
                   $ref: '#/components/schemas/Event'
                 type: array
                 title: Response 200 Get Events Play Liveops Get
+              example:
+              - id: '4829099650712359966'
+                app: com.supercell.brawlstars
+                store: play
+                type: Event
+                title: 'New Brawler: Willow!'
+                text: Who lives in a dirty swamp under the pier? Willow, the mind controller Brawler, is now available! Check out her powerful mind moves!
+                image: https://lh3.googleusercontent.com/szyrcQm36axbrcjkFKrOhBfQb0Z4JDvKI5lReOTKQTRj66Kh6fTa90ghG85FgBH7VJg=h300
+                country: US
+                state: ACTIVE
+                crawled: '2023-04-22T05:43:31+00:00'
+                date_from: '2023-04-10T08:00:00'
+                date_to: '2023-05-01T08:00:00'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '202':
           description: Response in progress
           content:
             application/json: {}
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 5
   /play/rankings:
     get:
       tags:
       - Google Play
       summary: Get Google Play rankings data
+      description: Returns Google Play chart positions over a date range, filtered by country, category and collection. One row per app per chart per day.
       operationId: get_play_rankings_play_rankings_get
       parameters:
       - description: Start date (YYYY-MM-DD)
@@ -871,224 +2749,196 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse_list_models.responses.response.PlayRankingItem__'
+              example:
+                data:
+                - date: '2026-10-06'
+                  app: com.whatsapp
+                  country: KG
+                  category: COMMUNICATION
+                  collection: topselling_free
+                  rank: 1
+                - date: '2026-10-06'
+                  app: com.whatsapp
+                  country: ZA
+                  category: COMMUNICATION
+                  collection: topselling_free
+                  rank: 1
+                total_count: 312
             text/csv: {}
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 5
+  /play/aggregates/countries:
+    get:
+      tags:
+      - Google Play
+      summary: Aggregate Google Play developers by HQ country
+      description: 'Per-country totals over all Google Play developers: developer count, published apps, and sums of monthly downloads/revenue estimates. The category_type split assigns each developer''s totals to their dominant category type. Sorted by downloads descending.'
+      operationId: get_country_aggregates_play_aggregates_countries_get
+      parameters:
+      - description: Restrict to developers with this dominant category type
+        required: false
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          description: Restrict to developers with this dominant category type
+        name: category_type
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevCountryAggregatesResponse'
+              example:
+                data:
+                - hq_country: US
+                  developers: 146051
+                  published_apps: 273050
+                  downloads: 1751362000
+                  revenue: 1241886000
+                - hq_country: IN
+                  developers: 124396
+                  published_apps: 306240
+                  downloads: 995689000
+                  revenue: 6634000
+                total_count: 241
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
+      security:
+      - APIKeyHeader: []
+      x-cost-credits: 1
 components:
   schemas:
-    AppLanguages:
-      type: string
-      enum:
-      - en_US
-      - ar
-      - en_GB
-      - fr_FR
-      - es_419
-      - de_DE
-      - pt_BR
-      - it_IT
-      - ja_JP
-      - ko_KR
-      - tr_TR
-      - ru_RU
-      - vi
-      title: AppLanguages
-      description: An enumeration.
-    SummarySearchBody:
-      properties:
-        q:
-          type: string
-          title: Q
-          description: Query
-        filter:
-          $ref: '#/components/schemas/SearchFilterPlay'
-      type: object
-      required:
-      - filter
-      title: SummarySearchBody
-      example:
-        filter:
-          name: twitter
-          published: true
-    ChartFilterPlay:
-      properties:
-        collection:
-          $ref: '#/components/schemas/Collection'
-        country:
-          type: string
-          title: Country
-        date:
-          type: string
-          title: Date
-        category:
-          $ref: '#/components/schemas/PlayCategory'
-      type: object
-      required:
-      - country
-      - category
-      title: ChartFilterPlay
-    SummaryResponse:
-      properties:
-        total:
-          type: integer
-          title: Total
-        ipd:
-          type: integer
-          title: Ipd
-        revenue:
-          type: integer
-          title: Revenue
-        downloads:
-          type: integer
-          title: Downloads
-        available:
-          type: integer
-          title: Available
-        removed:
-          type: integer
-          title: Removed
-      type: object
-      required:
-      - total
-      - ipd
-      - revenue
-      - downloads
-      - available
-      - removed
-      title: SummaryResponse
-    TypeEnum:
-      enum:
-      - APP
-      - GAME
-      title: TypeEnum
-      description: An enumeration.
-    PlayAppSearchBody:
-      properties:
-        limit:
-          type: integer
-          title: Limit
-          description: Count of apps in results
-          default: 10
-        page:
-          type: integer
-          title: Page
-          description: Offset page
-          default: 1
-        sort:
-          allOf:
-          - $ref: '#/components/schemas/PlaySortEnum'
-          description: Field for sort
-        fields:
-          items:
-            type: string
-          type: array
-          title: Fields
-          description: Fields for select, empty for all
-          default:
-          - id
-          - url_appstorespy
-          - name
-          - bundle
-          - description_full
-          - published
-          - listing_visible
-          - category
-          - category_type
-          - revenue_month
-          - revenue_lifetime
-          - downloads_month
-          - downloads_lifetime
-          - update_date
-          - release_date
-          - developer_name
-          - description_short
-          - whatsnew
-          - icon
-          - video
-          - screenshots
-          - feature_graphic
-          - removal_date
-          - version
-          - size
-          - downloads_exact
-          - downloads_mark
-          - rating_count
-          - rating_value
-          - review_count
-          - rating_avg
-          - iap
-          - editorial
-          - hosts
-          - chart_info
-          - country
-          - advertised
-          - ads
-        country:
-          allOf:
-          - $ref: '#/components/schemas/AppCountries'
-          description: Country for which return data
-          default: US
-        language:
-          allOf:
-          - $ref: '#/components/schemas/AppLanguages'
-          description: 'Language of meta data. By default: en_US'
-        filter:
-          $ref: '#/components/schemas/SearchFilterPlay'
-      type: object
-      required:
-      - filter
-      title: PlayAppSearchBody
-      example:
-        sort: -downloads_daily
-        fields:
-        - id
-        - name
-        - icon
-        - video
-        - downloads_mark
-        - category_type
-        - category
-        - url_appstorespy
-        language: en_US
-        filter:
-          name: twitter
-          bundle:
-          - com.twitter.android
-          - com.facebook.katana
-          published: true
-          category_type: APP
-          release_date:
-            lte: '2026-08-22'
-          update_date:
-            lte: '2026-08-22'
-          rating_avg:
-            lte: 5.0
-            gte: 3.0
-          rating_count:
-            lte: 1000000
-            gte: 0
-          active_countries:
-          - US
-          downloads_daily:
-            lte: 100000
-            gte: 0
-          downloads_exact:
-            lte: 1000000
-            gte: 0
-    CacheTime:
-      type: string
-      enum:
-      - 1d
-      - 7d
-      - 30d
-      title: CacheTime
-      description: An enumeration.
     SearchFilterPlay:
       properties:
         id:
@@ -1250,57 +3100,237 @@ components:
           description: Pre-registration games only (True); matches apps in the pre-registration state in at least one tracked country
       type: object
       title: SearchFilterPlay
-    PlayAppListResponse:
+    PlayDevSearchBody:
       properties:
-        data:
-          items:
-            $ref: '#/components/schemas/NewPlayApp'
-          type: array
-          title: Data
-        errors:
-          items:
-            $ref: '#/components/schemas/DetailedError'
-          type: array
-          title: Errors
-        total_count:
+        limit:
           type: integer
-          title: Total Count
-          default: 0
-      type: object
-      title: PlayAppListResponse
-    ValidationError:
-      properties:
-        loc:
+          title: Limit
+          description: Count of developers in results
+          default: 10
+        page:
+          type: integer
+          title: Page
+          description: Offset page
+          default: 1
+        sort:
+          allOf:
+          - $ref: '#/components/schemas/DevSortEnum'
+          description: Field for sort, prefix with - for descending
+        fields:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            type: string
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
+          title: Fields
+          description: Fields for select, empty for all
+        filter:
+          $ref: '#/components/schemas/SearchFilterDevPlay'
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    DateRange:
+      - filter
+      title: PlayDevSearchBody
+      example:
+        sort: -revenue
+        fields:
+        - id
+        - name
+        - hq_country
+        - category
+        - type
+        - total_apps
+        - revenue
+        - downloads
+        filter:
+          hq_country:
+          - CY
+          type: GAME
+          revenue:
+            gte: 10000
+          total_apps:
+            gte: 2
+    SuggestLite:
       properties:
-        lte:
+        id:
           type: string
-          format: date
-          title: Lte
-        gte:
+          title: Id
+        term:
           type: string
-          format: date
-          title: Gte
+          title: Term
+        country:
+          type: string
+          title: Country
+        added:
+          type: string
+          format: date-time
+          title: Added
+        lang:
+          type: string
+          title: Lang
+        store:
+          type: string
+          title: Store
       type: object
-      title: DateRange
+      required:
+      - id
+      - term
+      - country
+      - added
+      - lang
+      - store
+      title: SuggestLite
+    PlayReview:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: Review ID
+        lang:
+          type: string
+          title: Lang
+          description: Review language
+        author_id:
+          type: string
+          title: Author Id
+          description: ID of the review author
+        author_name:
+          type: string
+          title: Author Name
+          description: Name of the review author
+        author_image:
+          type: string
+          title: Author Image
+          description: Image URL of the review author
+        version:
+          type: string
+          title: Version
+          description: App version
+        created:
+          type: string
+          title: Created
+          description: Creation date
+        stars:
+          type: integer
+          title: Stars
+          description: App rating
+        likes:
+          type: integer
+          title: Likes
+          description: Review likes
+        comment:
+          type: string
+          title: Comment
+          description: Review text
+        reply:
+          type: string
+          title: Reply
+          description: Reply text
+        replied:
+          type: string
+          title: Replied
+          description: Reply date
+      type: object
+      required:
+      - id
+      - lang
+      - author_id
+      - author_name
+      - author_image
+      - created
+      - stars
+      - likes
+      - comment
+      title: PlayReview
+    CacheTime:
+      type: string
+      enum:
+      - 1d
+      - 7d
+      - 30d
+      title: CacheTime
+      description: An enumeration.
+    PlayListing:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The app package name
+        country:
+          type: string
+          title: Country
+          description: Country the listing was requested for (Google Play `gl`)
+        language:
+          type: string
+          title: Language
+          description: Language the listing was requested in (Google Play `hl`)
+        crawled:
+          type: string
+          format: date-time
+          title: Crawled
+          description: When Google Play was crawled, UTC
+        url:
+          type: string
+          title: Url
+          description: Link to the listing on Google Play for this country and language
+        name:
+          type: string
+          title: Name
+          description: Title as shown on Google Play
+        short:
+          type: string
+          title: Short
+          description: Short description as shown on Google Play
+        description:
+          type: string
+          title: Description
+          description: Full description as shown on Google Play
+        whatsnew:
+          type: string
+          title: Whatsnew
+          description: What's new as shown on Google Play
+        icon:
+          type: string
+          title: Icon
+          description: Icon URL
+        feature:
+          type: string
+          title: Feature
+          description: Feature graphic URL
+        trailer:
+          type: string
+          title: Trailer
+          description: Promo video Youtube link
+        screenshots:
+          items:
+            type: string
+          type: array
+          title: Screenshots
+          description: Screenshot URLs in the order Google Play shows them
+        translated:
+          type: boolean
+          title: Translated
+          description: 'True when the developer has not supplied this language and Google Play shows a machine translation of the default listing; `short` and `description` are then that translation. False means the texts are the developer''s own: a listing in this language, or the default listing when Google Play does not translate it.'
+        translated_from:
+          type: string
+          title: Translated From
+          description: Source language of the machine translation, as Google Play names it in the requested language
+      type: object
+      required:
+      - id
+      - country
+      - language
+      - crawled
+      - url
+      - name
+      - screenshots
+      - translated
+      title: PlayListing
+      description: 'A Google Play store listing crawled live for one country and language.
+
+
+        Unlike `PlayApp`, nothing here comes from AppstoreSpy storage: the fields are
+
+        exactly what Google Play served for the requested `country` and `language` at
+
+        `crawled`, so any locale Google Play Console accepts can be requested.'
     Suggest:
       properties:
         id:
@@ -1343,13 +3373,325 @@ components:
       - lang
       - store
       title: Suggest
-    Image:
+    SummaryResponse:
       properties:
-        url:
-          type: string
-          title: Url
+        total:
+          type: integer
+          title: Total
+        ipd:
+          type: integer
+          title: Ipd
+        revenue:
+          type: integer
+          title: Revenue
+        downloads:
+          type: integer
+          title: Downloads
+        available:
+          type: integer
+          title: Available
+        removed:
+          type: integer
+          title: Removed
       type: object
-      title: Image
+      required:
+      - total
+      - ipd
+      - revenue
+      - downloads
+      - available
+      - removed
+      title: SummaryResponse
+    TypeEnum:
+      enum:
+      - APP
+      - GAME
+      title: TypeEnum
+      description: An enumeration.
+    PlayCategory:
+      enum:
+      - APPLICATION
+      - SOCIAL
+      - FAMILY
+      - ANDROID_WEAR
+      - ART_AND_DESIGN
+      - AUTO_AND_VEHICLES
+      - BEAUTY
+      - BOOKS_AND_REFERENCE
+      - BUSINESS
+      - COMICS
+      - COMMUNICATION
+      - DATING
+      - EDUCATION
+      - ENTERTAINMENT
+      - EVENTS
+      - FINANCE
+      - FOOD_AND_DRINK
+      - HEALTH_AND_FITNESS
+      - HOUSE_AND_HOME
+      - LIBRARIES_AND_DEMO
+      - LIFESTYLE
+      - MAPS_AND_NAVIGATION
+      - MEDICAL
+      - MUSIC_AND_AUDIO
+      - NEWS_AND_MAGAZINES
+      - PARENTING
+      - PERSONALIZATION
+      - PHOTOGRAPHY
+      - PRODUCTIVITY
+      - SHOPPING
+      - SPORTS
+      - TOOLS
+      - TRAVEL_AND_LOCAL
+      - VIDEO_PLAYERS
+      - WEATHER
+      - GAME
+      - GAME_ACTION
+      - GAME_ADVENTURE
+      - GAME_ARCADE
+      - GAME_BOARD
+      - GAME_CARD
+      - GAME_CASINO
+      - GAME_CASUAL
+      - GAME_EDUCATIONAL
+      - GAME_MUSIC
+      - GAME_PUZZLE
+      - GAME_RACING
+      - GAME_ROLE_PLAYING
+      - GAME_SIMULATION
+      - GAME_SPORTS
+      - GAME_STRATEGY
+      - GAME_TRIVIA
+      - GAME_WORD
+      - FAMILY_ACTION
+      - FAMILY_BRAINGAMES
+      - FAMILY_CREATE
+      - FAMILY_MUSICVIDEO
+      - FAMILY_PRETEND
+      - FAMILY_EDUCATION
+      title: PlayCategory
+      description: An enumeration.
+    Collection:
+      enum:
+      - Free
+      - Grossing
+      - Paid
+      - topselling_free
+      - topgrossing
+      - topselling_paid
+      - topselling_new_free
+      - topselling_new_paid
+      - movers_shakers
+      title: Collection
+      description: An enumeration.
+    DevCountryAggregatesResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/DevCountryAggregate'
+          type: array
+          title: Data
+        errors:
+          items:
+            $ref: '#/components/schemas/DetailedError'
+          type: array
+          title: Errors
+        total_count:
+          type: integer
+          title: Total Count
+          default: 0
+      type: object
+      title: DevCountryAggregatesResponse
+    AppsEstimates:
+      properties:
+        id:
+          type: string
+          title: Id
+        month:
+          type: string
+          title: Month
+        downloads:
+          type: integer
+          title: Downloads
+        revenue:
+          type: integer
+          title: Revenue
+      type: object
+      required:
+      - id
+      - month
+      title: AppsEstimates
+    PlayAppSearchBody:
+      properties:
+        limit:
+          type: integer
+          title: Limit
+          description: Count of apps in results
+          default: 10
+        page:
+          type: integer
+          title: Page
+          description: Offset page
+          default: 1
+        sort:
+          allOf:
+          - $ref: '#/components/schemas/PlaySortEnum'
+          description: Field for sort
+        fields:
+          items:
+            type: string
+          type: array
+          title: Fields
+          description: Fields for select, empty for all
+          default:
+          - id
+          - url_appstorespy
+          - name
+          - bundle
+          - description_full
+          - published
+          - listing_visible
+          - category
+          - category_type
+          - revenue_month
+          - revenue_lifetime
+          - downloads_month
+          - downloads_lifetime
+          - update_date
+          - release_date
+          - developer_name
+          - description_short
+          - whatsnew
+          - icon
+          - video
+          - screenshots
+          - feature_graphic
+          - removal_date
+          - version
+          - size
+          - downloads_exact
+          - downloads_mark
+          - rating_count
+          - rating_value
+          - review_count
+          - rating_avg
+          - iap
+          - editorial
+          - hosts
+          - chart_info
+          - country
+          - advertised
+          - ads
+        country:
+          allOf:
+          - $ref: '#/components/schemas/AppCountries'
+          description: Country for which return data
+          default: US
+        language:
+          allOf:
+          - $ref: '#/components/schemas/AppLanguages'
+          description: 'Language of meta data. By default: en_US'
+        filter:
+          $ref: '#/components/schemas/SearchFilterPlay'
+      type: object
+      required:
+      - filter
+      title: PlayAppSearchBody
+      example:
+        sort: -downloads_daily
+        fields:
+        - id
+        - name
+        - icon
+        - video
+        - downloads_mark
+        - category_type
+        - category
+        - url_appstorespy
+        language: en_US
+        filter:
+          name: twitter
+          bundle:
+          - com.twitter.android
+          - com.facebook.katana
+          published: true
+          category_type: APP
+          release_date:
+            lte: '2026-10-19'
+          update_date:
+            lte: '2026-10-19'
+          rating_avg:
+            lte: 5.0
+            gte: 3.0
+          rating_count:
+            lte: 1000000
+            gte: 0
+          active_countries:
+          - US
+          downloads_daily:
+            lte: 100000
+            gte: 0
+          downloads_exact:
+            lte: 1000000
+            gte: 0
+    Event:
+      properties:
+        id:
+          type: string
+          title: Id
+        app:
+          type: string
+          title: App
+        store:
+          type: string
+          title: Store
+        type:
+          type: string
+          title: Type
+        title:
+          type: string
+          title: Title
+        text:
+          type: string
+          title: Text
+        image:
+          type: string
+          title: Image
+        country:
+          type: string
+          title: Country
+        state:
+          type: string
+          title: State
+        crawled:
+          type: string
+          format: date-time
+          title: Crawled
+        date_from:
+          type: string
+          format: date-time
+          title: Date From
+        date_to:
+          type: string
+          format: date-time
+          title: Date To
+        video:
+          type: string
+          title: Video
+      type: object
+      required:
+      - id
+      - app
+      - store
+      - type
+      - title
+      - text
+      - image
+      - country
+      - state
+      - crawled
+      - date_from
+      title: Event
     Creatives:
       properties:
         video:
@@ -1375,36 +3717,138 @@ components:
       - fb
       - network
       title: Creatives
-    PlaySortEnum:
+    SimilarEnum:
+      enum:
+      - to
+      - from
+      title: SimilarEnum
+      description: An enumeration.
+    PlayListingPending:
+      properties:
+        id:
+          type: string
+          title: Id
+          description: The app package name
+        country:
+          type: string
+          title: Country
+          description: Country the listing was requested for
+        language:
+          type: string
+          title: Language
+          description: Language the listing was requested in
+        status:
+          type: string
+          title: Status
+          description: Always `pending`
+          default: pending
+        requested:
+          type: string
+          format: date-time
+          title: Requested
+          description: When the crawl was queued, UTC
+        message:
+          type: string
+          title: Message
+          description: What to do next
+      type: object
+      required:
+      - id
+      - country
+      - language
+      - requested
+      - message
+      title: PlayListingPending
+    SearchFilterDevPlay:
+      properties:
+        hq_country:
+          items:
+            type: string
+          type: array
+          title: Hq Country
+          description: One or more country codes. Country of the developer's registered address as disclosed on the store listing (ISO 3166-1 alpha-2). May differ from where the company actually operates.
+        type:
+          allOf:
+          - $ref: '#/components/schemas/TypeEnum'
+          description: Dominant category type of the developer's apps
+        revenue:
+          allOf:
+          - $ref: '#/components/schemas/ValueRange'
+          title: Revenue
+          description: Monthly revenue estimate range, USD
+        downloads:
+          allOf:
+          - $ref: '#/components/schemas/ValueRange'
+          title: Downloads
+          description: Monthly downloads estimate range
+        total_apps:
+          allOf:
+          - $ref: '#/components/schemas/ValueRange'
+          title: Total Apps
+          description: Total apps count range
+        am_publisher_id:
+          items:
+            type: string
+          type: array
+          title: Am Publisher Id
+          description: One or more publisher ids. Unified cross-store publisher id; the same value appears on the iOS and Play developer accounts of one company. Null when no mapping is known.
+        st_publisher_id:
+          items:
+            type: string
+          type: array
+          title: St Publisher Id
+          description: One or more publisher ids. Store-specific publisher id from the download-estimates provider. Null when no mapping is known.
+        category:
+          allOf:
+          - $ref: '#/components/schemas/PlayCategory'
+          description: Dominant category of the developer's apps
+      type: object
+      title: SearchFilterDevPlay
+    ChartFilterPlay:
+      properties:
+        collection:
+          $ref: '#/components/schemas/Collection'
+        country:
+          type: string
+          title: Country
+        date:
+          type: string
+          title: Date
+        category:
+          $ref: '#/components/schemas/PlayCategory'
+      type: object
+      required:
+      - country
+      - category
+      title: ChartFilterPlay
+    StoreLanguages:
+      properties:
+        languages:
+          items:
+            type: string
+          type: array
+          title: Languages
+      type: object
+      required:
+      - languages
+      title: StoreLanguages
+    AppLanguages:
       type: string
       enum:
-      - revenue_month
-      - -revenue_month
-      - downloads_month
-      - -downloads_month
-      - update_date
-      - -update_date
-      - release_date
-      - -release_date
-      - removal_date
-      - -removal_date
-      - downloads_exact
-      - -downloads_exact
-      - downloads_mark
-      - -downloads_mark
-      - rating_count
-      - -rating_count
-      - rating_value
-      - -rating_value
-      - review_count
-      - -review_count
-      - rating_avg
-      - -rating_avg
-      - chart_info
-      - -chart_info
-      - downloads_daily
-      - -downloads_daily
-      title: PlaySortEnum
+      - en_US
+      - ar
+      - en_GB
+      - fr_FR
+      - es_419
+      - de_DE
+      - pt_BR
+      - it_IT
+      - ja_JP
+      - ko_KR
+      - tr_TR
+      - ru_RU
+      - vi
+      title: AppLanguages
       description: An enumeration.
     StoreCountries:
       properties:
@@ -1417,6 +3861,20 @@ components:
       required:
       - countries
       title: StoreCountries
+    ValueRange:
+      properties:
+        lte:
+          anyOf:
+          - type: integer
+          - type: number
+          title: Lte
+        gte:
+          anyOf:
+          - type: integer
+          - type: number
+          title: Gte
+      type: object
+      title: ValueRange
     AppCountries:
       type: string
       enum:
@@ -1472,55 +3930,122 @@ components:
       - MX
       title: AppCountries
       description: An enumeration.
-    AppsEstimates:
+    PlayListingLanguages:
+      type: string
+      enum:
+      - af
+      - sq
+      - am
+      - ar
+      - hy_AM
+      - az_AZ
+      - bn_BD
+      - eu_ES
+      - be
+      - bg
+      - my_MM
+      - ca
+      - zh_HK
+      - zh_CN
+      - zh_TW
+      - hr
+      - cs_CZ
+      - da_DK
+      - nl_NL
+      - en_IN
+      - en_SG
+      - en_ZA
+      - en_AU
+      - en_CA
+      - en_GB
+      - en_US
+      - et
+      - fil
+      - fi_FI
+      - fr_CA
+      - fr_FR
+      - gl_ES
+      - ka_GE
+      - de_DE
+      - el_GR
+      - gu
+      - iw_IL
+      - hi_IN
+      - hu_HU
+      - is_IS
+      - id
+      - it_IT
+      - ja_JP
+      - kn_IN
+      - kk
+      - km_KH
+      - ko_KR
+      - ky_KG
+      - lo_LA
+      - lv
+      - lt
+      - mk_MK
+      - ms
+      - ms_MY
+      - ml_IN
+      - mr_IN
+      - mn_MN
+      - ne_NP
+      - no_NO
+      - fa
+      - fa_AE
+      - fa_AF
+      - fa_IR
+      - pl_PL
+      - pt_BR
+      - pt_PT
+      - pa
+      - ro
+      - rm
+      - ru_RU
+      - sr
+      - si_LK
+      - sk
+      - sl
+      - es_419
+      - es_ES
+      - es_US
+      - sw
+      - sv_SE
+      - ta_IN
+      - te_IN
+      - th
+      - tr_TR
+      - uk
+      - ur
+      - vi
+      - zu
+      title: PlayListingLanguages
+      description: 'Every locale Google Play Console accepts for a store listing. Used by the live
+
+        listing endpoint, which crawls Google Play directly and is not limited by the
+
+        languages stored in Elasticsearch (see AppLanguages).'
+    DetailedError:
       properties:
-        id:
+        location:
           type: string
-          title: Id
-        month:
+          title: Location
+        message:
           type: string
-          title: Month
-        downloads:
-          type: integer
-          title: Downloads
-        revenue:
-          type: integer
-          title: Revenue
+          title: Message
+        value:
+          anyOf:
+          - type: string
+          - items:
+              type: string
+            type: array
+          title: Value
       type: object
       required:
-      - id
-      - month
-      title: AppsEstimates
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    AppsDailyInstalls:
-      properties:
-        id:
-          type: string
-          title: Id
-        date:
-          type: string
-          format: date
-          title: Date
-        ipd:
-          type: integer
-          title: Ipd
-        installs:
-          type: integer
-          title: Installs
-      type: object
-      required:
-      - id
-      - date
-      - ipd
-      title: AppsDailyInstalls
+      - location
+      - message
+      title: DetailedError
     SimilarSearchBody:
       properties:
         limit:
@@ -1620,289 +4145,117 @@ components:
         - category
         - url_appstorespy
         language: en_US
-    PlayReview:
+    Image:
       properties:
-        id:
+        url:
           type: string
-          title: Id
-          description: Review ID
-        lang:
-          type: string
-          title: Lang
-          description: Review language
-        author_id:
-          type: string
-          title: Author Id
-          description: ID of the review author
-        author_name:
-          type: string
-          title: Author Name
-          description: Name of the review author
-        author_image:
-          type: string
-          title: Author Image
-          description: Image URL of the review author
-        version:
-          type: string
-          title: Version
-          description: App version
-        created:
-          type: string
-          title: Created
-          description: Creation date
-        stars:
-          type: integer
-          title: Stars
-          description: App rating
-        likes:
-          type: integer
-          title: Likes
-          description: Review likes
-        comment:
-          type: string
-          title: Comment
-          description: Review text
-        reply:
-          type: string
-          title: Reply
-          description: Reply text
-        replied:
-          type: string
-          title: Replied
-          description: Reply date
+          title: Url
       type: object
-      required:
-      - id
-      - lang
-      - author_id
-      - author_name
-      - author_image
-      - created
-      - stars
-      - likes
-      - comment
-      title: PlayReview
-    Collection:
-      enum:
-      - Free
-      - Grossing
-      - Paid
-      - topselling_free
-      - topgrossing
-      - topselling_paid
-      - topselling_new_free
-      - topselling_new_paid
-      - movers_shakers
-      title: Collection
-      description: An enumeration.
-    NewPlayApp:
+      title: Image
+    PlayDev:
       properties:
         id:
           type: string
           title: Id
-        country:
-          type: string
-          title: Country
-        language:
-          type: string
-          title: Language
-        bundle:
-          type: string
-          title: Bundle
         name:
           type: string
           title: Name
-        description_full:
-          type: string
-          title: Description Full
-        published:
-          type: boolean
-          title: Published
-        listing_visible:
-          type: boolean
-          title: Listing Visible
         category:
           type: string
           title: Category
-        category_type:
+        type:
           type: string
-          title: Category Type
-        revenue_month:
+          title: Type
+        total_apps:
           type: integer
-          title: Revenue Month
-        revenue_lifetime:
+          title: Total Apps
+        published_apps:
           type: integer
-          title: Revenue Lifetime
-        downloads_month:
-          type: integer
-          title: Downloads Month
-        downloads_lifetime:
-          type: integer
-          title: Downloads Lifetime
-        release_date:
+          title: Published Apps
+        last_updated:
           type: string
-          format: date
-          title: Release Date
-        update_date:
+          title: Last Updated
+        first_released:
           type: string
-          format: date
-          title: Update Date
-        developer_name:
-          type: string
-          title: Developer Name
-        description_short:
-          type: string
-          title: Description Short
-        whatsnew:
-          type: string
-          title: Whatsnew
-        icon:
-          type: string
-          title: Icon
-        video:
-          type: string
-          title: Video
-        screenshots:
-          items:
-            type: string
-          type: array
-          title: Screenshots
-        feature_graphic:
-          type: string
-          title: Feature Graphic
-        removal_date:
-          type: string
-          format: date
-          title: Removal Date
-        version:
-          type: string
-          title: Version
-        size:
-          type: number
-          title: Size
-        downloads_daily:
-          type: integer
-          title: Downloads Daily
-        downloads_exact:
-          type: integer
-          title: Downloads Exact
-        downloads_mark:
-          type: integer
-          title: Downloads Mark
+          title: First Released
         rating_count:
           type: integer
           title: Rating Count
-        rating_value:
-          type: number
-          title: Rating Value
-        review_count:
+        downloads:
           type: integer
-          title: Review Count
-        rating_avg:
-          type: number
-          title: Rating Avg
-        iap:
-          type: boolean
-          title: Iap
-        editorial:
-          type: boolean
-          title: Editorial
-        chart_info:
-          $ref: '#/components/schemas/PlayChart'
-        hosts:
+          title: Downloads
+        revenue:
+          type: integer
+          title: Revenue
+        top_apps:
           items:
             type: string
           type: array
-          title: Hosts
-        url_appstorespy:
+          title: Top Apps
+        hq_country:
           type: string
-          title: Url Appstorespy
-          description: Url to AppstoreSpy
-        ipd:
-          type: integer
-          title: Ipd
-          description: Estimated daily installs
+          title: Hq Country
+          description: Country of the developer's registered address as disclosed on the store listing (ISO 3166-1 alpha-2). May differ from where the company actually operates.
+        am_publisher_id:
+          type: string
+          title: Am Publisher Id
+          description: Unified cross-store publisher id; the same value appears on the iOS and Play developer accounts of one company. Null when no mapping is known.
+        st_publisher_id:
+          type: string
+          title: St Publisher Id
+          description: Store-specific publisher id from the download-estimates provider. Null when no mapping is known.
         email:
           items:
             type: string
           type: array
           title: Email
-          description: App's developer email
         url:
           type: string
           title: Url
-          description: Link to App Store
-        policy:
+        installs:
+          type: integer
+          title: Installs
+        installs_exact:
+          type: integer
+          title: Installs Exact
+        ipd:
+          type: integer
+          title: Ipd
+        ipd_max:
+          type: integer
+          title: Ipd Max
+        icon:
           type: string
-          title: Policy
-          description: '...'
-        website:
+          title: Icon
+        header:
           type: string
-          title: Website
-          description: App website
-        developer_id:
+          title: Header
+        featured:
           type: string
-          title: Developer Id
-        ads:
-          allOf:
-          - $ref: '#/components/schemas/Creatives'
-          title: Ads
-          description: App`s ads
-        advertised:
-          type: boolean
-          title: Advertised
-          description: App is advertised in networks
-        about_phone:
+          title: Featured
+      type: object
+      title: PlayDev
+    AppsDailyInstalls:
+      properties:
+        id:
           type: string
-          title: About Phone
-          description: 'About developer: phone number'
-        about_address:
+          title: Id
+        date:
           type: string
-          title: About Address
-          description: 'About developer: address'
-        address_country:
-          type: string
-          title: Address Country
-          description: 'Address: country'
-        support_phone:
-          type: string
-          title: Support Phone
-          description: 'App support: phone number'
-        transferred:
-          type: string
-          title: Transferred
-          description: The last transfer date as detected by AppstoreSpy
-        previous_developer_id:
-          type: string
-          title: Previous Developer Id
-          description: Previous developer ID before transfer
-        previous_developer_name:
-          type: string
-          title: Previous Developer Name
-          description: Previous developer name before transfer
+          format: date
+          title: Date
+        ipd:
+          type: integer
+          title: Ipd
+        installs:
+          type: integer
+          title: Installs
       type: object
       required:
       - id
-      - country
-      - language
-      title: NewPlayApp
-    PlayChart:
-      properties:
-        position:
-          type: integer
-          title: Position
-        collection:
-          type: string
-          title: Collection
-        category:
-          type: string
-          title: Category
-      type: object
-      required:
-      - position
-      - collection
-      - category
-      title: PlayChart
+      - date
+      - ipd
+      title: AppsDailyInstalls
     AppCreativeVideo:
       properties:
         preview:
@@ -1916,86 +4269,87 @@ components:
           title: Url
       type: object
       title: AppCreativeVideo
-    SimilarEnum:
-      enum:
-      - to
-      - from
-      title: SimilarEnum
-      description: An enumeration.
-    DetailedError:
+    PlayAppListResponse:
       properties:
-        location:
-          type: string
+        data:
+          items:
+            $ref: '#/components/schemas/NewPlayApp'
+          type: array
+          title: Data
+        errors:
+          items:
+            $ref: '#/components/schemas/DetailedError'
+          type: array
+          title: Errors
+        total_count:
+          type: integer
+          title: Total Count
+          default: 0
+      type: object
+      title: PlayAppListResponse
+    ApiResponse_list_models.responses.response.PlayRankingItem__:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/PlayRankingItem'
+          type: array
+          title: Data
+        errors:
+          items:
+            $ref: '#/components/schemas/DetailedError'
+          type: array
+          title: Errors
+        total_count:
+          type: integer
+          title: Total Count
+          default: 0
+      type: object
+      title: ApiResponse[list[models.responses.response.PlayRankingItem]]
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
           title: Location
-        message:
+        msg:
           type: string
           title: Message
-        value:
-          anyOf:
-          - type: string
-          - items:
-              type: string
-            type: array
-          title: Value
+        type:
+          type: string
+          title: Error Type
       type: object
       required:
-      - location
-      - message
-      title: DetailedError
-    PlayRankingItem:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    DevAppsEstimates:
       properties:
-        date:
+        month:
           type: string
-          title: Date
-        app:
-          type: string
-          title: App
-        country:
-          type: string
-          title: Country
-        category:
-          type: string
-          title: Category
-        collection:
-          type: string
-          title: Collection
-        rank:
+          title: Month
+        downloads:
           type: integer
-          title: Rank
+          title: Downloads
+        revenue:
+          type: integer
+          title: Revenue
       type: object
       required:
-      - date
-      - app
-      - country
-      - category
-      - collection
-      - rank
-      title: PlayRankingItem
-    StoreLanguages:
+      - month
+      title: DevAppsEstimates
+    HTTPValidationError:
       properties:
-        languages:
+        detail:
           items:
-            type: string
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Languages
+          title: Detail
       type: object
-      required:
-      - languages
-      title: StoreLanguages
-    ValueRange:
-      properties:
-        lte:
-          anyOf:
-          - type: integer
-          - type: number
-          title: Lte
-        gte:
-          anyOf:
-          - type: integer
-          - type: number
-          title: Gte
-      type: object
-      title: ValueRange
+      title: HTTPValidationError
     PlayApp:
       properties:
         id:
@@ -2242,178 +4596,337 @@ components:
           description: 'Address: country'
       type: object
       title: PlayApp
-    PlayDev:
+    SummarySearchBody:
+      properties:
+        q:
+          type: string
+          title: Q
+          description: Query
+        filter:
+          $ref: '#/components/schemas/SearchFilterPlay'
+      type: object
+      required:
+      - filter
+      title: SummarySearchBody
+      example:
+        filter:
+          name: twitter
+          published: true
+    DateRange:
+      properties:
+        lte:
+          type: string
+          format: date
+          title: Lte
+        gte:
+          type: string
+          format: date
+          title: Gte
+      type: object
+      title: DateRange
+    PlayRankingItem:
+      properties:
+        date:
+          type: string
+          title: Date
+        app:
+          type: string
+          title: App
+        country:
+          type: string
+          title: Country
+        category:
+          type: string
+          title: Category
+        collection:
+          type: string
+          title: Collection
+        rank:
+          type: integer
+          title: Rank
+      type: object
+      required:
+      - date
+      - app
+      - country
+      - category
+      - collection
+      - rank
+      title: PlayRankingItem
+    PlayChart:
+      properties:
+        position:
+          type: integer
+          title: Position
+        collection:
+          type: string
+          title: Collection
+        category:
+          type: string
+          title: Category
+      type: object
+      required:
+      - position
+      - collection
+      - category
+      title: PlayChart
+    PlaySortEnum:
+      type: string
+      enum:
+      - revenue_month
+      - -revenue_month
+      - downloads_month
+      - -downloads_month
+      - update_date
+      - -update_date
+      - release_date
+      - -release_date
+      - removal_date
+      - -removal_date
+      - downloads_exact
+      - -downloads_exact
+      - downloads_mark
+      - -downloads_mark
+      - rating_count
+      - -rating_count
+      - rating_value
+      - -rating_value
+      - review_count
+      - -review_count
+      - rating_avg
+      - -rating_avg
+      - chart_info
+      - -chart_info
+      - downloads_daily
+      - -downloads_daily
+      title: PlaySortEnum
+      description: An enumeration.
+    DevCountryAggregate:
+      properties:
+        hq_country:
+          type: string
+          title: Hq Country
+          description: Country of the developer's registered address as disclosed on the store listing (ISO 3166-1 alpha-2). May differ from where the company actually operates.
+        developers:
+          type: integer
+          title: Developers
+          description: Number of developers with this HQ country
+        published_apps:
+          type: integer
+          title: Published Apps
+          description: Sum of published apps across those developers
+        downloads:
+          type: integer
+          title: Downloads
+          description: Sum of monthly downloads estimates across those developers
+        revenue:
+          type: integer
+          title: Revenue
+          description: Sum of monthly revenue estimates across those developers, USD
+      type: object
+      required:
+      - hq_country
+      - developers
+      - published_apps
+      - downloads
+      - revenue
+      title: DevCountryAggregate
+    NewPlayApp:
       properties:
         id:
           type: string
           title: Id
+        country:
+          type: string
+          title: Country
+        language:
+          type: string
+          title: Language
+        bundle:
+          type: string
+          title: Bundle
         name:
           type: string
           title: Name
+        description_full:
+          type: string
+          title: Description Full
+        published:
+          type: boolean
+          title: Published
+        listing_visible:
+          type: boolean
+          title: Listing Visible
         category:
           type: string
           title: Category
-        type:
+        category_type:
           type: string
-          title: Type
-        total_apps:
+          title: Category Type
+        revenue_month:
           type: integer
-          title: Total Apps
-        published_apps:
+          title: Revenue Month
+        revenue_lifetime:
           type: integer
-          title: Published Apps
-        last_updated:
+          title: Revenue Lifetime
+        downloads_month:
+          type: integer
+          title: Downloads Month
+        downloads_lifetime:
+          type: integer
+          title: Downloads Lifetime
+        release_date:
           type: string
-          title: Last Updated
-        first_released:
+          format: date
+          title: Release Date
+        update_date:
           type: string
-          title: First Released
-        rating_count:
-          type: integer
-          title: Rating Count
-        downloads:
-          type: integer
-          title: Downloads
-        revenue:
-          type: integer
-          title: Revenue
-        top_apps:
+          format: date
+          title: Update Date
+        developer_name:
+          type: string
+          title: Developer Name
+        description_short:
+          type: string
+          title: Description Short
+        whatsnew:
+          type: string
+          title: Whatsnew
+        icon:
+          type: string
+          title: Icon
+        video:
+          type: string
+          title: Video
+        screenshots:
           items:
             type: string
           type: array
-          title: Top Apps
-        hq_country:
+          title: Screenshots
+        feature_graphic:
           type: string
-          title: Hq Country
+          title: Feature Graphic
+        removal_date:
+          type: string
+          format: date
+          title: Removal Date
+        version:
+          type: string
+          title: Version
+        size:
+          type: number
+          title: Size
+        downloads_daily:
+          type: integer
+          title: Downloads Daily
+        downloads_exact:
+          type: integer
+          title: Downloads Exact
+        downloads_mark:
+          type: integer
+          title: Downloads Mark
+        rating_count:
+          type: integer
+          title: Rating Count
+        rating_value:
+          type: number
+          title: Rating Value
+        review_count:
+          type: integer
+          title: Review Count
+        rating_avg:
+          type: number
+          title: Rating Avg
+        iap:
+          type: boolean
+          title: Iap
+        editorial:
+          type: boolean
+          title: Editorial
+        chart_info:
+          $ref: '#/components/schemas/PlayChart'
+        hosts:
+          items:
+            type: string
+          type: array
+          title: Hosts
+        url_appstorespy:
+          type: string
+          title: Url Appstorespy
+          description: Url to AppstoreSpy
+        ipd:
+          type: integer
+          title: Ipd
+          description: Estimated daily installs
         email:
           items:
             type: string
           type: array
           title: Email
+          description: App's developer email
         url:
           type: string
           title: Url
-        installs:
-          type: integer
-          title: Installs
-        installs_exact:
-          type: integer
-          title: Installs Exact
-        ipd:
-          type: integer
-          title: Ipd
-        ipd_max:
-          type: integer
-          title: Ipd Max
-        icon:
+          description: Link to App Store
+        policy:
           type: string
-          title: Icon
-        header:
+          title: Policy
+          description: '...'
+        website:
           type: string
-          title: Header
-        featured:
+          title: Website
+          description: App website
+        developer_id:
           type: string
-          title: Featured
-      type: object
-      title: PlayDev
-    SuggestLite:
-      properties:
-        id:
+          title: Developer Id
+        ads:
+          allOf:
+          - $ref: '#/components/schemas/Creatives'
+          title: Ads
+          description: App`s ads
+        advertised:
+          type: boolean
+          title: Advertised
+          description: App is advertised in networks
+        about_phone:
           type: string
-          title: Id
-        term:
+          title: About Phone
+          description: 'About developer: phone number'
+        about_address:
           type: string
-          title: Term
-        country:
+          title: About Address
+          description: 'About developer: address'
+        address_country:
           type: string
-          title: Country
-        added:
+          title: Address Country
+          description: 'Address: country'
+        support_phone:
           type: string
-          format: date-time
-          title: Added
-        lang:
+          title: Support Phone
+          description: 'App support: phone number'
+        transferred:
           type: string
-          title: Lang
-        store:
+          title: Transferred
+          description: The last transfer date as detected by AppstoreSpy
+        previous_developer_id:
           type: string
-          title: Store
+          title: Previous Developer Id
+          description: Previous developer ID before transfer
+        previous_developer_name:
+          type: string
+          title: Previous Developer Name
+          description: Previous developer name before transfer
       type: object
       required:
       - id
-      - term
       - country
-      - added
-      - lang
-      - store
-      title: SuggestLite
-    PlayCategory:
-      enum:
-      - APPLICATION
-      - SOCIAL
-      - FAMILY
-      - ANDROID_WEAR
-      - ART_AND_DESIGN
-      - AUTO_AND_VEHICLES
-      - BEAUTY
-      - BOOKS_AND_REFERENCE
-      - BUSINESS
-      - COMICS
-      - COMMUNICATION
-      - DATING
-      - EDUCATION
-      - ENTERTAINMENT
-      - EVENTS
-      - FINANCE
-      - FOOD_AND_DRINK
-      - HEALTH_AND_FITNESS
-      - HOUSE_AND_HOME
-      - LIBRARIES_AND_DEMO
-      - LIFESTYLE
-      - MAPS_AND_NAVIGATION
-      - MEDICAL
-      - MUSIC_AND_AUDIO
-      - NEWS_AND_MAGAZINES
-      - PARENTING
-      - PERSONALIZATION
-      - PHOTOGRAPHY
-      - PRODUCTIVITY
-      - SHOPPING
-      - SPORTS
-      - TOOLS
-      - TRAVEL_AND_LOCAL
-      - VIDEO_PLAYERS
-      - WEATHER
-      - GAME
-      - GAME_ACTION
-      - GAME_ADVENTURE
-      - GAME_ARCADE
-      - GAME_BOARD
-      - GAME_CARD
-      - GAME_CASINO
-      - GAME_CASUAL
-      - GAME_EDUCATIONAL
-      - GAME_MUSIC
-      - GAME_PUZZLE
-      - GAME_RACING
-      - GAME_ROLE_PLAYING
-      - GAME_SIMULATION
-      - GAME_SPORTS
-      - GAME_STRATEGY
-      - GAME_TRIVIA
-      - GAME_WORD
-      - FAMILY_ACTION
-      - FAMILY_BRAINGAMES
-      - FAMILY_CREATE
-      - FAMILY_MUSICVIDEO
-      - FAMILY_PRETEND
-      - FAMILY_EDUCATION
-      title: PlayCategory
-      description: An enumeration.
-    ApiResponse_list_models.responses.response.PlayRankingItem__:
+      - language
+      title: NewPlayApp
+    PlayDevListResponse:
       properties:
         data:
           items:
-            $ref: '#/components/schemas/PlayRankingItem'
+            $ref: '#/components/schemas/PlayDev'
           type: array
           title: Data
         errors:
@@ -2426,82 +4939,31 @@ components:
           title: Total Count
           default: 0
       type: object
-      title: ApiResponse[list[models.responses.response.PlayRankingItem]]
-    Event:
-      properties:
-        id:
-          type: string
-          title: Id
-        app:
-          type: string
-          title: App
-        store:
-          type: string
-          title: Store
-        type:
-          type: string
-          title: Type
-        title:
-          type: string
-          title: Title
-        text:
-          type: string
-          title: Text
-        image:
-          type: string
-          title: Image
-        country:
-          type: string
-          title: Country
-        state:
-          type: string
-          title: State
-        crawled:
-          type: string
-          format: date-time
-          title: Crawled
-        date_from:
-          type: string
-          format: date-time
-          title: Date From
-        date_to:
-          type: string
-          format: date-time
-          title: Date To
-        video:
-          type: string
-          title: Video
-      type: object
-      required:
-      - id
-      - app
-      - store
-      - type
-      - title
-      - text
-      - image
-      - country
-      - state
-      - crawled
-      - date_from
-      title: Event
-    DevAppsEstimates:
-      properties:
-        month:
-          type: string
-          title: Month
-        downloads:
-          type: integer
-          title: Downloads
-        revenue:
-          type: integer
-          title: Revenue
-      type: object
-      required:
-      - month
-      title: DevAppsEstimates
+      title: PlayDevListResponse
+    DevSortEnum:
+      type: string
+      enum:
+      - revenue
+      - -revenue
+      - downloads
+      - -downloads
+      - total_apps
+      - -total_apps
+      - published_apps
+      - -published_apps
+      - rating_count
+      - -rating_count
+      - first_released
+      - -first_released
+      - last_updated
+      - -last_updated
+      title: DevSortEnum
+      description: An enumeration.
   securitySchemes:
     APIKeyHeader:
       type: apiKey
       in: header
       name: API-KEY
+externalDocs:
+  description: Guides, examples, a Postman collection and the Spectral ruleset
+  url: https://github.com/romamo/appstorespy-api-docs

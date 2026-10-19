@@ -1,0 +1,265 @@
+openapi: 3.2.0
+info:
+  title: AppstoreSpy Jobs API
+  description: '# Authentication
+
+
+    The Appstorespy API uses API-KEY authentication.'
+  version: 0.0.1
+servers:
+- url: https://api.appstorespy.com/v1
+tags:
+- name: Jobs
+paths:
+  /jobs/search:
+    get:
+      tags:
+      - Jobs
+      summary: Get Search
+      operationId: get_search_jobs_search_get
+      parameters:
+      - required: false
+        schema:
+          $ref: '#/components/schemas/Store'
+        name: store
+        in: query
+      - required: false
+        schema:
+          type: string
+          title: Term
+        name: term
+        in: query
+      - required: false
+        schema:
+          type: string
+          title: Id User
+        name: id_user
+        in: query
+      - required: false
+        schema:
+          type: string
+          title: Country
+        name: country
+        in: query
+      - required: false
+        schema:
+          type: string
+          title: Search Id
+        name: search_id
+        in: query
+      - required: false
+        schema:
+          type: string
+          format: date-time
+          title: Updated Gte
+        example: '2020-01-01T00:00:00+00:00'
+        name: updated_gte
+        in: query
+      - required: false
+        schema:
+          type: string
+          format: date-time
+          title: Updated Lte
+        example: '2022-01-01T00:00:00+00:00'
+        name: updated_lte
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/SearchResult'
+                type: array
+                title: Response Get Search Jobs Search Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+    post:
+      tags:
+      - Jobs
+      summary: Create Search
+      operationId: create_search_jobs_search_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResult'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SearchResult:
+      properties:
+        store:
+          type: string
+          title: Store
+        term:
+          type: string
+          title: Term
+        country:
+          type: string
+          title: Country
+          default: US
+        lang:
+          type: string
+          title: Lang
+          default: en_US
+        repeat:
+          type: integer
+          title: Repeat
+        id_user:
+          type: string
+          title: Id User
+        limit:
+          type: integer
+          maximum: 250.0
+          minimum: 1.0
+          title: Limit
+          default: 1
+        limit_apps:
+          items:
+            type: string
+          type: array
+          title: Limit Apps
+        crawled:
+          type: string
+          format: date-time
+          title: Crawled
+        id:
+          type: string
+          title: Id
+        results:
+          items:
+            $ref: '#/components/schemas/Cluster'
+          type: array
+          title: Results
+      type: object
+      required:
+      - store
+      - term
+      - id
+      title: SearchResult
+    Cluster:
+      properties:
+        type:
+          type: string
+          title: Type
+        title:
+          type: string
+          title: Title
+        items:
+          items:
+            type: string
+          type: array
+          title: Items
+        layout:
+          type: string
+          title: Layout
+      type: object
+      required:
+      - type
+      - title
+      - items
+      - layout
+      title: Cluster
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    SearchCreate:
+      properties:
+        store:
+          type: string
+          title: Store
+        term:
+          type: string
+          title: Term
+        country:
+          type: string
+          title: Country
+          default: US
+        lang:
+          type: string
+          title: Lang
+          default: en_US
+        repeat:
+          type: integer
+          title: Repeat
+        id_user:
+          type: string
+          title: Id User
+        limit:
+          type: integer
+          maximum: 250.0
+          minimum: 1.0
+          title: Limit
+          default: 1
+        limit_apps:
+          items:
+            type: string
+          type: array
+          title: Limit Apps
+      type: object
+      required:
+      - store
+      - term
+      title: SearchCreate
+    Store:
+      type: string
+      enum:
+      - play
+      - ios
+      title: Store
+      description: An enumeration.
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: API-KEY

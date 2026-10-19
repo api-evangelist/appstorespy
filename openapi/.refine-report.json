@@ -17,18 +17,7 @@
   "notes": [
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "appstorespy-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "appstorespy-openapi.json: declared missing tag: Events",
-    "appstorespy-openapi.json: declared missing tag: Jobs",
-    "appstorespy-openapi.json: declared missing tag: Search Filter v.2",
-    "appstorespy-openapi.json: declared missing tag: Suggestions",
     "apis.yml register: already-registered"
   ],
-  "skipped": [
-    "appstorespy-app-store-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "appstorespy-events-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "appstorespy-google-play-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "appstorespy-jobs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "appstorespy-search-filter-v-2-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "appstorespy-suggestions-api-openapi.yml: previously refined output, superseded by openapi/_original/"
-  ]
+  "skipped": []
 }

@@ -4,18 +4,137 @@ info:
   description: '# Authentication
 
 
-    The Appstorespy API uses API-KEY authentication.'
-  version: 0.0.1
-servers:
-- url: https://api.appstorespy.com/v1
+    The Appstorespy API uses API-KEY authentication.
+
+
+    If you do not have an API Key token, you can get it on your account page https://appstorespy.com/account.
+
+
+    An API Key is required to be sent as part of every request in request header.
+
+
+    ```
+
+
+    -H ''accept: application/json''
+
+
+    -H ''API-KEY: ''
+
+
+    ```
+
+
+    # Agents and MCP
+
+
+    AI agents can call the same endpoints as MCP tools at https://api.appstorespy.com/mcp, with the same API-KEY header and the same credits per call.
+
+
+    https://api.appstorespy.com/agentic-access lists what each operation costs and whether it reads, queues or writes; https://api.appstorespy.com/skills/ holds one agent skill per capability; https://api.appstorespy.com/llms.txt links every agent document.
+
+
+    # Fields
+
+
+    Use the fields parameter to specify which fields should be returned.
+
+
+    Example:
+
+
+    ```
+
+
+    Request: fields=name,developer_name,ipd,downloads,...
+
+
+    Response: {name: ..., developer_name: ..., ipd: ..., downloads: ..., ...}
+
+
+    ```
+
+
+    Don`t use fields parameter if you need to get all fields.
+
+
+    # Sort
+
+
+    When you use search, you can add a sort parameter.
+
+
+    ```
+
+
+    Request: sort=ratingCount
+
+
+    Response: [{name: app1, ratingCount: 4.2}, {name: app2, ratingCount: 4.4}, ...]
+
+
+    ```
+
+
+    If you need DESC sorting add "-" before sort parametr.
+
+
+    ```
+
+
+    Request: sort=-ratingCount
+
+
+    Response: [{name: app2, ratingCount: 4.4}, {name: app1, ratingCount: 4.2}, ...]
+
+
+    ```
+
+
+    # County & Language params
+
+
+    ...
+
+
+    # Status codes / Error codes
+
+
+    * 200 OK.
+
+
+    * 202 Accepted - The app was not present in our databases and has been submitted for crawling. If the app is available anywhere, it will be available soon.
+
+
+    * 204 No Content - No data for requested country.
+
+
+    * 403 Forbidden - Your access token is not valid.
+
+
+    * 429 Too Many Requests - Your request rate is over the limit.'
+  termsOfService: https://appstorespy.com/agreement
+  contact:
+    name: AppstoreSpy Support
+    url: https://appstorespy.com/support
+    email: support@appstorespy.com
+  license:
+    name: Proprietary
+    url: https://appstorespy.com/agreement
+  version: 1.1.1
 tags:
 - name: Jobs
+  description: 'Asynchronous keyword crawl jobs: submit a term for a store and country, then poll for the results.'
+  externalDocs:
+    description: Quickstart examples
+    url: https://github.com/romamo/appstorespy-api-docs
 paths:
   /jobs/search:
     get:
       tags:
       - Jobs
-      summary: Get Search
+      summary: List keyword crawl jobs
+      description: Lists the keyword crawl jobs you have submitted, filtered by store, term, country or last-updated window. Each result carries the job's current state and, once finished, its results.
       operationId: get_search_jobs_search_get
       parameters:
       - required: false
@@ -73,24 +192,129 @@ paths:
                   $ref: '#/components/schemas/SearchResult'
                 type: array
                 title: Response Get Search Jobs Search Get
+              example:
+              - store: play
+                term: spotify
+                country: US
+                lang: en_US
+                id_user: spotify
+                limit: 5
+                crawled: '2022-12-18T16:21:50+00:00'
+                id: 0bEHJoUBcG6dNe-QhIJ5
+                results:
+                - type: apps
+                  title: ''
+                  items:
+                  - com.spotify.music
+                  layout: apps_mdp_search_results_cluster
+                - type: apps
+                  title: You might also like
+                  items:
+                  - com.soundcloud.android
+                  - tunein.player
+                  - com.shazam.android
+                  - org.craigslist.CraigslistMobile
+                  - com.alphainventor.filemanager
+                  - com.melodis.midomiMusicIdentifier.freemium
+                  - video.player.videoplayer
+                  layout: pre_install_users_also_installed
+                - type: apps
+                  title: Similar apps
+                  items:
+                  - deezer.android.app
+                  - com.dywx.larkplayer
+                  - com.mmm.trebelmusic
+                  - com.amazon.mp3
+                  - com.audiomack
+                  - com.soundcloud.android
+                  - com.shazam.android
+                  layout: similar_apps
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 1
     post:
       tags:
       - Jobs
-      summary: Create Search
+      summary: Create a keyword crawl job
+      description: Submits a keyword crawl job for one search term in one store and country. Returns the created job immediately; poll `GET /jobs/search` with the returned id to collect the results.
       operationId: create_search_jobs_search_post
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SearchCreate'
+            example:
+              store: play
+              term: spotify
+              country: US
+              lang: en_US
+              id_user: spotify
+              limit: 5
         required: true
       responses:
         '200':
@@ -99,16 +323,105 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchResult'
+              example:
+                store: play
+                term: spotify
+                country: US
+                lang: en_US
+                id_user: spotify
+                limit: 5
+                id: 0bEHJoUBcG6dNe-QhIJ5
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 1
 components:
   schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -118,6 +431,36 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    Store:
+      type: string
+      enum:
+      - play
+      - ios
+      title: Store
+      description: An enumeration.
+    Cluster:
+      properties:
+        type:
+          type: string
+          title: Type
+        title:
+          type: string
+          title: Title
+        items:
+          items:
+            type: string
+          type: array
+          title: Items
+        layout:
+          type: string
+          title: Layout
+      type: object
+      required:
+      - type
+      - title
+      - items
+      - layout
+      title: Cluster
     SearchResult:
       properties:
         store:
@@ -169,50 +512,6 @@ components:
       - term
       - id
       title: SearchResult
-    Cluster:
-      properties:
-        type:
-          type: string
-          title: Type
-        title:
-          type: string
-          title: Title
-        items:
-          items:
-            type: string
-          type: array
-          title: Items
-        layout:
-          type: string
-          title: Layout
-      type: object
-      required:
-      - type
-      - title
-      - items
-      - layout
-      title: Cluster
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     SearchCreate:
       properties:
         store:
@@ -251,15 +550,11 @@ components:
       - store
       - term
       title: SearchCreate
-    Store:
-      type: string
-      enum:
-      - play
-      - ios
-      title: Store
-      description: An enumeration.
   securitySchemes:
     APIKeyHeader:
       type: apiKey
       in: header
       name: API-KEY
+externalDocs:
+  description: Guides, examples, a Postman collection and the Spectral ruleset
+  url: https://github.com/romamo/appstorespy-api-docs

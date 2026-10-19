@@ -1,0 +1,220 @@
+openapi: 3.2.0
+info:
+  title: AppstoreSpy Events API
+  description: '# Authentication
+
+
+    The Appstorespy API uses API-KEY authentication.'
+  version: 0.0.1
+servers:
+- url: https://api.appstorespy.com/v1
+tags:
+- name: Events
+paths:
+  /play/liveops:
+    get:
+      tags:
+      - Events
+      summary: Get Events
+      operationId: get_events_play_liveops_get
+      parameters:
+      - required: true
+        schema:
+          type: string
+          title: App
+        name: app
+        in: query
+      - required: false
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/AppCountries'
+          default: US
+        name: country
+        in: query
+      - required: false
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/CacheTime'
+          default: 7d
+        name: freshness
+        in: query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Event'
+                type: array
+                title: Response 200 Get Events Play Liveops Get
+        '202':
+          description: Response in progress
+          content:
+            application/json: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - APIKeyHeader: []
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CacheTime:
+      type: string
+      enum:
+      - 1d
+      - 7d
+      - 30d
+      title: CacheTime
+      description: An enumeration.
+    AppCountries:
+      type: string
+      enum:
+      - US
+      - CA
+      - AT
+      - BE
+      - CY
+      - CZ
+      - DK
+      - FI
+      - FR
+      - DE
+      - GR
+      - HU
+      - IE
+      - IT
+      - NL
+      - 'NO'
+      - PL
+      - PT
+      - RU
+      - ES
+      - SE
+      - CH
+      - TR
+      - UA
+      - GB
+      - EG
+      - IN
+      - IL
+      - MA
+      - NG
+      - SA
+      - ZA
+      - AE
+      - AU
+      - HK
+      - ID
+      - JP
+      - KZ
+      - KR
+      - MY
+      - NZ
+      - PK
+      - PH
+      - SG
+      - TW
+      - TH
+      - VN
+      - AR
+      - BR
+      - MX
+      title: AppCountries
+      description: An enumeration.
+    Event:
+      properties:
+        id:
+          type: string
+          title: Id
+        app:
+          type: string
+          title: App
+        store:
+          type: string
+          title: Store
+        type:
+          type: string
+          title: Type
+        title:
+          type: string
+          title: Title
+        text:
+          type: string
+          title: Text
+        image:
+          type: string
+          title: Image
+        country:
+          type: string
+          title: Country
+        state:
+          type: string
+          title: State
+        crawled:
+          type: string
+          format: date-time
+          title: Crawled
+        date_from:
+          type: string
+          format: date-time
+          title: Date From
+        date_to:
+          type: string
+          format: date-time
+          title: Date To
+        video:
+          type: string
+          title: Video
+      type: object
+      required:
+      - id
+      - app
+      - store
+      - type
+      - title
+      - text
+      - image
+      - country
+      - state
+      - crawled
+      - date_from
+      title: Event
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: API-KEY

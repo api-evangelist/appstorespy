@@ -4,18 +4,137 @@ info:
   description: '# Authentication
 
 
-    The Appstorespy API uses API-KEY authentication.'
-  version: 0.0.1
-servers:
-- url: https://api.appstorespy.com/v1
+    The Appstorespy API uses API-KEY authentication.
+
+
+    If you do not have an API Key token, you can get it on your account page https://appstorespy.com/account.
+
+
+    An API Key is required to be sent as part of every request in request header.
+
+
+    ```
+
+
+    -H ''accept: application/json''
+
+
+    -H ''API-KEY: ''
+
+
+    ```
+
+
+    # Agents and MCP
+
+
+    AI agents can call the same endpoints as MCP tools at https://api.appstorespy.com/mcp, with the same API-KEY header and the same credits per call.
+
+
+    https://api.appstorespy.com/agentic-access lists what each operation costs and whether it reads, queues or writes; https://api.appstorespy.com/skills/ holds one agent skill per capability; https://api.appstorespy.com/llms.txt links every agent document.
+
+
+    # Fields
+
+
+    Use the fields parameter to specify which fields should be returned.
+
+
+    Example:
+
+
+    ```
+
+
+    Request: fields=name,developer_name,ipd,downloads,...
+
+
+    Response: {name: ..., developer_name: ..., ipd: ..., downloads: ..., ...}
+
+
+    ```
+
+
+    Don`t use fields parameter if you need to get all fields.
+
+
+    # Sort
+
+
+    When you use search, you can add a sort parameter.
+
+
+    ```
+
+
+    Request: sort=ratingCount
+
+
+    Response: [{name: app1, ratingCount: 4.2}, {name: app2, ratingCount: 4.4}, ...]
+
+
+    ```
+
+
+    If you need DESC sorting add "-" before sort parametr.
+
+
+    ```
+
+
+    Request: sort=-ratingCount
+
+
+    Response: [{name: app2, ratingCount: 4.4}, {name: app1, ratingCount: 4.2}, ...]
+
+
+    ```
+
+
+    # County & Language params
+
+
+    ...
+
+
+    # Status codes / Error codes
+
+
+    * 200 OK.
+
+
+    * 202 Accepted - The app was not present in our databases and has been submitted for crawling. If the app is available anywhere, it will be available soon.
+
+
+    * 204 No Content - No data for requested country.
+
+
+    * 403 Forbidden - Your access token is not valid.
+
+
+    * 429 Too Many Requests - Your request rate is over the limit.'
+  termsOfService: https://appstorespy.com/agreement
+  contact:
+    name: AppstoreSpy Support
+    url: https://appstorespy.com/support
+    email: support@appstorespy.com
+  license:
+    name: Proprietary
+    url: https://appstorespy.com/agreement
+  version: 1.1.1
 tags:
 - name: Events
+  description: 'LiveOps events Google Play surfaces on an app listing: sales, tournaments, updates and new content.'
+  externalDocs:
+    description: Quickstart examples
+    url: https://github.com/romamo/appstorespy-api-docs
 paths:
   /play/liveops:
     get:
       tags:
       - Events
-      summary: Get Events
+      summary: Get Google Play LiveOps events for an app
+      description: Returns the LiveOps events (sales, tournaments, updates, new content) Google Play shows for one app in one country. Responds 202 while a fresh crawl is in progress.
       operationId: get_events_play_liveops_get
       parameters:
       - required: true
@@ -48,29 +167,106 @@ paths:
                   $ref: '#/components/schemas/Event'
                 type: array
                 title: Response 200 Get Events Play Liveops Get
+              example:
+              - id: '4829099650712359966'
+                app: com.supercell.brawlstars
+                store: play
+                type: Event
+                title: 'New Brawler: Willow!'
+                text: Who lives in a dirty swamp under the pier? Willow, the mind controller Brawler, is now available! Check out her powerful mind moves!
+                image: https://lh3.googleusercontent.com/szyrcQm36axbrcjkFKrOhBfQb0Z4JDvKI5lReOTKQTRj66Kh6fTa90ghG85FgBH7VJg=h300
+                country: US
+                state: ACTIVE
+                crawled: '2023-04-22T05:43:31+00:00'
+                date_from: '2023-04-10T08:00:00'
+                date_to: '2023-05-01T08:00:00'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '202':
           description: Response in progress
           content:
             application/json: {}
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+          headers:
+            X-Cost:
+              description: 'Credits this call cost, after any refund: 0 for a 422, a 429 or a 5xx response, except on job endpoints (the recrawl, liveops and suggestions operations), which are still billed; see https://github.com/romamo/as-rest/issues/99'
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits left on the account after this call
+              schema:
+                type: integer
+            X-Receipt:
+              description: Id of this call's billing receipt
+              schema:
+                type: string
+        '401':
+          description: The `API-KEY` header is missing or holds an unknown key
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  code:
+                    type: integer
+                required:
+                - message
+                - code
+              example:
+                message: Wrong key
+                code: 401
+        '402':
+          description: The credit balance does not cover this call's price; nothing was charged
+          content:
+            application/json:
+              schema:
+                type: string
+              example: Insufficient credits in your balance
+          headers:
+            X-Cost:
+              description: Price of the call that did not fit; nothing was charged
+              schema:
+                type: integer
+            X-Remaining-Credits:
+              description: Credits on the account when the call was refused
+              schema:
+                type: integer
       security:
       - APIKeyHeader: []
+      x-cost-credits: 5
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -92,14 +288,6 @@ components:
       - msg
       - type
       title: ValidationError
-    CacheTime:
-      type: string
-      enum:
-      - 1d
-      - 7d
-      - 30d
-      title: CacheTime
-      description: An enumeration.
     AppCountries:
       type: string
       enum:
@@ -155,6 +343,15 @@ components:
       - MX
       title: AppCountries
       description: An enumeration.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     Event:
       properties:
         id:
@@ -213,8 +410,19 @@ components:
       - crawled
       - date_from
       title: Event
+    CacheTime:
+      type: string
+      enum:
+      - 1d
+      - 7d
+      - 30d
+      title: CacheTime
+      description: An enumeration.
   securitySchemes:
     APIKeyHeader:
       type: apiKey
       in: header
       name: API-KEY
+externalDocs:
+  description: Guides, examples, a Postman collection and the Spectral ruleset
+  url: https://github.com/romamo/appstorespy-api-docs
