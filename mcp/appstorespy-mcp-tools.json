@@ -1,0 +1,714 @@
+{
+  "endpoint": "https://api.appstorespy.com/mcp",
+  "captured": "2026-10-20",
+  "method": "initialize + tools/list (anonymous, no tool called; roadmap#992)",
+  "protocol_version": "2025-06-18",
+  "server_info": {
+    "name": "appstorespy",
+    "title": "AppstoreSpy",
+    "version": "1.0.0"
+  },
+  "result": {
+    "tools": [
+      {
+        "name": "search_apps",
+        "title": "Search apps",
+        "description": "Free-text search over app listings on one store, returning a ranked list. Use this when you have a name or a phrase. To select apps by revenue, downloads, category or rating instead, use filter_apps, which is far more precise.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "store": {
+              "type": "string",
+              "enum": [
+                "play",
+                "ios"
+              ],
+              "description": "Which store to query."
+            },
+            "q": {
+              "type": "string",
+              "description": "Word or phrase to search for."
+            },
+            "published": {
+              "type": "boolean",
+              "description": "Restrict to published listings. Omit for all."
+            },
+            "country": {
+              "type": "string",
+              "description": "Storefront as an ISO 3166-1 alpha-2 code. Defaults to US."
+            },
+            "language": {
+              "type": "string",
+              "description": "Metadata language as a locale, e.g. en_US."
+            },
+            "fields": {
+              "type": "string",
+              "description": "Comma-separated field names to return; omit for all. This surface REJECTS the filter-only names (downloads_month, downloads_lifetime, downloads_daily, downloads_exact, downloads_mark, revenue_month, revenue_lifetime) with HTTP 400 naming the field; reach for filter_apps when you need one of them. The equivalents here are `downloads` and `revenue`. `installs`, `installs_exact` and `review_count` are Google Play only and 400 on the App Store."
+            },
+            "sort": {
+              "type": "string",
+              "description": "Comma-separated fields; a leading `-` sorts descending, e.g. `-downloads_month`."
+            },
+            "limit": {
+              "type": "integer",
+              "description": "Page size."
+            },
+            "page": {
+              "type": "integer",
+              "description": "1-based page number."
+            }
+          },
+          "required": [
+            "store"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Search apps",
+          "readOnlyHint": true,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "get_app",
+        "title": "Get app",
+        "description": "Full listing for one app. The id is the bundle id on Google Play (com.twitter.android) and the numeric App Store id on iOS (333903271).",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "store": {
+              "type": "string",
+              "enum": [
+                "play",
+                "ios"
+              ],
+              "description": "Which store to query."
+            },
+            "id": {
+              "type": "string",
+              "description": "Bundle id on Google Play, numeric id on the App Store."
+            },
+            "country": {
+              "type": "string",
+              "description": "Storefront as an ISO 3166-1 alpha-2 code. Defaults to US."
+            },
+            "language": {
+              "type": "string",
+              "description": "Metadata language as a locale, e.g. en_US."
+            },
+            "fields": {
+              "type": "string",
+              "description": "Comma-separated field names to return; omit for all. This surface REJECTS the filter-only names (downloads_month, downloads_lifetime, downloads_daily, downloads_exact, downloads_mark, revenue_month, revenue_lifetime) with HTTP 400 naming the field; reach for filter_apps when you need one of them. The equivalents here are `downloads` and `revenue`. `installs`, `installs_exact` and `review_count` are Google Play only and 400 on the App Store."
+            }
+          },
+          "required": [
+            "store",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Get app",
+          "readOnlyHint": true,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "filter_apps",
+        "title": "Filter apps",
+        "description": "Search apps by structured criteria: revenue, downloads, rating, category, developer, release and update dates, countries of availability. This is the main market-research tool and the one to reach for over search_apps whenever the question is about a segment rather than a name.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "store": {
+              "type": "string",
+              "enum": [
+                "play",
+                "ios"
+              ],
+              "description": "Which store to query."
+            },
+            "filter": {
+              "type": "object",
+              "description": "Structured filter object. Numeric fields take {\"gte\": n, \"lte\": n} and date fields take {\"gte\": \"YYYY-MM-DD\", \"lte\": \"YYYY-MM-DD\"}. Common keys: name, category, category_type (APP|GAME), developer, developer_id, downloads_month, revenue_month, rating_avg, rating_count, review_count, release_date, update_date, active_countries, iap, published. Note that downloads_month and revenue_month are expressed in thousands.",
+              "additionalProperties": true
+            },
+            "fields": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Field names to return; omit for all. This surface accepts every field the GET tools accept, plus the filter-only names (downloads_month, downloads_lifetime, downloads_daily, downloads_exact, downloads_mark, revenue_month, revenue_lifetime). `downloads_mark` is Google Play only."
+            },
+            "sort": {
+              "type": "string",
+              "description": "Comma-separated fields; a leading `-` sorts descending, e.g. `-downloads_month`."
+            },
+            "limit": {
+              "type": "integer",
+              "description": "Page size."
+            },
+            "page": {
+              "type": "integer",
+              "description": "1-based page number."
+            },
+            "country": {
+              "type": "string",
+              "description": "Storefront as an ISO 3166-1 alpha-2 code. Defaults to US."
+            },
+            "language": {
+              "type": "string",
+              "description": "Metadata language as a locale, e.g. en_US."
+            }
+          },
+          "required": [
+            "store",
+            "filter"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Filter apps",
+          "readOnlyHint": true,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "summarize_apps",
+        "title": "Summarise apps",
+        "description": "Aggregate totals for every app matching a filter, without returning the apps. Use this first to size a segment: it answers 'how many apps and how much revenue' in one call, where paging through filter_apps would cost many.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "store": {
+              "type": "string",
+              "enum": [
+                "play",
+                "ios"
+              ],
+              "description": "Which store to query."
+            },
+            "filter": {
+              "type": "object",
+              "description": "Structured filter object. Numeric fields take {\"gte\": n, \"lte\": n} and date fields take {\"gte\": \"YYYY-MM-DD\", \"lte\": \"YYYY-MM-DD\"}. Common keys: name, category, category_type (APP|GAME), developer, developer_id, downloads_month, revenue_month, rating_avg, rating_count, review_count, release_date, update_date, active_countries, iap, published. Note that downloads_month and revenue_month are expressed in thousands.",
+              "additionalProperties": true
+            },
+            "q": {
+              "type": "string",
+              "description": "Optional free-text term to narrow the set."
+            }
+          },
+          "required": [
+            "store",
+            "filter"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Summarise apps",
+          "readOnlyHint": true,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "get_similar_apps",
+        "title": "Get similar apps",
+        "description": "Apps the store lists as similar to a given app. `link` set to `to` returns what the store shows on this app's page; `from` reverses the question and returns the apps that list this one as similar to them, which is how you find who is competing for its audience.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "store": {
+              "type": "string",
+              "enum": [
+                "play",
+                "ios"
+              ],
+              "description": "Which store to query."
+            },
+            "id": {
+              "type": "string",
+              "description": "The app to start from."
+            },
+            "link": {
+              "type": "string",
+              "enum": [
+                "to",
+                "from"
+              ],
+              "description": "`to` for this app's similar list, `from` for apps that list this one."
+            },
+            "filter": {
+              "type": "object",
+              "description": "Structured filter object. Numeric fields take {\"gte\": n, \"lte\": n} and date fields take {\"gte\": \"YYYY-MM-DD\", \"lte\": \"YYYY-MM-DD\"}. Common keys: name, category, category_type (APP|GAME), developer, developer_id, downloads_month, revenue_month, rating_avg, rating_count, review_count, release_date, update_date, active_countries, iap, published. Note that downloads_month and revenue_month are expressed in thousands.",
+              "additionalProperties": true
+            },
+            "limit": {
+              "type": "integer",
+              "description": "Page size."
+            },
+            "page": {
+              "type": "integer",
+              "description": "1-based page number."
+            }
+          },
+          "required": [
+            "store",
+            "id",
+            "link"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Get similar apps",
+          "readOnlyHint": true,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "get_app_reviews",
+        "title": "Get app reviews",
+        "description": "User reviews for one app. Reviews are storefront- and language-specific, so country and language change which set comes back rather than just how it is rendered.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "store": {
+              "type": "string",
+              "enum": [
+                "play",
+                "ios"
+              ],
+              "description": "Which store to query."
+            },
+            "id": {
+              "type": "string",
+              "description": "Bundle id on Google Play, numeric id on the App Store."
+            },
+            "language": {
+              "type": "string",
+              "description": "Metadata language as a locale, e.g. en_US."
+            },
+            "country": {
+              "type": "string",
+              "description": "Storefront as an ISO 3166-1 alpha-2 code. Defaults to US."
+            },
+            "limit": {
+              "type": "integer",
+              "description": "Reviews per page, up to 1000."
+            },
+            "sort": {
+              "type": "string",
+              "description": "Comma-separated fields; a leading `-` sorts descending, e.g. `-downloads_month`."
+            }
+          },
+          "required": [
+            "store",
+            "id",
+            "language"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Get app reviews",
+          "readOnlyHint": true,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "get_rankings",
+        "title": "Get chart rankings",
+        "description": "Chart positions over a date range, one row per app per chart per day. A chart is the triple (country, category, collection), plus platform on the App Store.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "store": {
+              "type": "string",
+              "enum": [
+                "play",
+                "ios"
+              ],
+              "description": "Which store to query."
+            },
+            "country": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Storefronts, ISO alpha-2."
+            },
+            "category": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Store category ids."
+            },
+            "collection": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "Free",
+                  "Grossing",
+                  "Paid",
+                  "topselling_free",
+                  "topgrossing",
+                  "topselling_paid",
+                  "topselling_new_free",
+                  "topselling_new_paid",
+                  "movers_shakers"
+                ]
+              },
+              "description": "Which chart."
+            },
+            "platform": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "iPhone",
+                  "iPad"
+                ]
+              },
+              "description": "App Store only."
+            },
+            "app": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Restrict to these apps."
+            },
+            "date_start": {
+              "type": "string",
+              "description": "ISO date, inclusive."
+            },
+            "date_end": {
+              "type": "string",
+              "description": "ISO date, inclusive."
+            },
+            "rank_start": {
+              "type": "integer",
+              "description": "Lowest position to return."
+            },
+            "rank_end": {
+              "type": "integer",
+              "description": "Highest position to return."
+            },
+            "limit": {
+              "type": "integer",
+              "description": "Page size."
+            },
+            "page": {
+              "type": "integer",
+              "description": "1-based page number."
+            }
+          },
+          "required": [
+            "store"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Get chart rankings",
+          "readOnlyHint": true,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "search_developers",
+        "title": "Search developers",
+        "description": "Free-text search over developers. The query also accepts `field:value` terms, for example `hq_country:US`.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "store": {
+              "type": "string",
+              "enum": [
+                "play",
+                "ios"
+              ],
+              "description": "Which store to query."
+            },
+            "q": {
+              "type": "string",
+              "description": "Free text, or `field:value` such as hq_country:US."
+            },
+            "fields": {
+              "type": "string",
+              "description": "Comma-separated field names to return; omit for all. This surface REJECTS the filter-only names (downloads_month, downloads_lifetime, downloads_daily, downloads_exact, downloads_mark, revenue_month, revenue_lifetime) with HTTP 400 naming the field; reach for filter_apps when you need one of them. The equivalents here are `downloads` and `revenue`. `installs`, `installs_exact` and `review_count` are Google Play only and 400 on the App Store."
+            },
+            "sort": {
+              "type": "string",
+              "description": "Comma-separated fields; a leading `-` sorts descending, e.g. `-downloads_month`."
+            },
+            "limit": {
+              "type": "integer",
+              "description": "Page size."
+            },
+            "page": {
+              "type": "integer",
+              "description": "1-based page number."
+            }
+          },
+          "required": [
+            "store"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Search developers",
+          "readOnlyHint": true,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "get_developer",
+        "title": "Get developer",
+        "description": "One developer record, including publisher identifiers and headquarters country.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "store": {
+              "type": "string",
+              "enum": [
+                "play",
+                "ios"
+              ],
+              "description": "Which store to query."
+            },
+            "id": {
+              "type": "string",
+              "description": "Developer id, which is store-specific."
+            },
+            "fields": {
+              "type": "string",
+              "description": "Comma-separated field names to return; omit for all. This surface REJECTS the filter-only names (downloads_month, downloads_lifetime, downloads_daily, downloads_exact, downloads_mark, revenue_month, revenue_lifetime) with HTTP 400 naming the field; reach for filter_apps when you need one of them. The equivalents here are `downloads` and `revenue`. `installs`, `installs_exact` and `review_count` are Google Play only and 400 on the App Store."
+            }
+          },
+          "required": [
+            "store",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Get developer",
+          "readOnlyHint": true,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "filter_developers",
+        "title": "Filter developers",
+        "description": "Search developers by structured criteria, with paging and sorting.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "store": {
+              "type": "string",
+              "enum": [
+                "play",
+                "ios"
+              ],
+              "description": "Which store to query."
+            },
+            "filter": {
+              "type": "object",
+              "description": "Structured developer filter.",
+              "additionalProperties": true
+            },
+            "fields": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Field names to return; omit for all. This surface accepts every field the GET tools accept, plus the filter-only names (downloads_month, downloads_lifetime, downloads_daily, downloads_exact, downloads_mark, revenue_month, revenue_lifetime). `downloads_mark` is Google Play only."
+            },
+            "sort": {
+              "type": "string",
+              "description": "Comma-separated fields; a leading `-` sorts descending, e.g. `-downloads_month`."
+            },
+            "limit": {
+              "type": "integer",
+              "description": "Page size."
+            },
+            "page": {
+              "type": "integer",
+              "description": "1-based page number."
+            }
+          },
+          "required": [
+            "store",
+            "filter"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Filter developers",
+          "readOnlyHint": true,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "get_app_estimates",
+        "title": "Get download and revenue estimates",
+        "description": "Download and revenue estimates for one or more apps over a date range.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "store": {
+              "type": "string",
+              "enum": [
+                "play",
+                "ios"
+              ],
+              "description": "Which store to query."
+            },
+            "id": {
+              "type": "string",
+              "description": "One app id, or several separated by commas."
+            },
+            "start": {
+              "type": "string",
+              "description": "ISO date, inclusive."
+            },
+            "end": {
+              "type": "string",
+              "description": "ISO date, inclusive."
+            }
+          },
+          "required": [
+            "store",
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Get download and revenue estimates",
+          "readOnlyHint": true,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "get_keyword_suggestions",
+        "title": "Get keyword suggestions",
+        "description": "Google Play search autocomplete for a term. Answers 202 with a partial result while a fresh crawl runs, so call again shortly for the complete set.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "q": {
+              "type": "string",
+              "description": "The term to complete."
+            },
+            "country": {
+              "type": "string",
+              "description": "Storefront as an ISO 3166-1 alpha-2 code. Defaults to US."
+            },
+            "lang": {
+              "type": "string",
+              "description": "Metadata language as a locale, e.g. en_US."
+            },
+            "freshness": {
+              "type": "string",
+              "enum": [
+                "1d",
+                "7d",
+                "30d"
+              ],
+              "description": "How stale a cached result may be before it is recrawled."
+            }
+          },
+          "required": [
+            "q"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Get keyword suggestions",
+          "readOnlyHint": true,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "get_liveops_events",
+        "title": "Get LiveOps events",
+        "description": "LiveOps events Google Play shows on an app listing: sales, tournaments, updates and new content. Answers 202 while a fresh crawl runs.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "app": {
+              "type": "string",
+              "description": "Bundle id, e.g. com.twitter.android."
+            },
+            "country": {
+              "type": "string",
+              "description": "Storefront as an ISO 3166-1 alpha-2 code. Defaults to US."
+            },
+            "freshness": {
+              "type": "string",
+              "enum": [
+                "1d",
+                "7d",
+                "30d"
+              ],
+              "description": "How stale a cached result may be before it is recrawled."
+            }
+          },
+          "required": [
+            "app"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Get LiveOps events",
+          "readOnlyHint": true,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "get_app_listing",
+        "title": "Get app listing",
+        "description": "The Google Play store listing of one app for a country and language exactly as Google Play serves it: title, short and full description, what's new, icon, feature graphic, trailer and screenshots. Accepts any Google Play Console locale, not only the languages get_app stores, so use it for localized metadata such as Indonesian, Thai or Portuguese (Portugal). The listing is crawled on demand and kept; answers 202 while the crawl runs, so call again shortly. `translated` is true when Google Play shows a machine translation because the developer has not supplied that language.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Bundle id, e.g. com.twitter.android."
+            },
+            "country": {
+              "type": "string",
+              "description": "Storefront as an ISO 3166-1 alpha-2 code. Defaults to US."
+            },
+            "language": {
+              "type": "string",
+              "description": "Listing language as a Google Play Console locale, e.g. id, th, pt_PT, es_ES."
+            },
+            "freshness": {
+              "type": "string",
+              "enum": [
+                "1d",
+                "7d",
+                "30d"
+              ],
+              "description": "How old a kept listing may be before it is crawled again."
+            },
+            "wait": {
+              "type": "boolean",
+              "description": "Wait for a running crawl (default) or answer 202 right away."
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "additionalProperties": false
+        },
+        "annotations": {
+          "title": "Get app listing",
+          "readOnlyHint": true,
+          "destructiveHint": false
+        }
+      }
+    ]
+  }
+}

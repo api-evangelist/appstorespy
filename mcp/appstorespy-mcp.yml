@@ -3,9 +3,9 @@ method: probed
 source: https://api.appstorespy.com/mcp
 status: published
 name: AppstoreSpy MCP server
-description: 'Remote MCP server published by AppstoreSpy over streamable HTTP (stateless, POST only). Probed live
-  2026-10-03: initialize returns serverInfo appstorespy 1.0.0 (protocol 2025-06-18) and tools/list returns 14 read-only
-  tools addressing both Google Play and the App Store through a store argument.'
+description: 'Remote MCP server published by AppstoreSpy over streamable HTTP (stateless, POST only).
+  Probed live 2026-10-03: initialize returns serverInfo appstorespy 1.0.0 (protocol 2025-06-18) and tools/list
+  returns 14 read-only tools addressing both Google Play and the App Store through a store argument.'
 server:
   name: appstorespy
   title: AppstoreSpy
@@ -20,37 +20,38 @@ deployment:
   verified: probed
   probe: live
   checked: '2026-10-03'
-  source: 'provider PR #4 (2026-09-20), re-probed 2026-10-03 with POST JSON-RPC initialize + tools/list; GET answers
-    405 (POST only)'
+  source: 'provider PR #4 (2026-09-20), re-probed 2026-10-03 with POST JSON-RPC initialize + tools/list;
+    GET answers 405 (POST only)'
 tools_count: 14
 tools:
 - name: search_apps
-  description: Free-text search over app listings on one store, returning a ranked list. Use this when you have
-    a name or a phrase. To select apps by revenue, downloads, category or rating instead, use filter_apps, which
-    is far more precise.
+  description: Free-text search over app listings on one store, returning a ranked list. Use this when
+    you have a name or a phrase. To select apps by revenue, downloads, category or rating instead, use
+    filter_apps, which is far more precise.
 - name: get_app
-  description: Full listing for one app. The id is the bundle id on Google Play (com.twitter.android) and the numeric
-    App Store id on iOS (333903271).
+  description: Full listing for one app. The id is the bundle id on Google Play (com.twitter.android)
+    and the numeric App Store id on iOS (333903271).
 - name: filter_apps
-  description: 'Search apps by structured criteria: revenue, downloads, rating, category, developer, release and
-    update dates, countries of availability. This is the main market-research tool and the one to reach for over
-    search_apps whenever the question is about a segment rather than a name.'
+  description: 'Search apps by structured criteria: revenue, downloads, rating, category, developer, release
+    and update dates, countries of availability. This is the main market-research tool and the one to
+    reach for over search_apps whenever the question is about a segment rather than a name.'
 - name: summarize_apps
-  description: 'Aggregate totals for every app matching a filter, without returning the apps. Use this first to
-    size a segment: it answers ''how many apps and how much revenue'' in one call, where paging through filter_apps
-    would cost many.'
+  description: 'Aggregate totals for every app matching a filter, without returning the apps. Use this
+    first to size a segment: it answers ''how many apps and how much revenue'' in one call, where paging
+    through filter_apps would cost many.'
 - name: get_similar_apps
-  description: Apps the store lists as similar to a given app. `link` set to `to` returns what the store shows on
-    this app's page; `from` reverses the question and returns the apps that list this one as similar to them, which
-    is how you find who is competing for its audience.
+  description: Apps the store lists as similar to a given app. `link` set to `to` returns what the store
+    shows on this app's page; `from` reverses the question and returns the apps that list this one as
+    similar to them, which is how you find who is competing for its audience.
 - name: get_app_reviews
-  description: User reviews for one app. Reviews are storefront- and language-specific, so country and language
-    change which set comes back rather than just how it is rendered.
+  description: User reviews for one app. Reviews are storefront- and language-specific, so country and
+    language change which set comes back rather than just how it is rendered.
 - name: get_rankings
-  description: Chart positions over a date range, one row per app per chart per day. A chart is the triple (country,
-    category, collection), plus platform on the App Store.
+  description: Chart positions over a date range, one row per app per chart per day. A chart is the triple
+    (country, category, collection), plus platform on the App Store.
 - name: search_developers
-  description: Free-text search over developers. The query also accepts `field:value` terms, for example `hq_country:US`.
+  description: Free-text search over developers. The query also accepts `field:value` terms, for example
+    `hq_country:US`.
 - name: get_developer
   description: One developer record, including publisher identifiers and headquarters country.
 - name: filter_developers
@@ -58,19 +59,45 @@ tools:
 - name: get_app_estimates
   description: Download and revenue estimates for one or more apps over a date range.
 - name: get_keyword_suggestions
-  description: Google Play search autocomplete for a term. Answers 202 with a partial result while a fresh crawl
-    runs, so call again shortly for the complete set.
+  description: Google Play search autocomplete for a term. Answers 202 with a partial result while a fresh
+    crawl runs, so call again shortly for the complete set.
 - name: get_liveops_events
-  description: 'LiveOps events Google Play shows on an app listing: sales, tournaments, updates and new content.
-    Answers 202 while a fresh crawl runs.'
+  description: 'LiveOps events Google Play shows on an app listing: sales, tournaments, updates and new
+    content. Answers 202 while a fresh crawl runs.'
 - name: get_app_listing
-  description: 'The Google Play store listing of one app for a country and language exactly as Google Play serves
-    it: title, short and full description, what''s new, icon, feature graphic, trailer and screenshots. Accepts
-    any Google Play Console locale, not only the languages get_app stores, so use it for localized metadata such
-    as Indonesian, Thai or Portuguese (Portugal). The listing is crawled on demand and kept; answers 202 while the
-    crawl runs, so call again shortly. `translated` is true when Google Play shows a machine translation because
-    the developer has not supplied that language.'
+  description: 'The Google Play store listing of one app for a country and language exactly as Google
+    Play serves it: title, short and full description, what''s new, icon, feature graphic, trailer and
+    screenshots. Accepts any Google Play Console locale, not only the languages get_app stores, so use
+    it for localized metadata such as Indonesian, Thai or Portuguese (Portugal). The listing is crawled
+    on demand and kept; answers 202 while the crawl runs, so call again shortly. `translated` is true
+    when Google Play shows a machine translation because the developer has not supplied that language.'
 tools_source: live tools/list via initialize handshake, 2026-10-03
 authorship: first-party
-note: Replaces the 2026-08-22 candidate manifest, which recorded a 404 at this endpoint before the provider shipped
-  the server. The provider PR copy listed 13 tools; the live server lists 14 (get_app_listing added).
+note: Replaces the 2026-08-22 candidate manifest, which recorded a 404 at this endpoint before the provider
+  shipped the server. The provider PR copy listed 13 tools; the live server lists 14 (get_app_listing
+  added).
+tool_quality:
+  tool_count: 14
+  tokens_total: 4295
+  tokens_per_tool_median: 307
+  heavy_tools: []
+  heavy_tool_count: 0
+  params_total: 80
+  params_undescribed: 0
+  params_described_pct: 100.0
+  tools_with_undescribed_params: 0
+  tools_annotated: 14
+  annotated_pct: 100.0
+  state_changing_unhinted: []
+  tools_missing_schema: 0
+  short_descriptions: 0
+  duplicate_descriptions: 0
+  duplicate_names: 0
+  nonportable_names: []
+  output_schema_count: 0
+  token_estimate: chars/3.6 of each compact tool definition
+  source: mcp/appstorespy-mcp-tools.json
+  measured: '2026-10-20'
+  scored: false
+  note: Facts from the saved tools/list capture (mcp_tool_quality.py); recorded, not scored. Checks learned
+    from Glimind's agent-readiness audit.
