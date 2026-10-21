@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/appstorespy/main/json-schema/appstorespy-play-listing-schema.json",
+  "title": "PlayListing",
+  "description": "A Google Play store listing crawled live for one country and language.\n\nUnlike `PlayApp`, nothing here comes from AppstoreSpy storage: the fields are\nexactly what Google Play served for the requested `country` and `language` at\n`crawled`, so any locale Google Play Console accepts can be requested.",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/appstorespy-google-play-api-openapi.yml#/components/schemas/PlayListing",
+  "properties": {
+    "id": {
+      "type": "string",
+      "title": "Id",
+      "description": "The app package name"
+    },
+    "country": {
+      "type": "string",
+      "title": "Country",
+      "description": "Country the listing was requested for (Google Play `gl`)"
+    },
+    "language": {
+      "type": "string",
+      "title": "Language",
+      "description": "Language the listing was requested in (Google Play `hl`)"
+    },
+    "crawled": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Crawled",
+      "description": "When Google Play was crawled, UTC"
+    },
+    "url": {
+      "type": "string",
+      "title": "Url",
+      "description": "Link to the listing on Google Play for this country and language"
+    },
+    "name": {
+      "type": "string",
+      "title": "Name",
+      "description": "Title as shown on Google Play"
+    },
+    "short": {
+      "type": "string",
+      "title": "Short",
+      "description": "Short description as shown on Google Play"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description",
+      "description": "Full description as shown on Google Play"
+    },
+    "whatsnew": {
+      "type": "string",
+      "title": "Whatsnew",
+      "description": "What's new as shown on Google Play"
+    },
+    "icon": {
+      "type": "string",
+      "title": "Icon",
+      "description": "Icon URL"
+    },
+    "feature": {
+      "type": "string",
+      "title": "Feature",
+      "description": "Feature graphic URL"
+    },
+    "trailer": {
+      "type": "string",
+      "title": "Trailer",
+      "description": "Promo video Youtube link"
+    },
+    "screenshots": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Screenshots",
+      "description": "Screenshot URLs in the order Google Play shows them"
+    },
+    "translated": {
+      "type": "boolean",
+      "title": "Translated",
+      "description": "True when the developer has not supplied this language and Google Play shows a machine translation of the default listing; `short` and `description` are then that translation. False means the texts are the developer's own: a listing in this language, or the default listing when Google Play does not translate it."
+    },
+    "translated_from": {
+      "type": "string",
+      "title": "Translated From",
+      "description": "Source language of the machine translation, as Google Play names it in the requested language"
+    }
+  },
+  "type": "object",
+  "required": [
+    "id",
+    "country",
+    "language",
+    "crawled",
+    "url",
+    "name",
+    "screenshots",
+    "translated"
+  ]
+}

@@ -53,6 +53,9 @@ standards:
 - id: openapi-3.2
   conforms: true
   evidence: the document declares 3.2.0
+- id: ratelimit-headers
+  conforms: true
+  evidence: responses declare RateLimit-Limit, RateLimit-Remaining, RateLimit-Reset, Retry-After
 domain_standards:
 - id: none-applicable
   conforms: false

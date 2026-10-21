@@ -1,0 +1,76 @@
+generated: '2026-10-20'
+method: searched
+generator: extract-docs-artifacts.py (local)
+source: https://api.appstorespy.com/changelog
+sources:
+- https://api.appstorespy.com/changelog
+entries:
+- breaking: false
+  highlights:
+  - 'Billing: a 422, a 429 or any 5xx response costs nothing (X-Cost 0) on every endpoint except the job endpoints (the two recrawls, /play/liveops
+    and /play/suggestions). 400 and 404 stay billed.'
+  - 'Behaviour change: POST /{store}/apps/summary applies q and published, so total, available and removed describe the matching apps, and total
+    equals available plus removed. Before, q was ignored and published didn''t narrow total.'
+  - A key whose plan isn't found gets 401 instead of 500.
+  date: '2026-10-06'
+- breaking: false
+  highlights:
+  - info.version is now the contract's semantic version, read from this changelog (1.0.0 for the 2026-09-20 entry). info gains license, and every
+    tag gains a description and externalDocs.
+  - The contract declares a 401 on every keyed operation, X-Cost, X-Remaining-Credits and X-Receipt on billed responses, an x-cost-credits price
+    on every operation, and a request and response example on every operation.
+  - GET /play/apps/{id}/listing sends RateLimit-Limit, RateLimit-Remaining and RateLimit-Reset, and Retry-After on 429.
+  date: '2026-10-06'
+- breaking: false
+  highlights:
+  - Every operation now carries a description in the OpenAPI contract; 27 had none.
+  - info gains contact and termsOfService.
+  - New MCP server at POST /mcp over Streamable HTTP, exposing read-only tools (listed by `tools/list`) across both stores. Unauthenticated discovery;
+    tool calls take the same API key and cost the same credits as the endpoint each one wraps.
+  date: '2026-09-20'
+- breaking: false
+  highlights:
+  - Publisher id mappings exposed on the Google Play and App Store developer models.
+  - seller_name added to the App Store developer structured filter.
+  date: '2026-09-10'
+- breaking: false
+  highlights:
+  - New GET /{store}/aggregates/countries, aggregating developers by headquarters country.
+  - New POST /{store}/developers/query for structured developer filter search.
+  - App Store seller legal name exposed on the developer model.
+  date: '2026-09-08'
+- breaking: false
+  highlights:
+  - Per-country revenue and downloads breakdowns split by upstream source.
+  date: '2026-07-30'
+- breaking: false
+  highlights:
+  - 'ipd: negative values are clamped and stale plateaus collapsed, with the raw values documented. Values change for apps that were affected.'
+  date: '2026-07-17'
+- breaking: false
+  highlights:
+  - pre_order and pre_register filters added for both stores.
+  date: '2026-07-08'
+- breaking: false
+  highlights:
+  - Sorting by removal_date allowed.
+  date: '2026-07-07'
+- breaking: false
+  highlights:
+  - Fixed POST /{store}/apps/query filters that were accepted but never applied. rating_avg, iap, editorial, with_ads, advertised and removal_date
+    returned HTTP 200 and had no effect on the result set. They now filter. A caller who was sending any of them will see fewer results than before,
+    which is the point, but it is a change in what comes back for an unchanged request.
+  - 'ValueRange no longer truncates float bounds: rating_avg gte 4.9 was being read as gte 4.'
+  date: '2026-07-06'
+- breaking: false
+  highlights:
+  - revenue_lifetime and downloads_lifetime added for both stores.
+  date: '2026-06-19'
+- breaking: false
+  highlights:
+  - Filters accept list inputs for ids and bundles.
+  - App transfer details exposed, and filtering by previous developer id and name.
+  date: '2026-06-18'
+current_version: 1.1.1
+note: Only entries listed on the page are included; entries without a version are treated as additive changes to the current version.
+docs: https://api.appstorespy.com/changelog

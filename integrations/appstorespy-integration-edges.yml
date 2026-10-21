@@ -1,0 +1,16 @@
+generated: '2026-10-20'
+method: none
+source:
+- https://zapier.com/apps/appstorespy/integrations
+- https://n8n.io/integrations/appstorespy/
+- https://composio.dev/toolkits/appstorespy
+- https://monid.ai/tools/appstorespy
+checked:
+- https://composio.dev/toolkits/appstorespy
+- https://monid.ai/tools/appstorespy
+- https://n8n.io/integrations/appstorespy/
+- https://zapier.com/apps/appstorespy/integrations
+summary: null
+marketplace_apps: []
+edges: []
+templates: []

@@ -1,14 +1,15 @@
-generated: '2026-09-28'
+generated: '2026-10-20'
 method: derived
 source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
 generator: derive-hosts.py
 summary:
-  hosts: 3
-  own: 3
+  hosts: 6
+  own: 4
   other_domain: 0
-  platform: 0
+  platform: 2
   roles:
   - docs
+  - other
   - portal
   - website
 hosts:
@@ -24,7 +25,16 @@ hosts:
   - well-known
   - vendor-detect
   types:
+  - GettingStarted
   - APIReference
+  - MCPServer
+  - APICatalog
+  - SecurityTxt
+  - APIsJSON
+  - ChangeLog
+  - StatusPage
+  - Deprecation
+  - Roadmap
   serves:
   - api
   - docs
@@ -33,6 +43,17 @@ hosts:
   vendor: swagger-ui
   registrable_domain: appstorespy.com
   role: docs
+  relation: own
+- host: api5.appstorespy.com
+  found_by:
+  - probed
+  - site-links
+  - contract-discovery
+  - well-known
+  types: []
+  serves: []
+  registrable_domain: appstorespy.com
+  role: other
   relation: own
 - host: appstorespy.com
   found_by:
@@ -57,6 +78,25 @@ hosts:
   registrable_domain: appstorespy.com
   role: portal
   relation: own
+- host: github.com
+  found_by:
+  - pointer
+  types:
+  - GitHubRepository
+  - Examples
+  serves: []
+  registrable_domain: github.com
+  role: other
+  relation: platform
+- host: raw.githubusercontent.com
+  found_by:
+  - pointer
+  types:
+  - PostmanCollection
+  serves: []
+  registrable_domain: githubusercontent.com
+  role: other
+  relation: platform
 - host: www.appstorespy.com
   found_by:
   - pointer

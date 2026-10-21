@@ -401,27 +401,6 @@ paths:
       x-cost-credits: 1
 components:
   schemas:
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -431,36 +410,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    Store:
-      type: string
-      enum:
-      - play
-      - ios
-      title: Store
-      description: An enumeration.
-    Cluster:
-      properties:
-        type:
-          type: string
-          title: Type
-        title:
-          type: string
-          title: Title
-        items:
-          items:
-            type: string
-          type: array
-          title: Items
-        layout:
-          type: string
-          title: Layout
-      type: object
-      required:
-      - type
-      - title
-      - items
-      - layout
-      title: Cluster
     SearchResult:
       properties:
         store:
@@ -512,6 +461,13 @@ components:
       - term
       - id
       title: SearchResult
+    Store:
+      type: string
+      enum:
+      - play
+      - ios
+      title: Store
+      description: An enumeration.
     SearchCreate:
       properties:
         store:
@@ -550,6 +506,50 @@ components:
       - store
       - term
       title: SearchCreate
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    Cluster:
+      properties:
+        type:
+          type: string
+          title: Type
+        title:
+          type: string
+          title: Title
+        items:
+          items:
+            type: string
+          type: array
+          title: Items
+        layout:
+          type: string
+          title: Layout
+      type: object
+      required:
+      - type
+      - title
+      - items
+      - layout
+      title: Cluster
   securitySchemes:
     APIKeyHeader:
       type: apiKey

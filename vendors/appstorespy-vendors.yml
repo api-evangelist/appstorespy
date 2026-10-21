@@ -1,4 +1,4 @@
-generated: '2026-09-28'
+generated: '2026-10-20'
 method: probed
 source: pre-flight dossier (docs platform, portal detections) + CNAME chains and response headers of the hosts apis.yml names
 registry: all/0-working/vendors.yml
@@ -46,11 +46,13 @@ reliance:
     cannot tell those apart
 checked:
 - 'docs-platform: swagger-ui'
+- api.appstorespy.com (GettingStarted)
 - www.appstorespy.com (Website)
 - appstorespy.com (DeveloperPortal)
 - api.appstorespy.com (APIReference)
 - appstorespy.com (SignUp)
 - appstorespy.com (Login)
 - appstorespy.com (Support)
+- api.appstorespy.com (StatusPage)
 - api.appstorespy.com (baseURL)
 - api.appstorespy.com (mcp)

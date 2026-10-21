@@ -1,0 +1,104 @@
+generated: '2026-10-20'
+method: derived
+source:
+  - https://api.appstorespy.com/mcp (tools list)
+  - https://api.appstorespy.com/openapi.json (operationIds)
+crosswalk:
+  - tool: search_apps
+    category: search
+    rest:
+      - get_app_search_ios_apps_get
+      - get_app_search_play_apps_get
+    binding: operationId
+    confidence: medium
+  - tool: get_app
+    category: retrieve
+    rest:
+      - get_app_details_ios_apps__id__get
+      - get_app_details_play_apps__id__get
+    binding: operationId
+    confidence: medium
+  - tool: filter_apps
+    category: filter
+    rest:
+      - get_filter_search_ios_apps_query_post
+      - get_filter_search_play_apps_query_post
+    binding: operationId
+    confidence: medium
+  - tool: summarize_apps
+    category: aggregate
+    rest:
+      - get_app_search_ios_apps_get
+      - get_app_search_play_apps_get
+    binding: operationId
+    confidence: low
+  - tool: get_similar_apps
+    category: related
+    rest:
+      - get_app_search_ios_apps_get
+      - get_app_search_play_apps_get
+    binding: operationId
+    confidence: low
+  - tool: get_app_reviews
+    category: reviews
+    rest:
+      - get_app_details_ios_apps__id__reviews_get
+      - get_app_details_play_apps__id__reviews_get
+    binding: operationId
+    confidence: medium
+  - tool: get_rankings
+    category: rankings
+    rest:
+      - get_events_play_liveops_get
+    binding: operationId
+    confidence: low
+  - tool: search_developers
+    category: search
+    rest:
+      - dev_search_ios_developers_get
+      - dev_search_play_developers_get
+    binding: operationId
+    confidence: medium
+  - tool: get_developer
+    category: retrieve
+    rest:
+      - get_developer_ios_developers__id__get
+      - get_developer_play_developers__id__get
+    binding: operationId
+    confidence: medium
+  - tool: filter_developers
+    category: filter
+    rest:
+      - dev_filter_search_ios_developers_query_post
+      - dev_filter_search_play_developers_query_post
+    binding: operationId
+    confidence: medium
+  - tool: get_app_estimates
+    category: estimates
+    rest:
+      - get_apps_estimates_ios_estimates_get
+      - get_apps_estimates_play_estimates_get
+    binding: operationId
+    confidence: medium
+  - tool: get_keyword_suggestions
+    category: suggestions
+    rest:
+      - get_keyword_suggestions
+    binding: operationId
+    confidence: low
+  - tool: get_liveops_events
+    category: events
+    rest:
+      - get_events_play_liveops_get
+    binding: operationId
+    confidence: medium
+  - tool: get_app_listing
+    category: listing
+    rest:
+      - get_app_details_ios_apps__id__recrawl_get
+      - get_app_details_play_apps__id__recrawl_get
+    binding: operationId
+    confidence: low
+mcp_only: []
+rest_only: []
+surfaces: {}

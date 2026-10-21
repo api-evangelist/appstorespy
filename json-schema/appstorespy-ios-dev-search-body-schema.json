@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/appstorespy/main/json-schema/appstorespy-ios-dev-search-body-schema.json",
+  "title": "IosDevSearchBody",
+  "x-generated": "2026-10-20",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/appstorespy-app-store-api-openapi.yml#/components/schemas/IosDevSearchBody",
+  "properties": {
+    "limit": {
+      "type": "integer",
+      "title": "Limit",
+      "description": "Count of developers in results",
+      "default": 10
+    },
+    "page": {
+      "type": "integer",
+      "title": "Page",
+      "description": "Offset page",
+      "default": 1
+    },
+    "sort": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/DevSortEnum"
+        }
+      ],
+      "description": "Field for sort, prefix with - for descending"
+    },
+    "fields": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array",
+      "title": "Fields",
+      "description": "Fields for select, empty for all"
+    },
+    "filter": {
+      "$ref": "#/$defs/SearchFilterDevIos"
+    }
+  },
+  "type": "object",
+  "required": [
+    "filter"
+  ],
+  "$defs": {
+    "DevSortEnum": {
+      "type": "string",
+      "enum": [
+        "revenue",
+        "-revenue",
+        "downloads",
+        "-downloads",
+        "total_apps",
+        "-total_apps",
+        "published_apps",
+        "-published_apps",
+        "rating_count",
+        "-rating_count",
+        "first_released",
+        "-first_released",
+        "last_updated",
+        "-last_updated"
+      ],
+      "title": "DevSortEnum",
+      "description": "An enumeration."
+    },
+    "IosCategory": {
+      "enum": [
+        "GAMES",
+        "GAMES_ACTION",
+        "GAMES_ADVENTURE",
+        "GAMES_ARCADE",
+        "GAMES_BOARD",
+        "GAMES_CARD",
+        "GAMES_CASINO",
+        "GAMES_FAMILY",
+        "GAMES_MUSIC",
+        "GAMES_PUZZLE",
+        "GAMES_RACING",
+        "GAMES_ROLE_PLAYING",
+        "GAMES_SIMULATION",
+        "GAMES_SPORTS",
+        "GAMES_STRATEGY",
+        "GAMES_TRIVIA",
+        "GAMES_WORD",
+        "BOOKS",
+        "BUSINESS",
+        "EDUCATION",
+        "ENTERTAINMENT",
+        "FINANCE",
+        "FOOD_AND_DRINK",
+        "HEALTH_AND_FITNESS",
+        "LIFESTYLE",
+        "MEDICAL",
+        "MUSIC",
+        "NAVIGATION",
+        "NEWS",
+        "PHOTO_AND_VIDEO",
+        "PRODUCTIVITY",
+        "REFERENCE",
+        "SHOPPING",
+        "SOCIAL_NETWORKING",
+        "SPORTS",
+        "TRAVEL",
+        "UTILITIES",
+        "WEATHER",
+        "DEVELOPER_TOOLS",
+        "GRAPHICS_AND_DESIGN",
+        "ALL"
+      ],
+      "title": "IosCategory",
+      "description": "An enumeration."
+    },
+    "SearchFilterDevIos": {
+      "properties": {
+        "hq_country": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Hq Country",
+          "description": "One or more country codes. Country of the developer's registered address as disclosed on the store listing (ISO 3166-1 alpha-2). May differ from where the company actually operates."
+        },
+        "type": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/TypeEnum"
+            }
+          ],
+          "description": "Dominant category type of the developer's apps"
+        },
+        "revenue": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ValueRange"
+            }
+          ],
+          "title": "Revenue",
+          "description": "Monthly revenue estimate range, USD"
+        },
+        "downloads": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ValueRange"
+            }
+          ],
+          "title": "Downloads",
+          "description": "Monthly downloads estimate range"
+        },
+        "total_apps": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/ValueRange"
+            }
+          ],
+          "title": "Total Apps",
+          "description": "Total apps count range"
+        },
+        "am_publisher_id": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Am Publisher Id",
+          "description": "One or more publisher ids. Unified cross-store publisher id; the same value appears on the iOS and Play developer accounts of one company. Null when no mapping is known."
+        },
+        "st_publisher_id": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "St Publisher Id",
+          "description": "One or more publisher ids. Store-specific publisher id from the download-estimates provider. Null when no mapping is known."
+        },
+        "category": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/IosCategory"
+            }
+          ],
+          "description": "Dominant category of the developer's apps"
+        },
+        "seller_name": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "title": "Seller Name",
+          "description": "One or more exact App Store seller legal names. Matches accounts whose seller field contains any of the given values."
+        }
+      },
+      "type": "object",
+      "title": "SearchFilterDevIos"
+    },
+    "TypeEnum": {
+      "enum": [
+        "APP",
+        "GAME"
+      ],
+      "title": "TypeEnum",
+      "description": "An enumeration."
+    },
+    "ValueRange": {
+      "properties": {
+        "lte": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Lte"
+        },
+        "gte": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "title": "Gte"
+        }
+      },
+      "type": "object",
+      "title": "ValueRange"
+    }
+  }
+}
