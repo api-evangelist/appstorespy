@@ -426,3 +426,9 @@ components:
 externalDocs:
   description: Guides, examples, a Postman collection and the Spectral ruleset
   url: https://github.com/romamo/appstorespy-api-docs
+x-provenance:
+  method: harvested
+  publisher: AppstoreSpy
+  source: https://api.appstorespy.com/openapi.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
