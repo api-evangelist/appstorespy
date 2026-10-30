@@ -97,33 +97,35 @@ Which operations an agent can call, which act, and which need a human in the loo
 
 - [Appstorespy Agentic Access](https://apis.io/agentic-access/appstorespy/appstorespy-agentic-access/)
 
-#### JSON Schema (17)
+#### JSON Schema (19)
 
 The data models the API reads and writes.
 
-- [Moved to /providers/appstorespy/](https://apis.io/schemas/appstorespy/appstorespy-event/)
-- [Moved to /providers/appstorespy/](https://apis.io/schemas/appstorespy/appstorespy-ios-app/)
-- [Moved to /providers/appstorespy/](https://apis.io/schemas/appstorespy/appstorespy-ios-app-list-response/)
-- [Moved to /providers/appstorespy/](https://apis.io/schemas/appstorespy/appstorespy-ios-app-search-body/)
-- [Moved to /providers/appstorespy/](https://apis.io/schemas/appstorespy/appstorespy-ios-dev/)
-- [Moved to /providers/appstorespy/](https://apis.io/schemas/appstorespy/appstorespy-ios-review/)
-- [Moved to /providers/appstorespy/](https://apis.io/schemas/appstorespy/appstorespy-ios-similar-search-body/)
-- [Moved to /providers/appstorespy/](https://apis.io/schemas/appstorespy/appstorespy-play-app/)
-- [Moved to /providers/appstorespy/](https://apis.io/schemas/appstorespy/appstorespy-play-app-search-body/)
-- [Moved to /providers/appstorespy/](https://apis.io/schemas/appstorespy/appstorespy-play-dev/)
-- [Moved to /providers/appstorespy/](https://apis.io/schemas/appstorespy/appstorespy-play-review/)
-- [Moved to /providers/appstorespy/](https://apis.io/schemas/appstorespy/appstorespy-search-create/)
-- [Moved to /providers/appstorespy/](https://apis.io/schemas/appstorespy/appstorespy-search-result/)
-- [Moved to /providers/appstorespy/](https://apis.io/schemas/appstorespy/appstorespy-similar-search-body/)
-- [Moved to /providers/appstorespy/](https://apis.io/schemas/appstorespy/appstorespy-suggest/)
-- [Moved to /providers/appstorespy/](https://apis.io/schemas/appstorespy/appstorespy-suggest-lite/)
-- [Moved to /providers/appstorespy/](https://apis.io/schemas/appstorespy/appstorespy-summary-response/)
+- [Event](https://apis.io/schemas/appstorespy/appstorespy-event/)
+- [IosApp](https://apis.io/schemas/appstorespy/appstorespy-ios-app/)
+- [IosAppListResponse](https://apis.io/schemas/appstorespy/appstorespy-ios-app-list-response/)
+- [IosAppSearchBody](https://apis.io/schemas/appstorespy/appstorespy-ios-app-search-body/)
+- [IosDev](https://apis.io/schemas/appstorespy/appstorespy-ios-dev/)
+- [IosDevSearchBody](https://apis.io/schemas/appstorespy/appstorespy-ios-dev-search-body/)
+- [IosReview](https://apis.io/schemas/appstorespy/appstorespy-ios-review/)
+- [IosSimilarSearchBody](https://apis.io/schemas/appstorespy/appstorespy-ios-similar-search-body/)
+- [PlayApp](https://apis.io/schemas/appstorespy/appstorespy-play-app/)
+- [PlayAppSearchBody](https://apis.io/schemas/appstorespy/appstorespy-play-app-search-body/)
+- [PlayDev](https://apis.io/schemas/appstorespy/appstorespy-play-dev/)
+- [PlayListing](https://apis.io/schemas/appstorespy/appstorespy-play-listing/)
+- [PlayReview](https://apis.io/schemas/appstorespy/appstorespy-play-review/)
+- [SearchCreate](https://apis.io/schemas/appstorespy/appstorespy-search-create/)
+- [SearchResult](https://apis.io/schemas/appstorespy/appstorespy-search-result/)
+- [SimilarSearchBody](https://apis.io/schemas/appstorespy/appstorespy-similar-search-body/)
+- [Suggest](https://apis.io/schemas/appstorespy/appstorespy-suggest/)
+- [SuggestLite](https://apis.io/schemas/appstorespy/appstorespy-suggest-lite/)
+- [SummaryResponse](https://apis.io/schemas/appstorespy/appstorespy-summary-response/)
 
 #### JSON-LD (1)
 
 Linked-data contexts for the provider's vocabulary.
 
-- [Moved to /providers/appstorespy/](https://apis.io/jsonld/appstorespy/appstorespy-context/)
+- [Appstorespy Context](https://apis.io/jsonld/appstorespy/appstorespy-context/)
 
 #### Overlays (1)
 
@@ -135,15 +137,16 @@ OpenAPI overlays, including conversational phrasing for each operation.
 
 Spectral rulesets for the provider's contracts.
 
-- [Moved to /providers/appstorespy/](https://apis.io/rules/appstorespy/appstorespy-rules/)
+- [AppstoreSpy API Rules](https://apis.io/rules/appstorespy/appstorespy-rules/)
 - [AppstoreSpy API Rules](https://apis.io/rules/appstorespy/appstorespy-spectral-rules/)
 
-#### Security (2)
+#### Security (3)
 
 Authentication, trust centre, and vulnerability disclosure.
 
 - [Appstorespy Authentication](https://apis.io/security/appstorespy/appstorespy-authentication/)
 - [Appstorespy Domain Security](https://apis.io/security/appstorespy/appstorespy-domain-security/)
+- [Appstorespy Vulnerability Disclosure](https://apis.io/security/appstorespy/appstorespy-vulnerability-disclosure/)
 
 #### Plans and pricing (1)
 
@@ -156,6 +159,12 @@ Published plans, tiers and prices.
 Published request limits.
 
 - [Appstorespy Rate Limits](https://apis.io/rate-limits/appstorespy/appstorespy-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Appstorespy Finops](https://apis.io/finops/appstorespy/appstorespy-finops/)
 
 ## Where to find this API
 
