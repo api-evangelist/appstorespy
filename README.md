@@ -95,7 +95,7 @@ Model Context Protocol servers that expose the API to agents.
 
 Which operations an agent can call, which act, and which need a human in the loop.
 
-- [Appstorespy Agentic Access](https://apis.io/agentic-access/appstorespy/appstorespy-agentic-access/)
+- [AppstoreSpy Agentic Access](https://apis.io/agentic-access/appstorespy/appstorespy-agentic-access/)
 
 #### JSON Schema (19)
 
@@ -131,7 +131,7 @@ Linked-data contexts for the provider's vocabulary.
 
 OpenAPI overlays, including conversational phrasing for each operation.
 
-- [Appstorespy Openapi Overlay](https://apis.io/overlays/appstorespy/appstorespy-openapi-overlay/)
+- [AppstoreSpy Openapi Overlay](https://apis.io/overlays/appstorespy/appstorespy-openapi-overlay/)
 
 #### Governance rules (2)
 
@@ -144,27 +144,27 @@ Spectral rulesets for the provider's contracts.
 
 Authentication, trust centre, and vulnerability disclosure.
 
-- [Appstorespy Authentication](https://apis.io/security/appstorespy/appstorespy-authentication/)
-- [Appstorespy Domain Security](https://apis.io/security/appstorespy/appstorespy-domain-security/)
-- [Appstorespy Vulnerability Disclosure](https://apis.io/security/appstorespy/appstorespy-vulnerability-disclosure/)
+- [AppstoreSpy Authentication](https://apis.io/security/appstorespy/appstorespy-authentication/)
+- [AppstoreSpy Domain Security](https://apis.io/security/appstorespy/appstorespy-domain-security/)
+- [AppstoreSpy Vulnerability Disclosure](https://apis.io/security/appstorespy/appstorespy-vulnerability-disclosure/)
 
 #### Plans and pricing (1)
 
 Published plans, tiers and prices.
 
-- [Appstorespy Plans Pricing](https://apis.io/plans/appstorespy/appstorespy-plans-pricing/)
+- [AppstoreSpy Plans Pricing](https://apis.io/plans/appstorespy/appstorespy-plans-pricing/)
 
 #### Rate limits (1)
 
 Published request limits.
 
-- [Appstorespy Rate Limits](https://apis.io/rate-limits/appstorespy/appstorespy-rate-limits/)
+- [AppstoreSpy Rate Limits](https://apis.io/rate-limits/appstorespy/appstorespy-rate-limits/)
 
 #### FinOps (1)
 
 What the API costs to run, by operation.
 
-- [Appstorespy Finops](https://apis.io/finops/appstorespy/appstorespy-finops/)
+- [AppstoreSpy Finops](https://apis.io/finops/appstorespy/appstorespy-finops/)
 
 ## Where to find this API
 
